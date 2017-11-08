@@ -29,7 +29,7 @@ def test_simple():
     (res, err) = operator("niño")
     assert res is not None
     assert err is None
-    assert res == {"bebé": 0, "niño":  1, "joven": 0, "adulto": 0, "anciano": 0}
+    assert res == {"bebé": 0, "niño": 1, "joven": 0, "adulto": 0, "anciano": 0}
 
 
 def test_zero_categories():

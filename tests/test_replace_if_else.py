@@ -93,4 +93,3 @@ def test_cond_false_replace_if_then_else():
     assert res["a"] == 102
     assert err is not None
     assert err == {}
-

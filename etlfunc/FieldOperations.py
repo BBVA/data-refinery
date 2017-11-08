@@ -155,7 +155,7 @@ def linear_category(categories: List[T]) -> \
 
     if categories is None or len(categories) == 0:
         return _fixed_input(None, "no categories supplied")
-    category_map = {value: i+1 for (i, value) in enumerate(categories)}
+    category_map = {value: i + 1 for (i, value) in enumerate(categories)}
 
     return _app
 
@@ -263,25 +263,21 @@ def time_parser(formats: list):
 
 def explode_date(date: datetime.datetime, e):
     if date is not None:
-        return {
-                   "year": date.year,
-                   "month": date.month,
-                   "day": date.day,
-                   "hour": date.hour,
-                   "minute": date.minute,
-                   "second": date.second
-               }, e
+        return {"year": date.year,
+                "month": date.month,
+                "day": date.day,
+                "hour": date.hour,
+                "minute": date.minute,
+                "second": date.second}, e
     else:
         return None, e
 
 
 def explode_time(time: datetime.time, e):
     if time is not None:
-        return {
-                   "hour": time.hour,
-                   "minute": time.minute,
-                   "second": time.second
-               }, e
+        return {"hour": time.hour,
+                "minute": time.minute,
+                "second": time.second}, e
     else:
         return None, e
 

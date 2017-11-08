@@ -48,4 +48,3 @@ def test_final_bucket():
     assert res is not None
     assert res == 6
     assert err is None
-

@@ -8,7 +8,7 @@ def test_some_working():
         return x == 0
 
     def _fun_part(x):
-        return x+1
+        return x + 1
 
     operation = Tr(substitution(["a"], replace_if(_if_part, _fun_part))).apply()
     (inp, res, err) = operation({"a": 0})
@@ -25,7 +25,7 @@ def test_empty():
         return x == 0
 
     def _fun_part(x):
-        return x+1
+        return x + 1
 
     operation = Tr(substitution(["a"], replace_if(_if_part, _fun_part))).apply()
     (inp, res, err) = operation(None)

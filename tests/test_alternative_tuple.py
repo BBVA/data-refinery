@@ -5,7 +5,7 @@ from etlfunc.tuple.TupleOperations import alternative, substitution, wrap
 def test_empty():
     operation = Tr(alternative(
         substitution(["a"], etl_func=lambda x: (None, "nop")),
-        substitution(["b"], etl_func=wrap(lambda x: x+1))
+        substitution(["b"], etl_func=wrap(lambda x: x + 1))
     )).apply()
     (inp, res, err) = operation(None)
     assert inp is None
