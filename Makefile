@@ -19,7 +19,7 @@ help:
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts
-	rm -rf build dist .eggs .cache
+	rm -rf build dist .eggs .cache docs/build
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 
@@ -47,5 +47,5 @@ release: ## upload release to pypi
 codecov: ## update coverage to codecov
 	@tox -e codecov
 
-docs: ## create documentation
+doc: ## create documentation
 	@tox -e doc

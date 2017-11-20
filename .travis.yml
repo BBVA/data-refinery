@@ -1,0 +1,71 @@
+language: python
+dist: trusty
+sudo: false
+branches:
+  except:
+    - /^v\d+\.*$/
+    - gh-pages
+    - travis-*
+    - /^untagged.*/
+matrix:
+  include:
+  - python: "3.5"
+    env:
+    - FLAG=false
+      TOXENV=py35
+  - python: "3.6"
+    env:
+    - FLAG=true
+      TOXENV=py36,doc,build
+install:
+- travis_retry pip install tox
+script:
+- tox
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: >-
+    pip install -U bumpversion gitchangelog &&
+    git config --global user.email "builds@travis-ci.com" &&
+    git config --global user.name "Travis CI" &&
+    git pull -t &&
+    git checkout -b travis-master-$TRAVIS_BUILD_NUMBER origin/$TRAVIS_BRANCH &&
+    bumpversion --tag --commit --message "[skip ci] Travis Build ${TRAVIS_BUILD_NUMBER}. Update version {current_version} --> {new_version}" patch
+  on:
+    branch: master
+    condition: $FLAG = true
+- provider: script
+  skip_cleanup: true
+  script: >-
+    make clean build release codecov doc &&
+    touch docs/build/html/.nojekyll &&
+    git checkout master &&
+    git merge travis-master-$TRAVIS_BUILD_NUMBER &&
+    git push --tags https://$GITHUB_TOKEN@github.com/laetitiae/data-refinery.git $TRAVIS_BRANCH
+  on:
+    branch: master
+    condition: $FLAG = true
+- provider: releases
+  overwrite: true
+  api_key: $GITHUB_TOKEN
+  file_glob: true
+  file: dist/*
+  skip_cleanup: true
+  on:
+    branch: master
+    condition: $FLAG = true
+- provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: docs/build/html
+  on:
+    branch: master
+    condition: $FLAG = true
+
+notifications:
+  email:
+    recipients:
+      - leticia.garcia3@bbva.com
+      - enrique.garcia.pablos@bbva.com
+    on_success: never
+    on_failure: always
