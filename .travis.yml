@@ -37,12 +37,12 @@ deploy:
 - provider: script
   skip_cleanup: true
   script: >-
-    make codecov &&
-    make clean build release doc &&
-    touch docs/build/html/.nojekyll &&
+    make clean build &&
     git checkout master &&
     git merge travis-master-$TRAVIS_BUILD_NUMBER &&
-    git push --tags https://$GITHUB_TOKEN@github.com/BBVA/data-refinery.git $TRAVIS_BRANCH
+    git push --tags https://$GITHUB_TOKEN@github.com/BBVA/data-refinery.git $TRAVIS_BRANCH &&
+    make codecov release doc &&
+    touch docs/build/html/.nojekyll
   on:
     branch: master
     condition: $FLAG = true
