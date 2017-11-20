@@ -37,7 +37,8 @@ deploy:
 - provider: script
   skip_cleanup: true
   script: >-
-    make clean build release codecov doc &&
+    make codecov &&
+    make clean build release doc &&
     touch docs/build/html/.nojekyll &&
     git checkout master &&
     git merge travis-master-$TRAVIS_BUILD_NUMBER &&
