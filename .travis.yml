@@ -41,7 +41,7 @@ deploy:
     touch docs/build/html/.nojekyll &&
     git checkout master &&
     git merge travis-master-$TRAVIS_BUILD_NUMBER &&
-    git push --tags https://$GITHUB_TOKEN@github.com/laetitiae/data-refinery.git $TRAVIS_BRANCH
+    git push --tags https://$GITHUB_TOKEN@github.com/BBVA/data-refinery.git $TRAVIS_BRANCH
   on:
     branch: master
     condition: $FLAG = true
