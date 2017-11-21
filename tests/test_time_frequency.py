@@ -15,6 +15,8 @@
 from datetime import datetime
 from datarefinery.DateFieldOperations import year_iterator, month_iterator, day_iterator
 from datarefinery.DateFieldOperations import hour_iterator, minute_iterator, second_iterator
+from datarefinery.DateFieldOperations import years_between, months_between, days_between, hours_between
+from datarefinery.DateFieldOperations import minutes_between, seconds_between
 from itertools import islice
 
 
@@ -250,3 +252,66 @@ def test_second_iterator():
         None
     )
     assert five is None
+
+
+def test_years_between():
+    operation = years_between(datetime(1970, 1, 1))
+    (five_years, err) = operation(datetime(1975, 1, 1))
+    assert err is None
+    assert five_years == 5
+
+
+def test_months_between_years():
+    operation = months_between(datetime(1970, 1, 1))
+    (twelve, err) = operation(datetime(1971, 1, 1))
+    assert err is None
+    assert twelve == 12
+
+
+def test_months_between():
+    operation = months_between(datetime(1970, 1, 1))
+    (twelve, err) = operation(datetime(1970, 5, 1))
+    assert err is None
+    assert twelve == 4
+
+
+def test_days_between():
+    operation = days_between(datetime(1970, 1, 1))
+    (ten, err) = operation(datetime(1970, 1, 11))
+    assert err is None
+    assert ten == 10
+
+
+def test_days_between_years():
+    operation = days_between(datetime(1970, 1, 1))
+    (ten, err) = operation(datetime(1971, 1, 1))
+    assert err is None
+    assert ten == 365
+
+
+def test_days_between_leap_years():
+    operation = days_between(datetime(1976, 1, 1))
+    (ten, err) = operation(datetime(1977, 1, 1))
+    assert err is None
+    assert ten == 366
+
+
+def test_hours_between():
+    operation = hours_between(datetime(1970, 1, 1))
+    (ten, err) = operation(datetime(1970, 1, 2))
+    assert err is None
+    assert ten == 24
+
+
+def test_minutes_between():
+    operation = minutes_between(datetime(1970, 1, 1, 0))
+    (ten, err) = operation(datetime(1970, 1, 1, 1))
+    assert err is None
+    assert ten == 60
+
+
+def test_seconds_between():
+    operation = seconds_between(datetime(1970, 1, 1, 0, 0))
+    (ten, err) = operation(datetime(1970, 1, 1, 0, 1))
+    assert err is None
+    assert ten == 60

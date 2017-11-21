@@ -13,6 +13,8 @@
 # limitations under the License.
 
 from datetime import datetime, timedelta
+from itertools import takewhile
+from functools import reduce
 
 
 def date_parser(date_formats: list):
@@ -83,8 +85,7 @@ def _date_iterator(start, advance):
         "day": start.day,
         "hour": start.hour,
         "minute": start.minute,
-        "second": start.second,
-        "microsecond": start.microsecond
+        "second": start.second
     }
     yield datetime(**current)
     while True:
@@ -132,3 +133,50 @@ def minute_iterator(start):
 def second_iterator(start):
     delta = timedelta(seconds=1)
     return _time_iter(start, delta)
+
+
+def years_between(start):
+    def _app(end, err=None):
+        if end is None:
+            return None, "no date provided"
+        return end.year - start.year, err
+    return _app
+
+
+def months_between(start):
+    year_counter = years_between(start)
+
+    def _app(end, err=None):
+        if end is None:
+            return None, "no date provided"
+        (years, err2) = year_counter(end)
+        if err2 is not None:
+            return None, err2
+        return years*12 + (end.month - start.month), err
+    return _app
+
+
+def _count_steps(start, generator_fun):
+    def _app(end, err=None):
+        if end is None:
+            return None, "no date provided"
+        ite = generator_fun(start)
+        total = map(lambda x: 1, takewhile(lambda d: d < end, ite))
+        return reduce(lambda a, b: a + b, total), err
+    return _app
+
+
+def days_between(start):
+    return _count_steps(start, day_iterator)
+
+
+def hours_between(start):
+    return _count_steps(start, hour_iterator)
+
+
+def minutes_between(start):
+    return _count_steps(start, minute_iterator)
+
+
+def seconds_between(start):
+    return _count_steps(start, second_iterator)
