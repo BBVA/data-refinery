@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import date_parser, compose, explode_date, remove_columns
+from datarefinery.FieldOperations import compose, remove_columns
+from datarefinery.DateFieldOperations import date_parser, explode_date
 from datarefinery.Tr import Tr
 from datarefinery.tuple.TupleOperations import append
 

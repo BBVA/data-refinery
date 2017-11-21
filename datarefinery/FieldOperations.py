@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
-
 from collections import OrderedDict
 from typing import Callable, TypeVar, Tuple, Optional, List, Union
 from datarefinery.tuple.TupleOperations import compose
@@ -237,67 +235,6 @@ def replace_if(func, replacement):
         return i, e
 
     return _app
-
-
-def date_parser(date_formats: list):
-    def _app(x: str, e=None):
-        if x is None:
-            return None, "Date can't be None: {}".format(x)
-        if date_formats is None:
-            return None, "Date formats can't be None"
-        for current_format in date_formats:
-            try:
-                d = datetime.datetime.strptime(x, current_format)
-                if d is not None:
-                    return d, None
-            except ValueError:
-                continue
-        return None, "Can not parse date {}".format(x)
-
-    return _app
-
-
-def time_parser(formats: list):
-    def _app(x: str, e=None):
-        if x is None:
-            return None, "Time can't be None: {}".format(x)
-        if formats is None:
-            return None, "Time formats can't be None"
-        for current_format in formats:
-            try:
-                d = datetime.datetime.strptime(x, current_format).time()
-                if d is not None:
-                    return d, None
-            except ValueError:
-                continue
-        return None, "Can not parse time {}".format(x)
-
-    return _app
-
-
-def explode_date(date: datetime.datetime, e):
-    if date is not None:
-        return {
-                   "year": date.year,
-                   "month": date.month,
-                   "day": date.day,
-                   "hour": date.hour,
-                   "minute": date.minute,
-                   "second": date.second
-               }, e
-    else:
-        return None, e
-
-
-def explode_time(time: datetime.time, e):
-    if time is not None:
-        return {
-                   "hour": time.hour,
-                   "minute": time.minute,
-                   "second": time.second
-               }, e
-    else:
-        return None, e
 
 
 def remove_columns(*columns_to_remove: str):
