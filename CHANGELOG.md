@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [v0.1.56 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.56)
+
+### Other
+
+* [ff72f71](https://github.com/BBVA/data-refinery/commit/ff72f715d3316d923f336afe8c38685842e38467) [skip ci] Travis Build 13. Update version 0.1.55 --> 0.1.56.
+
+* [bee765f](https://github.com/BBVA/data-refinery/commit/bee765f07c92f1695a9fa4b99f8b78210b7f099e) Update README with right title.
+
+
 ## [v0.1.55 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.55)
 
 ### Fix
