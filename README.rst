@@ -1,7 +1,7 @@
 |Build Status| |Coverage| |Docs| |Version| |PyVersions| |License|
 
-ETL library
-===========
+Data Refinery
+=============
 
 The main goal of the library is perform a Transformation over a data
 event. Supports a variety of functions typically used on machine
