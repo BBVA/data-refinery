@@ -2,6 +2,8 @@
 !.gitignore
 !.travis.yml
 !.coveragerc
+!.gitchangelog.rc
+!.changelog.tpl
 
 __pycache__
 *.py[cod]

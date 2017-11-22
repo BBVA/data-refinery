@@ -38,6 +38,10 @@ deploy:
   skip_cleanup: true
   script: >-
     make clean-pyc clean-build build &&
+    pip install -U pystache gitchangelog &&
+    gitchangelog > CHANGELOG.md &&
+    git add CHANGELOG.md && git commit -m "[skip ci] @skip Generated CHANGELOG file" &&
+    git tag -f $(git describe --tags `git rev-list --tags --max-count=1`) &&
     git checkout master &&
     git merge travis-master-$TRAVIS_BUILD_NUMBER &&
     git push --tags https://$GITHUB_TOKEN@github.com/BBVA/data-refinery.git $TRAVIS_BRANCH &&
