@@ -4,8 +4,7 @@ Tuple DSL documentation
 DSL
 ~~~
 
-DSL let us create any operation over a row, but you know... with great power comes great responsibility_.
-::_responsibility: https://i.annihil.us/u/prod/marvel//universe3zx/images/4/4f/Ben_parker.jpg
+DSL let us create any operation over a row, but you know... with great power comes great responsibility.
 
 When you create an operation, you have to spread the input, the modified output and the error if proceeds.
 
