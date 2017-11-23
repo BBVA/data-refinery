@@ -40,6 +40,7 @@ En ocasiones la fuente de datos no contiene información de tipo, o esta no es c
 Por ejemplo, si quiero cambiar el tipo de un dato a int puedo usar el siguiente código:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import type_enforcer
 
     int_enforcer = type_enforcer(lambda x: int(x))
@@ -52,6 +53,7 @@ Normalización min max
 Esta es una operación típica en machine learning. Consiste en interpolar entre 0 y 1 un valor, considerando que el 0 es representado por el valor min y el 1 es representado por el valor max. Esta función necesita el mínimo y el máximo como contexto para su creación. Un ejemplo de uso podría ser:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import min_max_normalization
 
     normalizator = min_max_normalization(1, 10)
@@ -64,6 +66,7 @@ Puntuación estandar
 Esta operación representa lo lejos que está un dato de la estadística representativa de una columna completa. Para usarlo necesitamos pasarle como contexto la media y la desviación típica de los valores de la columna. Un ejemplo de uso sería:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import std_score_normalization
 
     normalizator = std_score_normalization(79, 8)
@@ -84,6 +87,7 @@ Continuando con el ejmplo de edad, si queremos distinguir entre niños, adultos 
 En código podríamos ver estas situaciones así:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import buckets_grouping
 
     group = buckets_grouping(18, 70)
@@ -103,6 +107,7 @@ Esto se debe a que asignará el valor numérico del orden de la lista, y necesit
 Como ejemplo podemos categorizar de nuevo la edad, pero esta vez nos llega como texto en lugar de como número.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import linear_category
 
     categorizer = linear_category(["niño", "adulto", "jubilado"])
@@ -117,6 +122,7 @@ Funciona como la categorización lineal pero genera una columna con cada valor d
 Continuando con el ejemplo de la edad.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import column_category
 
     categorizer = column_category(["niño", "adulto", "jubilado"])
@@ -131,6 +137,7 @@ Prefijo de columna
 En casos en los que una función genera varios campos es posible que estas coincidan en nombre con otros campos. Por eso podemos usar esta función que añadirá un prefijo al nombre de la columna.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import add_column_prefix
 
     prefix = add_column_prefix("good")
@@ -146,6 +153,7 @@ En el caso de que haya un solo sub objeto no se añadirá más que el prefijo de
 Por ejemplo, si queremos explotar el campo nombre la llamada podría ser asi:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import explode
 
     explode_name = explode("name")
@@ -160,6 +168,7 @@ Cuando se estudian los datos en raras ocasiones una columna tiene todos los valo
 Por ejemplo, si queremos sustituir por cero todos los valores negativos de un campo:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import replace_if
 
     change = replace_if(lambda x: x<0, lambda x: 0)
@@ -174,6 +183,7 @@ Las fechas son siempre una fuente de problemas, la variedad de formatos puede se
 Los formatos esperados deben ser formatos de fecha estandar de Python.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import date_parser
 
     parser = date_parser(["%Y-%m-%d"])
@@ -188,6 +198,7 @@ Explosión temporal
 Tanto para fechas, como para tiempo, es posible que queramos tener los integrantes del valor como números simples en diferentes campos. Como entrada espera siempre un valor de tipo datetime.
 
 .. code-block:: python
+
     import datetime
     from datarefinery.FieldOperations import explode_date
 
@@ -206,6 +217,7 @@ En el caso de que quieras eliminar una columna, simplemente no operes sobre ella
 Si este es el primer caso de composición que ves considera revisar primero la [documentación](##Combinando operaciones de campo) a este respecto.
 
 .. code-block:: python
+
     import datetime
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.FieldOperations import explode_date, remove_columns
@@ -222,6 +234,7 @@ Hay veces que muchos cambios en un campo son variados pero estáticos, como en a
 A la función match_dict se le pasa este diccionario contexto y se encarga de devolver el valor correspondiente de la clave con la que se llama a la función.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import match_dict
 
     d = {"Spain": "ES", "United States of America": "US"}
@@ -245,6 +258,7 @@ Normalización numérica
 Convertir un número de entrada en texto a un número y luego llevar a cabo una normalización min max.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.FieldOperations import type_enforcer, min_max_normalization
 
@@ -261,6 +275,7 @@ Fecha completa
 Otra operación típica es la de explotar una fecha, querase solo con los años, meses y dias, y añadir un prefijo para evitar colisiones con otros campos.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.FieldOperations import date_parser, explode_date, remove_columns, add_column_prefix
 
@@ -279,6 +294,7 @@ One hot vector del día
 Incluso podemos llevar a cabo una transformación mucho más atrevida, como construir un one hot vector, desde una fecha en texto, con el día de la semana.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.tuple.TupleOperations import wrap
     from datarefinery.FieldOperations import date_parser, match_dict, column_category
@@ -316,6 +332,7 @@ Keep - Mantener campos
 La operación más sencilla, que no requiere de ninguna función de campo, es Keep. Básicamente coge un campo del input y lo pone en el output sin modificar su valor:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import keep
 
     operation = keep(["greet"])
@@ -330,6 +347,7 @@ Substitution - Substituir campos
 La siguiente operación si que requiere de una función de campo. Substitution pondrá el campo, con el mismo nombre, en el output pero con el valor transformado por la función de campo que se provea. Por ejemplo, una función to_float que transforme el valor dado en un float podrían usarse así:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution
 
     operation = substitution(["greet"], wrap(lambda x: len(x)))
@@ -342,6 +360,7 @@ Append - Añadir nuevos campos a partir de uno
 En muchas ocasiones queremos añadir varios campos con una sola operación, o cambiar el nombre del campo. La operación append permite hacer esto, pero requiere que la función de campo devuelva un diccionario donde el nombre del campo será extraído de la clave del diccionario y el valor del campo del valor del diccionario.Supongamos una función de campo, llamada len_cap, que dada una cadena de texto genera los campos len, con la longitud de la cadena, y cap, con la primera letra en mayúsculas.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, append
 
     operation = append(["greet"], wrap(lambda x: {x: "you", "y": "None"}))
@@ -358,6 +377,7 @@ Si nos fijamos con atención veremos que como patrón subyacente estamos llevand
 Esta es una de las operaciones más complejas, y se llama fusion; para ilustrar esta función vamos a cambiar el ejemplo. Dada una función de campo suma, que suma todos los valores que recibe, vamos a generar un campo total.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, fusion
 
     operation = fusion(["a", "b", "c"], "sum_abc", wrap(lambda x: sum(x)))
@@ -369,6 +389,7 @@ Pero fusión también puede usarse para operaciones más complejas. Supongamos q
 Con este conocimiento podríamos generar una función que recupere los valores por su orden y que llame a la función de cambio de divisa existente (to_eur).
 
 .. code-block:: python
+
     def to_eur_wrapped(x):
       [currency, value] = x
       return to_eur(currency, value)
@@ -376,6 +397,7 @@ Con este conocimiento podríamos generar una función que recupere los valores p
 Y usarla junto con fusión para crear el campo val_eur.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, fusion
 
     val_eur_op = fusion(["currency", "value"], "val_eur", wrap(to_eur_wrapped))
@@ -392,6 +414,7 @@ Básicamente es una operación en la que usamos varios campos para generar vario
 Modificando la función del ejemplo anterior podemos devolver varios campos para no perder los datos originales en una sola operación:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, fusion_append
 
     def to_eur_cols(x):
@@ -410,6 +433,7 @@ En algunos casos estamos trabajando con un dataset del que solo queremos una par
 Por ejemplo, si necesitamos descartar las filas que no tengan un campo nulo; primero necesitamos una función que devuelve true si la fila no es nula. Usandola en filter_tuple quedaría algo así.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, filter_tuple
 
     no_none = filter_tuple(["value"], wrap(lambda x: x is not None))
@@ -427,6 +451,7 @@ En muchas ocasiones una operación en concreto no se puede llevar a cabo. Pero s
 Supongamos que queremos multiplicar el campo valor por dos, pero si no viene nos vale con poner un 0.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, alternative, substitution, append
 
     need_value = alternative(
@@ -444,6 +469,7 @@ Fallo con estilo
 Cuando registramos el fallo, a cualquier nivel, no detenemos el proceso; si escribes tus propias funciones para la librería asegurate de que son resistentes al fallo. Esto nos permite llevar a cabo una operación especial, el recuperarnos de un error. La operación recover lee del error, escribe en el output y si todo va bien borra del error el campo relacionado. En el siguiente ejemplo, el tercer parametro es el input de error de la función y el segundo el output.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, recover
 
     no_error = recover(["value"], wrap(lambda x: 0))
@@ -465,6 +491,7 @@ Ten en cuenta que en cuanto llamamos a apply perdemos las funciones *then* y *ap
 Si por ejemplo queremos guardar un campo y sustutir el valor de otro con la función x2 (multiplica un valor por dos) podríamos escribir el siguiente código.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, keep, substitution
     from datarefinery.Tr import Tr
 
@@ -478,6 +505,7 @@ Si por ejemplo queremos guardar un campo y sustutir el valor de otro con la func
 Errores comunes a evitar son pasarle los datos a apply, que no hace nada más que devolver la función a usar. O llamar a la función que estamos pasando a la operación (se pasa sin paréntesis).
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import substitution
 
     substitution(["value"], x2()) # WRONG!!!
@@ -496,6 +524,7 @@ Los datos de entrenamiento suelen ser como los de ejecución pero contienen un c
 En el siguiente ejemplo la transformación de datos (el objeto Tr) se construye en un módulo especifico de tu aplicación, y se recupera con la función etl(). Luego añadiremos la lógica para el label:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import keep
 
     tr = etl()
@@ -521,6 +550,7 @@ Hay que tener cuidado si queremos usar init y tenemos guardadas en variables Tr 
 Si llevamos a cabo esta operación:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import keep
     from datarefinery.tuple.Formats import from_json
 
@@ -531,6 +561,7 @@ Si llevamos a cabo esta operación:
 En este caso tanto step1 como step2 tendrían como primera operación *from_json*, y es posible que no es esto lo que queramos llevar a cabo. Si queremos que cada una mantenga un origen independiente te sugiero que uses el siguiente código en su lugar:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import keep
     from datarefinery.tuple.Formats import from_json
 
@@ -553,6 +584,7 @@ Secuencialidad
 Cuando se encadenan funciones con then todas ellas pasan en un solo "paso". Es decir que todas usan el mismo input y escriben en el mismo output. Por lo que si queremos modificar el valor de un campo ya modificado, aunque lo encadenemos con then, pasan a la vez y recibimos el valor de la segunda transformación solamente. Por ejemplo:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution
     from datarefinery.Tr import Tr
 
@@ -574,6 +606,7 @@ Al pasar al mismo tiempo el input es 2 en las dos llamadas a la función. Y adem
 Si queremos llevar a cabo estas operaciones, y obetener el resultado esperado, la solución optima es usar compose; que nos permite secuenciar las operaciones de campo, como ya hemos visto, en una sola referencia de función, que es lo que espera la función de fila. El código quedaría así:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution, compose
     from datarefinery.Tr import Tr
 
@@ -587,6 +620,7 @@ Si queremos llevar a cabo estas operaciones, y obetener el resultado esperado, l
 Hay una otra opción para llevar a cabo esta operación. Dentro de las operaciones podemos usar change, que lleva a cabo una sustitución pero usa el valor del output en lugar del input, y **sobreescribe** el valor del output con el nuevo valor.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution, change
     from datarefinery.Tr import Tr
 
@@ -602,6 +636,7 @@ Otra opción es el uso de [DSL](##DSL) de bajo nivel que permite configurar una 
 En el caso de que queramos llevar cabo esta transformación, pero no tengamos acceso a la operación de campo original, podemos usar la operación de evento chain. Que termina con la operación que estamos llevando a cabo en ese momento y pasa el output al input, para que lo usen las siguientes operaciones propagando el error si es necesario, y **descarta el input** anterior.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution, chain
     from datarefinery.Tr import Tr
 
@@ -623,6 +658,7 @@ El dsl de bajo nivel nos permite crear cualquier operación que se nos pueda ima
 Su uso es bastante sencillo, básicamente todas las funciones de evento se crear con este DSL, para ejemplificar su uso vamos a ver como está declarado keep:
 
 .. code-block:: python
+
     def keep(fields) -> Callable[[dict, dict, dict], Tuple[dict, dict, dict]]:
         operations = [compose(use_input(), read_field(f), write_field(f)) for f in fields]
         return reduce(compose, map(apply_over_output, operations))
