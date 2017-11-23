@@ -1,6 +1,39 @@
 # Changelog
 
 
+## [v0.1.59 (2017-11-23)](https://github.com/BBVA/data-refinery/tree/v0.1.59)
+
+### Other
+
+* [c2daa6e](https://github.com/BBVA/data-refinery/commit/c2daa6e5f7634fe03154c1afec7b78d7bd8b29a7) [skip ci] Travis Build 18. Update version 0.1.58 --> 0.1.59.
+
+* [c0fd793](https://github.com/BBVA/data-refinery/commit/c0fd793587c7ece97f4a42f9e954e279d519d7d9) Update .travis.yml.
+
+  Add myself
+
+
+## [v0.1.58 (2017-11-23)](https://github.com/BBVA/data-refinery/tree/v0.1.58)
+
+### Fix
+
+* [8ce7b21](https://github.com/BBVA/data-refinery/commit/8ce7b21f643ac94710a1b353a41e16ed1fd0585e) Side effect on mutable function parameter.
+
+### Other
+
+* [def3901](https://github.com/BBVA/data-refinery/commit/def390149781cd43e3a9e9ab8df2cb9eeea456df) [skip ci] Travis Build 17. Update version 0.1.57 --> 0.1.58.
+
+
+## [v0.1.57 (2017-11-23)](https://github.com/BBVA/data-refinery/tree/v0.1.57)
+
+### Features
+
+* [7273012](https://github.com/BBVA/data-refinery/commit/7273012c9577fa1a1c26c12f4c338e543e7115d8) Feature branches as exception on travis execution.
+
+### Other
+
+* [09465d5](https://github.com/BBVA/data-refinery/commit/09465d58193431b65add278ff07c16d42bb4eb9f) [skip ci] Travis Build 16. Update version 0.1.56 --> 0.1.57.
+
+
 ## [v0.1.56 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.56)
 
 ### Other

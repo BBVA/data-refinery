@@ -66,7 +66,11 @@ class Tr:
         if self.next_tr is not None:
             operation = self.next_tr.apply()
 
-        def _app(i, o={}, e={}):
+        def _app(i, o=None, e=None):
+            if o is None:
+                o = {}
+            if e is None:
+                e = {}
             if operation is not None:
                 (ip, op, ep) = operation(i, o, e)
             else:

@@ -74,3 +74,41 @@ def test_some_working():
     assert res["year"] == 2017
     assert err is not None
     assert err == {}
+
+
+def test_sequential_use():
+    date_formats = ["%Y-%m-%d"]
+
+    operation = Tr(append(fields=["date"], etl_func=compose(date_parser(date_formats), explode_date))).apply()
+    (inp, res, err) = operation({"date": "2017-10-10"})
+    assert inp is not None
+    assert inp["date"] == "2017-10-10"
+    assert res is not None
+    assert res["second"] == 0
+    assert res["minute"] == 0
+    assert res["hour"] == 0
+    assert res["day"] == 10
+    assert res["month"] == 10
+    assert res["year"] == 2017
+    assert err is not None
+    assert err == {}
+
+    (inp, res, err) = (None, None, None)
+    (inp, res, err) = operation({"date": "0"})
+    assert inp is not None
+    assert res == {}
+    assert err is not None
+
+    (inp, res, err) = (None, None, None)
+    (inp, res, err) = operation({"date": "2017-10-10"})
+    assert inp is not None
+    assert inp["date"] == "2017-10-10"
+    assert res is not None
+    assert res["second"] == 0
+    assert res["minute"] == 0
+    assert res["hour"] == 0
+    assert res["day"] == 10
+    assert res["month"] == 10
+    assert res["year"] == 2017
+    assert err is not None
+    assert err == {}
