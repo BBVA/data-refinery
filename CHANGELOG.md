@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.1.58 (2017-11-23)](https://github.com/BBVA/data-refinery/tree/v0.1.58)
+
+### Fix
+
+* [8ce7b21](https://github.com/BBVA/data-refinery/commit/8ce7b21f643ac94710a1b353a41e16ed1fd0585e) Side effect on mutable function parameter.
+
+### Other
+
+* [def3901](https://github.com/BBVA/data-refinery/commit/def390149781cd43e3a9e9ab8df2cb9eeea456df) [skip ci] Travis Build 17. Update version 0.1.57 --> 0.1.58.
+
+
 ## [v0.1.57 (2017-11-23)](https://github.com/BBVA/data-refinery/tree/v0.1.57)
 
 ### Features
