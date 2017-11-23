@@ -44,8 +44,7 @@ List of functions
 On data transformation processes, it's common to transform types or values if a condition is triggered, decompose data,..
 Data Refinery has defined this kind of functions. Furthermore, if it's necessary we can create our own functions.
 
-If the process is more complicated, you can chain several simple functions,
-More complex scenarios can use the compose function to build complicated behaviours; all 
+More complex scenarios can use the compose function to build complicated behaviours; all*******
 
 Y para dar soporte a casos más complejos podemos “encadenar” varias funciones más sencillas, permitiendo un uso atómico
 por pasos pequeños y posibilitando el cambiar fácilmente la funcionalidad intercalando funciones muy sencillas en un
@@ -779,39 +778,8 @@ Por favor, considera su uso la última opción, es una operación **muy peligros
 Esto significa que si te quedan operaciones que hacer con los campos originales no podrás hacerla después. Es especialmente
 destructivo su uso dentro de un módulo donde un usuario de tu código perdería el input irremediablemente.
 
-DSL
-~~~
+Review exercises
+----------------
 
-El dsl de bajo nivel nos permite crear cualquier operación que se nos pueda imaginar respecto de una fila, pero como
-siempre todo gran poder conlleva una gran responsabilidad. Queda bajo tu responsabilidad propagar el input, el output
-modificado (si procede) y el error modificado (si procede).
-
-Su uso es bastante sencillo, básicamente todas las funciones de evento se crear con este DSL, para ejemplificar su uso
-vamos a ver como está declarado keep:
-
-.. code-block:: python
-
-    def keep(fields) -> Callable[[dict, dict, dict], Tuple[dict, dict, dict]]:
-        operations = [compose(use_input(), read_field(f), write_field(f)) for f in fields]
-        return reduce(compose, map(apply_over_output, operations))
-
-Como puedes ver es una composición donde especificamos los pasos por cada campo y finalmente reducimos de nuevo a una
-sola función con compose. Hay también funciones para usar el input, para usar el error... para casi todas las operaciones
-que se te puedan ocurrir.
-
-En última instancia puedes generarte tu propia función de 0, aunque te recomiendo seguir la filosofía de atomizar lo
-máximo posible en funciones de código pequeñas; simplemente debes devolver una fucnión que reciba los tres diccionarios
-que representan el input, el output y el error y los retorne modificados como proceda.
-
-Repaso con ejercicios
----------------------
-
-Si quieres hacer algunos ejercicios para practicar, puedes ejecutar el contenedor así:
-
-.. code-block:: bash
-
-    docker run -it --rm -p 8888:8888 -v [tu ruta del proyecto etl-func]:/home/jovyan/work datarefinery-notebook:latest
-
-
-Desde jupyter, puedes acceder al notebook con ejercicios básicos en /work/docs/notebooks/thebasics.ipynb.
-
+If you want or need to do basic exercises for review all your knowledge, you can execute the next notebook on your
+Jupyter instance: docs/notebooks/thebasics.ipynb.
