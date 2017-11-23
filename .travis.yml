@@ -73,5 +73,6 @@ notifications:
     recipients:
       - leticia.garcia3@bbva.com
       - enrique.garcia.pablos@bbva.com
+      - cesar.gallego@bbva.com
     on_success: never
     on_failure: always
