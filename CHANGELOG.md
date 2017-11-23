@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.1.57 (2017-11-23)](https://github.com/BBVA/data-refinery/tree/v0.1.57)
+
+### Features
+
+* [7273012](https://github.com/BBVA/data-refinery/commit/7273012c9577fa1a1c26c12f4c338e543e7115d8) Feature branches as exception on travis execution.
+
+### Other
+
+* [09465d5](https://github.com/BBVA/data-refinery/commit/09465d58193431b65add278ff07c16d42bb4eb9f) [skip ci] Travis Build 16. Update version 0.1.56 --> 0.1.57.
+
+
 ## [v0.1.56 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.56)
 
 ### Other
