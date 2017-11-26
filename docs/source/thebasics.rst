@@ -41,17 +41,19 @@ Finally it depends on the current operation, the process rejects the field or fa
 List of functions
 ~~~~~~~~~~~~~~~~~
 
-On data transformation processes, it's common to transform types or values if a condition is triggered, decompose data,..
-Data Refinery has defined this kind of functions. Furthermore, if it's necessary we can create our own functions.
+On data transformation processes, it's common to transform types or values if a
+condition is triggered, decompose data,..  Data Refinery has defined this kind
+of functions. Furthermore, if it's necessary we can create our own functions.
 
-More complex scenarios can use the compose function to build complicated behaviours; all*******
+More complex situations can be solved chaining together two or more simple
+functions. This atomic design allows changes on application behaviour with very
+little user effort.
 
-Y para dar soporte a casos más complejos podemos “encadenar” varias funciones más sencillas, permitiendo un uso atómico
-por pasos pequeños y posibilitando el cambiar fácilmente la funcionalidad intercalando funciones muy sencillas en un
-proceso.Una gran mayoría de las funciones de ETL ya definidas necesitan unos parámetros de contexto y con estos
-construirán y devolverán una función que nos permita llevar a cabo la transformación de campo sin estar pasando un
-número variable de argumentos. Lo que al fin y al cabo permite la composición sencilla, al compartir todas las
-funciones la misma entrada y salida en todos los pasos.
+The majority of ETL's functions require some context parameters in order to
+produce another, more specialized function. This specialized function can then
+be used to transform the field. This style of operation improves simple
+composition given that all functions will have the same input and output
+instead of a veriable number of parameters.
 
 type_enforcer
 .............
@@ -72,12 +74,12 @@ For example, if you want to change the data type to integer:
     (res, err) = int_enforcer("6")
     print(res) # 6
 
+
 min_max_normalization
 .....................
 
-Esta es una operación típica en machine learning. Consiste en interpolar entre 0 y 1 un valor, considerando que el 0
-es representado por el valor min y el 1 es representado por el valor max. Esta función necesita el mínimo y el máximo
-como contexto para su creación. Un ejemplo de uso podría ser:
+Typical operation on machine learning. It consists of interpolate a value between 0 (as minimum) and 1 (as maximum).
+So, this function need a context with the maximum and minimum to run. For example:
 
 .. code-block:: python
 
@@ -87,12 +89,17 @@ como contexto para su creación. Un ejemplo de uso podría ser:
     (res, err) = normalizator(5)
     print(res) # 0.5
 
+
 std_score_normalization
 .......................
 
-Esta operación representa lo lejos que está un dato de la estadística representativa de una columna completa.
-Para usarlo necesitamos pasarle como contexto la media y la desviación típica de los valores de la columna.
-Un ejemplo de uso sería:
+Returns the distance of a particular datum ...
+
+Esta operación representa lo lejos que está un dato de la estadística
+representativa de una columna completa. 
+
+The function requires two input parameters, the column average and the standard
+deviation. Usage example:
 
 .. code-block:: python
 
@@ -102,21 +109,24 @@ Un ejemplo de uso sería:
     (res, err) = normalizator(85)
     print(res) # 0.75
 
+
 buckets_grouping
 ................
 
-Esta función nos ayuda cuando queremos convertir un valor lineal numérico en uno categórico. Un caso común de uso
-es agrupar usuarios por edad. Requiere como contexto el paso de al menos un valor, esto generará dos grupos uno desde
-menos infinito al valor y del valor hasta infinito.
+Transform a lineal numeric value into a categorical one. For instance it can be
+used to group users by age. 
 
-Continuando con el ejmplo de edad, si queremos distinguir entre niños, adultos y jubilados podríamos pasar como valores
-18 y 70. De esta forma la agrupación generará los siguientes grupos:
+A minimun of one input value is mandatory. This will produce two groups, the
+first one from negative infinity to the given value, and the second one from
+the given value to infinity.
 
-1. Entre menos infinito y 18
-2. Entre 18 y 70
-3. Entre 70 e infinito
+For example, in order to categorize users into three groups (children, adults
+and elderly) the values 18 and 70 can be passed to the function. This will
+produce the following groups:
 
-En código podríamos ver estas situaciones así:
+1. From negative inifity to 18.
+2. From 18 to 70.
+3. From 70 to inifity.
 
 .. code-block:: python
 
@@ -130,14 +140,20 @@ En código podríamos ver estas situaciones así:
     (res, err) = group(73)
     print(res) # 3
 
+
 linear_category
 ...............
 
-Esta operación de campo cambia los datos categóricos, como textos, en un número. Para ellos debemos pasarle
-las categorías existentes siempre con los elementos en las mismas posiciones (añadiendo siempre al final los nuevos valores).
-Esto se debe a que asignará el valor numérico del orden de la lista, y necesitamos que sea coherente entre ejecuciones.
+Translates the textual value of a field into a numeric value given a list of
+possible values.
 
-Como ejemplo podemos categorizar de nuevo la edad, pero esta vez nos llega como texto en lugar de como número.
+The input value is a list of categories. Keep in mind that this list must
+always be in the same order to consistently translate the values.
+
+The translated value will be the category index of the list.
+
+As an example, the age can be categorized again, but this time the input a text
+value instead of a numeric one.
 
 .. code-block:: python
 
@@ -147,13 +163,17 @@ Como ejemplo podemos categorizar de nuevo la edad, pero esta vez nos llega como 
     (res, err) = categorizer("adulto")
     print(res) # 2
 
+
 column_category
 ...............
 
-Funciona como la categorización lineal pero genera una columna con cada valor de la categoría, por defecto tendrá valor
- de 0, y en la categoría encontrada en el campo tendrá 1. También es conocido como *one hot vector*.
+Translates the textual value of a field into a set of columns given a list of
+possible values. A column will be produced by each one of the members of the
+input list. This columns will have a value of `0` by default except for the
+corresponding category that will have a value of `1`. This is known as *one hot
+vector*.
 
-Continuando con el ejemplo de la edad.
+Example:
 
 .. code-block:: python
 
@@ -163,13 +183,14 @@ Continuando con el ejemplo de la edad.
     (res, err) = categorizer("niño")
     print(res) # {"niño": "1", "adulto": "0", "jubilado": "0"}
 
-Esta operación añade campos, por lo que suele usarse con una operación de evento de tipo [append](##Cange it).
+This operation adds new columns, so is usually used along with an event operation of type [append](##Change it).
+
 
 add_column_prefix
 .................
 
-En casos en los que una función genera varios campos es posible que estas coincidan en nombre con otros campos. Por eso
-podemos usar esta función que añadirá un prefijo al nombre de la columna.
+Adds a prefix to the column name. This is useful in a scenario when other
+function generates a new column with the same name of another already existing. 
 
 .. code-block:: python
 
@@ -179,17 +200,18 @@ podemos usar esta función que añadirá un prefijo al nombre de la columna.
     (res, err) = prefix({"one": "me"})
     print(res) # {"good_one": "me"}
 
+
 explode
 .......
 
-Es común encontrar datos anidados, la función explode aplana esta anidación, incluso si esta está formada por una lista
-de objetos.
-En el caso de que haya un solo sub objeto no se añadirá más que el prefijo del nombre de campo original. Pero si hay una
- lista con varios elementos entonces al nombre del campos se le añadirá, además del prefijo, un sufijo munérico empezando
-  en 1 para la segunda posición; esto es asi para evitar cambiar el nombre de los campos de la primera posición en el
-  caso de recibir un elemento inesperado.
+Flattens a nested data structure even when is made up by a list of objects.
 
-Por ejemplo, si queremos explotar el campo nombre la llamada podría ser asi:
+In the case of just one inner object, only the original name prefix will be added.
+
+When multiple objects are present the same prefix will be added and in
+addition, a numerical suffix (starting on 1) fo the second position.
+
+In this example we exploded the field `name`:
 
 .. code-block:: python
 
@@ -199,15 +221,17 @@ Por ejemplo, si queremos explotar el campo nombre la llamada podría ser asi:
     (res, err) = explode_name({"name": {"first": "Bob", "last": "Dylan"}})
     print(res) # {"name_first": "Bob", "name_last": "Dylan"}
 
+
 replace_if
 ..........
 
-Cuando se estudian los datos en raras ocasiones una columna tiene todos los valores correctamente rellenos. Es muy útil
-el sustituir un valor cuando este cumple una condición en concreto, pero para añadir flexibilidad usaremos dos funciones,
-una que debe devolver true o false, y otra función que generará un nuevo valor si la primera función devuelve true; ambas
-funciones recibiran el valor del campo.
+Replaces a value when some condition fulfilled.
 
-Por ejemplo, si queremos sustituir por cero todos los valores negativos de un campo:
+Two functions are expected, the former should return a boolean value and the
+latter should produce a new value in case of the former function returns
+`True`. Both function will receive the field value.
+
+As an example, if we want to replace by zero all negative values:
 
 .. code-block:: python
 
@@ -217,14 +241,14 @@ Por ejemplo, si queremos sustituir por cero todos los valores negativos de un ca
     (res, err) = change(-3)
     print(res) # 0
 
+
 date_parser - time_parser
 .........................
 
-Las fechas son siempre una fuente de problemas, la variedad de formatos puede ser abrumadora. Para ellos tenemos una
-función de intenta parsear varios formatos diferentes, y si no lo consigue informa del error para que se añada un
-formato nuevo.
+Tries to parse a date with the given list of date formats. If none of the
+formats successfully parses the date then the function returns an error.
 
-Los formatos esperados deben ser formatos de fecha estandar de Python.
+The expected formats are Python standard time formats.
 
 .. code-block:: python
 
@@ -234,13 +258,13 @@ Los formatos esperados deben ser formatos de fecha estandar de Python.
     (res, err) = parser("2017-03-22")
     print(res) # <datetime class>
 
-Hay una función similar solo para formatear horas, minutos y segundos.
+There is a similar function to format hours, minutes and seconds.
+
 
 explode_date - explode_time
 ...........................
 
-Tanto para fechas, como para tiempo, es posible que queramos tener los integrantes del valor como números simples en
-diferentes campos. Como entrada espera siempre un valor de tipo datetime.
+Transforms a datetime object to a series of columns with numeric values.
 
 .. code-block:: python
 
@@ -250,21 +274,21 @@ diferentes campos. Como entrada espera siempre un valor de tipo datetime.
     (res, err) = explode_date(datetime(2017,3,22))
     print(res) # {"year": 2017, "month": 3, "day": 22, "hour":0, "minute": 0, "second": 0}
 
-Si hay varias fechas en tu evento considera usar la función [add_prefix](###Prefijo de columna). SI no necesitas todos
-los campos de la fecha considera usar [remove column](###Quitando columnas). Esta función se usa típicamente en conjunción
-con un date_parser.
+If multiple date exists on the event, please consider using the function [add_prefix](###Prefijo de columna). If no all fields are needed the function [remove column](###Quitando columnas) can be used.
+
+This function is tipically used along with `date_parser`.
+
 
 remove_columns
 ..............
 
-Este método es habitualmente una fuente de confusión. Su uso en solitario no tiene sentido debido a que no puede afectar
-a todo el evento. Está diseñado solo para ser usado en conjunto con otras funciones de campo que generan varios campos.
+Removes one or more columns from a set.
 
-En el caso de que quieras eliminar una columna, simplemente no operes sobre ella, la función ETL solo pondrá en el output
-los campos con los que operes.
+This function is usually used along with other functions which generate
+multiple columns.
 
-Si este es el primer caso de composición que ves considera revisar primero la [documentación](##Combinando operaciones
-de campo) a este respecto.
+In case of not require a column, is better just not to operate it. This
+non-operated column will be removed automatically.
 
 .. code-block:: python
 
@@ -276,15 +300,11 @@ de campo) a este respecto.
     (res, err) = only_year_month(datetime(2017,3,22))
     print(res) # {"year": 2017, "month": 3}
 
+
 match_dict
 ..........
 
-Hay veces que muchos cambios en un campo son variados pero estáticos, como en asignación de coordenadas a una provincia.
-Para estos casos tener un diccionario de elementos donde la entrada y el valor estén representados por la clave y el valor
-respectivamente es una solución muy cómoda.
-
-A la función match_dict se le pasa este diccionario contexto y se encarga de devolver el valor correspondiente de la
-clave con la que se llama a la función.
+Translates values from a table.
 
 .. code-block:: python
 
@@ -295,22 +315,27 @@ clave con la que se llama a la función.
     (res, err) = iso_decoder("Spain")
     print(res) # "ES"
 
-Combinando operaciones de campo
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Toda la arquitectura gira en torno a este concepto, muy potente, de programación funcional que nos permite construir
-aplicaciones muy complejas con bloques muy sencillos de código (funciones) fáciles de probar y mantener.
+Composing field operations
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-La composición se parece mucho a la promación tradicional en que tenemos un conjunto sencillo de operaciones que
- combinados pueden resolver infinidad de situaciones.
-Todas las funciones de la librería se pueden combinar para generar estos comportamientos con la función combine.
+This powerful concept from functional programing allow us to build complex
+applications using simple blocks (functions). 
 
-Pero este concepto se puede ver mejor con algunos ejemplos.
+
+Composition is similar to programming in the sense that a small set of
+operations can be combined to solve a very large set of problems.
+
+All functions on the library can be combined together using the function
+`combine`.
+
+This concept is better shown by example.
+
 
 Normalize Numeric Data
 ......................
 
-Convertir un número de entrada en texto a un número y luego llevar a cabo una normalización min max.
+Convert a numeric string to a numeric format and then normalize using min max approximation.
 
 .. code-block:: python
 
@@ -324,11 +349,12 @@ Convertir un número de entrada en texto a un número y luego llevar a cabo una 
     (res, err) = str_2_min_max("50")
     print(res) # 0.5
 
+
 Date data
 .........
 
-Otra operación típica es la de explotar una fecha, querase solo con los años, meses y dias, y añadir un prefijo para
-evitar colisiones con otros campos.
+Explode a date is a typical operation too. It keeps year, month and day as data. Furthermore, it adds a prefix to avoid
+problems with other fields.
 
 .. code-block:: python
 
@@ -344,11 +370,11 @@ evitar colisiones con otros campos.
     (res, err) = complete_date("2017-03-22")
     print(res) # {"x_year": 2017, "x_month": 3, "x_day": 22}
 
+
 Day to one hot vector
 .....................
 
-Incluso podemos llevar a cabo una transformación mucho más atrevida, como construir un one hot vector, desde una fecha
-en texto, con el día de la semana.
+This example returns one hot vector using a date string and week days.
 
 .. code-block:: python
 
