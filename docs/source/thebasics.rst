@@ -607,7 +607,7 @@ For example, if we want to keep a field and replace another field value with a x
     print(res) # {"name": "John", "value": 20}
 
 There are common mistakes as:
-- Add arguments to *apply*. This function only returns the complete function to use in the event.
+- Add arguments to *apply*. This function only returns the complete function to use at the event.
 
 .. code-block:: python
 
@@ -615,8 +615,7 @@ There are common mistakes as:
 
     tr = Tr(keep(["name"])).apply(substitution(["value"], x2)) # WRONG!!!
 
-- Use directly the function with parenthesis :
-******** llamar a la función que estamos pasando a la operación (se pasa sin paréntesis).
+- Use directly the function with parenthesis as argument (the argument is the function result without parameters):
 
 .. code-block:: python
 
@@ -625,26 +624,22 @@ There are common mistakes as:
 
     tr = Tr(keep(["name"])).then(substitution(["value"], x2())) # WRONG!!!
 
+In this case, we need a function as argument (the reference to the function).
 
+This should be carefully used, in Data Refinery some functions receives data parameters (as min_max_normalization) and
+returns a function as result and other (as explode_date) use functions as parameters.
 
-En este caso estamos llamando a la función, mientras que en realiad la operación espera una referencia a la función y no
- el resultado de la llamada sin parámetros.
+A world of possibilities
+........................
 
-Esto suele pasar porque algunas de las funciones de la libería reciben parámetros (como min_max_normalization) y devuelven
- la referencia a la función como resultado y otras no (como explode_date) que se usa directamente la referencia.
+We can save our set of transformations every time we want using *Tr* object. This is very useful when you have training
+and production data.
 
-Un bosque de posibilidades
-..........................
+Training data is often as production data, but it contains an extra field called "label". This field indicates what
+machine learning model must learn.
 
-Al usar un objeto para encapsular las transformaciones, y este objeto ser inmutable, se da el caso de que podemos guardar
-pasos intermedios en el proceso de transormación de datos, lo cual es especialmente útil cuando tenemos, por ejemplo,
-datos de entrenamiento y datos de ejecución.
-
-Los datos de entrenamiento suelen ser como los de ejecución pero contienen un campo extra "label" que suele indicar lo
-que tiene que aprender (o inferir) el modelo de machine learning.
-
-En el siguiente ejemplo la transformación de datos (el objeto Tr) se construye en un módulo especifico de tu aplicación,
-y se recupera con la función etl(). Luego añadiremos la lógica para el label:
+In next example, data transformation is a specified module of your application. You can get it with *etl* function.
+Then we will add the label logic:
 
 .. code-block:: python
 
@@ -655,11 +650,10 @@ y se recupera con la función etl(). Luego añadiremos la lógica para el label:
         tr = tr.then(keep("label"))
     operation = tr.apply()
 
-De esta forma si estamos en la fase de entrenamiento la salida contendrá el label necesario sin tener que saber a priori
-cuales son las transformaciones específicas para ese set de datos.
+By this way, the output will contain the label without knowing other transformations over the data during training phase.
 
-Then - Empujando transformaciones al inicio
-...........................................
+Then - Adding new transformations
+.................................
 
 En ocasiones hay datos que nos llegan en formatos que no entendemos, la librería solo maneja diccionarios de python
 internamente, o tal vez necesitamos hacer una operación al inicio del proceso.
