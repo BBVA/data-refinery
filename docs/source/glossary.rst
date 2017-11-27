@@ -8,3 +8,5 @@ Glossary
 **Row**: Minimal unit of transformation at ETL.
 
 **DSL**: Domain Specific Language
+
+**Event**: Operations over a tuple or row.

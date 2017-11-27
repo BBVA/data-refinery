@@ -53,7 +53,7 @@ The majority of ETL's functions require some context parameters in order to
 produce another, more specialized function. This specialized function can then
 be used to transform the field. This style of operation improves simple
 composition given that all functions will have the same input and output
-instead of a veriable number of parameters.
+instead of a variable number of parameters.
 
 type_enforcer
 .............
@@ -115,7 +115,7 @@ buckets_grouping
 Transform a lineal numeric value into a categorical one. For instance it can be
 used to group users by age.
 
-A minimun of one input value is mandatory. This will produce two groups, the
+A minimum of one input value is mandatory. This will produce two groups, the
 first one from negative infinity to the given value, and the second one from
 the given value to infinity.
 
@@ -123,9 +123,9 @@ For example, in order to categorize users into three groups (children, adults
 and elderly) the values 18 and 70 can be passed to the function. This will
 produce the following groups:
 
-1. From negative inifity to 18.
+1. From negative infinity to 18.
 2. From 18 to 70.
-3. From 70 to inifity.
+3. From 70 to infinity.
 
 .. code-block:: python
 
@@ -275,7 +275,7 @@ Transforms a datetime object to a series of columns with numeric values.
 
 If multiple date exists on the event, please consider using the function [add_prefix](###Prefijo de columna). If no all fields are needed the function [remove column](###Quitando columnas) can be used.
 
-This function is tipically used along with `date_parser`.
+This function is typically used along with `date_parser`.
 
 
 remove_columns
@@ -403,17 +403,17 @@ Event operations
 
 Field functions has no affect on the row, so we need Event functions; maybe we need to change the value of a field; or
 maybe create a new field.
-Field functions has different interface. They recieves the input, the accumulated output until this point and the error.
+Field functions has different interface. They receives the input, the accumulated output until this point and the error.
 Every Field function also returns the same, because of this we can compose all functions together in one bigger function.
 
 The Field function has total control over the transformation step, and can affect to the full row, even fields already
-changed by other field functions. Because of this responsability it's better using the supplied functions, but you can
+changed by other field functions. Because of this responsibility it's better using the supplied functions, but you can
 build your own.
 
-List of funcitons
+List of functions
 ~~~~~~~~~~~~~~~~~
 
-Keep fileds
+keep - Keep files
 ...........
 
 Keep is the simplest operation, no need of any field function. In essence take the value of a field from the input and
@@ -429,7 +429,7 @@ put it on the output without change neither the value nor the name of field.
 
 If you need keep several similar fields you can use keep_regexp.
 
-Value Substitution
+substitution - Value Substitution
 ..................
 
 The next operation change the value of a field with the supplied field function. This function will not change the
@@ -443,11 +443,11 @@ name of the field. By example, given a to_float function, you can do this:
     (inp, res, err) = operation({"greet": "hello", "who": "world"}, {}, {})
     print(res) # {"greet": 5}
 
-Append new fields
+append - Append new fields
 .................
 
 Usually we need add new field or change the name of the field. We can use append to do this, but it expects a
-field function that return a python diccionary, where every key will be a new field. By exmaple, given a len_cap function that
+field function that return a python dictionary, where every key will be a new field. By example, given a len_cap function that
 will return the len of a string and the first letter in uppercase:
 
 .. code-block:: python
@@ -461,7 +461,7 @@ will return the len of a string and the first letter in uppercase:
 Notice that the field "greet" it's not in the output. Append only add the result of the function, and the function has no
 "greet" in their output.
 
-Fusion - several fields one output
+fusion - several fields one output
 ..................................
 
 We already define functions to change the values and add more than one field to the output. But also we can create one
@@ -501,7 +501,7 @@ We can use this way with fusion:
     (inp, res, err) = val_eur_op({"currency": "USD", "value": 1})
     print(res) # {"val_eur": 0.8459}
 
-Fusion_append - Multiple values in, multiple values out
+fusion_append - Multiple values in, multiple values out
 .......................................................
 
 In fact it's the same that a fusion, but expect that the field function returns a python dict, in the same way than
@@ -522,7 +522,7 @@ the money value as value:
     (inp, res, err) = val_eur_op({"currency": "USD", "value": 1})
     print(res) # {"EUR": 0.8459, "USD": 1}
 
-Filter_tuple - Discard irrelevant
+filter_tuple - Discard irrelevant
 .................................
 
 When we don't need all data, the best approach it's discard as soon as possible the rows that we don't need.
@@ -541,11 +541,11 @@ it's discarded:
 
 It's up to you not to fail when result it's None, if no error means that event is discarded.
 
-Alternative - Plan B
+alternative - Plan B
 ....................
 
 Some times we have several ways to transform the event. If the first approach fail, alternative will try the
-next, until sucess or the last fail.
+next, until success or the last fail.
 
 Suppose that you want to multiply by two, but if this operation fail, you want to append value 0.
 
@@ -577,26 +577,22 @@ En el siguiente ejemplo, el tercer parametro es el input de error de la función
     print(res) # {"value": 0}
     print(err) # {}
 
-Combinando operaciones de evento
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Combine event operations
+~~~~~~~~~~~~~~~~~~~~~~~~
+Normally, a transformation is a group of different type of functions, not only one type. For example, you want to keep
+some fields and change the value of a field using a function.
 
-Una transformación no solo se compone de un cambio. Es decir, no solo nos quedamos con un grupo de campos; o no solo
-sustituimos los valores de una forma concreta. Normalmente nos quedamos un campos, cambiamos el valor de otro de una
-forma concreta y de un tercer campo de forma completamente diferente.
+So that's why we need an interface for doing this kind of transformations. Data Refinery has an object that wraps event
+operations and exposes the methods. This object is *Tr*.
 
-A si que necesitamos un interfaz que lo permita. En este caso tenemos *Tr*. Este objeto envuelve la operación para
-evento y expone métodos que nos ayudan a expresar como queremos que funcionen los campos.
+The most important methods are *then* and *apply*. *then* returns a new *Tr* object which contains last operations plus
+the operation was passed as argument with *then*.
+When we have all needed operations, we need to have a function to transform data. For this case, we use *apply*.
+This function returns a function that contains all operations and has the same interface that a row operation.
 
-Especialmente destacan *then* y *apply*. Cuando llamamos a *then* este devuelve un nuevo objeto *Tr* que contiene una
-secuencia con las operaciones anteriores y la operación que hemos pasado a la función then.
-Una vez que tenemos todas las funciones encadenadas necesitamos una función que nos permita transformar los datos,
-ya que en este punto tenemos un objeto *Tr*. Para esto llamamos a la función *apply*. Esta función devuelve una sola
-función, generada en ese momento, que engloba todas las operaciones encadenadas, y que además tiene el mismo interfaz
-que una operación de fila.
-Ten en cuenta que en cuanto llamamos a apply perdemos las funciones *then* y *apply*.
+******** Ten en cuenta que en cuanto llamamos a apply perdemos las funciones *then* y *apply*.
 
-Si por ejemplo queremos guardar un campo y sustutir el valor de otro con la función x2 (multiplica un valor por dos)
-podríamos escribir el siguiente código.
+For example, if we want to keep a field and replace another field value with a x2 function (multiply by two):
 
 .. code-block:: python
 
@@ -610,14 +606,26 @@ podríamos escribir el siguiente código.
     (inp, res, err) = operation({"name": "John", "value": 10})
     print(res) # {"name": "John", "value": 20}
 
-Errores comunes a evitar son pasarle los datos a apply, que no hace nada más que devolver la función a usar. O llamar
-a la función que estamos pasando a la operación (se pasa sin paréntesis).
+There are common mistakes as:
+- Add arguments to *apply*. This function only returns the complete function to use in the event.
 
 .. code-block:: python
 
     from datarefinery.tuple.TupleOperations import substitution
 
-    substitution(["value"], x2()) # WRONG!!!
+    tr = Tr(keep(["name"])).apply(substitution(["value"], x2)) # WRONG!!!
+
+- Use directly the function with parenthesis :
+******** llamar a la función que estamos pasando a la operación (se pasa sin paréntesis).
+
+.. code-block:: python
+
+    from datarefinery.tuple.TupleOperations import substitution
+    from datarefinery.Tr import Tr
+
+    tr = Tr(keep(["name"])).then(substitution(["value"], x2())) # WRONG!!!
+
+
 
 En este caso estamos llamando a la función, mientras que en realiad la operación espera una referencia a la función y no
  el resultado de la llamada sin parámetros.
