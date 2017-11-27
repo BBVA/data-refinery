@@ -560,13 +560,13 @@ Suppose that you want to multiply by two, but if this operation fail, you want t
     (inp, res, err) = need_value({"name": "John"})
     print(res) # {"value": 0}
 
-Fallo con estilo
-................
+Fail gracefully
+...............
 
-Cuando registramos el fallo, a cualquier nivel, no detenemos el proceso; si escribes tus propias funciones para la
-librería asegurate de que son resistentes al fallo. Esto nos permite llevar a cabo una operación especial, el recuperarnos
-de un error. La operación recover lee del error, escribe en el output y si todo va bien borra del error el campo relacionado.
-En el siguiente ejemplo, el tercer parametro es el input de error de la función y el segundo el output.
+When error occurs, at any point, we don't stop the process; keep in mind this principle when you develop your own functions. Instead exceptions we try to explain what it's going on, the deeper the better.
+This allow us to perform a recovery from fail as one of last steps. The recovery function search the field in error, write to the output with the provided function and if it's succsesful remove the error.
+
+Remember that params to the no_error function are input, ouput and error.
 
 .. code-block:: python
 
