@@ -655,17 +655,15 @@ By this way, the output will contain the label without knowing other transformat
 Then - Adding new transformations
 .................................
 
-En ocasiones hay datos que nos llegan en formatos que no entendemos, la librería solo maneja diccionarios de python
-internamente, o tal vez necesitamos hacer una operación al inicio del proceso.
+Data Refinery only works with Python dictionaries. So, when data is not a dictionary, it's useful to use a data format
+operation before the event.
+*Tr* interface has a function to do this: *init*. This function takes the specified function and puts it at first on
+the group of event operations.
 
-El interfaz de Tr tiene una función para llevar a cabo esta operación: init. Esta pone al principio de la secuencia
-de transformaciones la función de evento que pongamos.
+At datarefinery.tuple.Formats module you can find several functions to transform different formats to Python
+dictionaries. In addition, there is the function *reader* to read the data. It's an alias for *init*.
 
-En el modulo datarefinery.tuple.Formats encontrarás varias operaciones que transforman el input de los formatos más
-populares a diccionarios de python. Como además esta es una función que se usa mucho para "leer" los datos el interfaz
-tiene una función *reader* que no es más que un alias de *init*.
-
-Hay que tener cuidado si queremos usar init y tenemos guardadas en variables Tr intermedios que queremos diverger.
+***** Hay que tener cuidado si queremos usar init y tenemos guardadas en variables Tr intermedios que queremos diverger.
 Ya que todos los Tr que divergen tienen en común la misma referencia a la raiz.
 
 **TODO: dibujo de raíz de transformaciones**
