@@ -95,8 +95,7 @@ std_score_normalization
 
 Returns the distance of a particular datum ...
 
-Esta operación representa lo lejos que está un dato de la estadística
-representativa de una columna completa. 
+This operation represents how far it's the value from mean, using deviation as scale.
 
 The function requires two input parameters, the column average and the standard
 deviation. Usage example:
@@ -114,7 +113,7 @@ buckets_grouping
 ................
 
 Transform a lineal numeric value into a categorical one. For instance it can be
-used to group users by age. 
+used to group users by age.
 
 A minimun of one input value is mandatory. This will produce two groups, the
 first one from negative infinity to the given value, and the second one from
@@ -190,7 +189,7 @@ add_column_prefix
 .................
 
 Adds a prefix to the column name. This is useful in a scenario when other
-function generates a new column with the same name of another already existing. 
+function generates a new column with the same name of another already existing.
 
 .. code-block:: python
 
@@ -320,7 +319,7 @@ Composing field operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This powerful concept from functional programing allow us to build complex
-applications using simple blocks (functions). 
+applications using simple blocks (functions).
 
 
 Composition is similar to programming in the sense that a small set of
@@ -399,25 +398,26 @@ This example returns one hot vector using a date string and week days.
     (res, err) = day_hot("2017-10-19")
     print(res) # {"Mo": 0, "Tu": 0, "We": 0, "Th": 1, "Fr": 0, "Sa": 0, "Su": 0}
 
-Operaciones de evento
----------------------
+Event operations
+----------------
 
-Pero las funciones de campo no dicen que queremos hacer con el valor transformado; tal vez quiero que el valor se guarde
-en un campo con el mismo nombre; o a lo mejor quiero que tenga un nombre de campo diferente. En este nivel tenemos las
-funciones de fila, que funcionan de forma ligeramente diferente, ya que reciben el input, el output acumulado hasta este
- momento y el error acumulado hasta este momento; y se espera que devuelvan lo mismo, es decir, input, output y error.
+Field functions has no affect on the row, so we need Event functions; maybe we need to change the value of a field; or
+maybe create a new field.
+Field functions has different interface. They recieves the input, the accumulated output until this point and the error.
+Every Field function also returns the same, because of this we can compose all functions together in one bigger function.
 
-Esto les da el control total en cada paso de la transformación de lo que está pasando, por lo que tienen una gran
-responsabilidad; es recomendable usar las existentes, aunque se pueden definir nuevas como veremos más adelante.
+The Field function has total control over the transformation step, and can affect to the full row, even fields already
+changed by other field functions. Because of this responsability it's better using the supplied functions, but you can
+build your own.
 
-Listado de funciones
-~~~~~~~~~~~~~~~~~~~~
+List of funcitons
+~~~~~~~~~~~~~~~~~
 
-Keep - Mantener campos
-......................
+Keep fileds
+...........
 
-La operación más sencilla, que no requiere de ninguna función de campo, es Keep. Básicamente coge un campo del input y
-lo pone en el output sin modificar su valor:
+Keep is the simplest operation, no need of any field function. In essence take the value of a field from the input and
+put it on the output without change neither the value nor the name of field.
 
 .. code-block:: python
 
@@ -427,15 +427,13 @@ lo pone en el output sin modificar su valor:
     (inp, res, err) = operation({"greet": "hello", "who": "world"}, {}, {})
     print(res) # {"greet": "hello"}
 
-Existe una versión de esta función que funciona exactamente igual pero que recibe una expresión regular como selector
-de campos. Se llama keep_regexp.
+If you need keep several similar fields you can use keep_regexp.
 
-Substitution - Substituir campos
-................................
+Value Substitution
+..................
 
-La siguiente operación si que requiere de una función de campo. Substitution pondrá el campo, con el mismo nombre, en
-el output pero con el valor transformado por la función de campo que se provea. Por ejemplo, una función to_float que
-transforme el valor dado en un float podrían usarse así:
+The next operation change the value of a field with the supplied field function. This function will not change the
+name of the field. By example, given a to_float function, you can do this:
 
 .. code-block:: python
 
@@ -445,14 +443,12 @@ transforme el valor dado en un float podrían usarse así:
     (inp, res, err) = operation({"greet": "hello", "who": "world"}, {}, {})
     print(res) # {"greet": 5}
 
-Append - Añadir nuevos campos a partir de uno
-.............................................
+Append new fields
+.................
 
-En muchas ocasiones queremos añadir varios campos con una sola operación, o cambiar el nombre del campo. La operación
-append permite hacer esto, pero requiere que la función de campo devuelva un diccionario donde el nombre del campo será
-extraído de la clave del diccionario y el valor del campo del valor del diccionario.Supongamos una función de campo,
-llamada len_cap, que dada una cadena de texto genera los campos len, con la longitud de la cadena, y cap, con la primera
- letra en mayúsculas.
+Usually we need add new field or change the name of the field. We can use append to do this, but it expects a
+field function that return a python diccionary, where every key will be a new field. By exmaple, given a len_cap function that
+will return the len of a string and the first letter in uppercase:
 
 .. code-block:: python
 
@@ -462,18 +458,17 @@ llamada len_cap, que dada una cadena de texto genera los campos len, con la long
     (inp, res, err) = operation({"greet": "hello", "who": "world"}, {}, {})
     print(res) # {'hello': 'you', 'y': 'None'}
 
-Cabe destacar que, en este caso, en el output no está el campo nombre. Esto es así porque aunque se pase a la función
-el nombre, esta no devuelve en ningún momento el campo nombre, solo len y cap.
+Notice that the field "greet" it's not in the output. Append only add the result of the function, and the function has no
+"greet" in their output.
 
-Fusion - Combinar campos
-........................
+Fusion - several fields one output
+..................................
 
-Si nos fijamos con atención veremos que como patrón subyacente estamos llevando a cabo una operación que genera varios
-campos a partir de uno. Pero es posible que necesitemos la operación opuesta, es decir, a partir de varios campos el
-generar uno nuevo.
+We already define functions to change the values and add more than one field to the output. But also we can create one
+field from several inputs.
 
-Esta es una de las operaciones más complejas, y se llama fusion; para ilustrar esta función vamos a cambiar el ejemplo.
-Dada una función de campo suma, que suma todos los valores que recibe, vamos a generar un campo total.
+This function it's complex, and we have several scenarios. Also need the name of the new field.
+By example we can sum several numeric fields into total field.
 
 .. code-block:: python
 
@@ -483,15 +478,12 @@ Dada una función de campo suma, que suma todos los valores que recibe, vamos a 
     (inp, res, err) = operation({"a": 1, "b": 2, "c": 3}, {}, {})
     print(res) # {'sum_abc': 6}
 
-Pero fusión también puede usarse para operaciones más complejas. Supongamos que dependiendo del valor de un campo moneda
-queremos aplicar un tipo de cambio concreto. Para poder llevar a cabo esta operación necesitamos saber el valor concreto
-del campo moneda y el campo concreto con la cantidad monetaria. Para poder llevar a cabo esto, debemos saber que, la fusión
-entrega a la función de transformación de campo una lista, con los parámetros ordenados, exactamente en el mismo orden
-en el que se especificaron, en la llamada a la operación de fusión. En el ejemplo anterior llamamos a fusión con los
-campos ene, feb y mar; por lo que el listado que se pasará a la función contendrá los valores 5, 15 y 18.
+But we can perform some decision with the input fields. Suppose that you need to change the value of money amount
+field by currency code field. But functions receive only one parameter input, so fusion will put all the values in
+a list as the input, in the same order that you request in fields field.
+Knowing that, we can decompose the list into the fields that we need.
 
-Con este conocimiento podríamos generar una función que recupere los valores por su orden y que llame a la función de
-cambio de divisa existente (to_eur).
+By example, given a function to_eur that convert any currency into EUR:
 
 .. code-block:: python
 
@@ -499,7 +491,7 @@ cambio de divisa existente (to_eur).
       [currency, value] = x
       return to_eur(currency, value)
 
-Y usarla junto con fusión para crear el campo val_eur.
+We can use this way with fusion:
 
 .. code-block:: python
 
@@ -509,17 +501,14 @@ Y usarla junto con fusión para crear el campo val_eur.
     (inp, res, err) = val_eur_op({"currency": "USD", "value": 1})
     print(res) # {"val_eur": 0.8459}
 
-Con este mismo ejemplo se puede intuir la siguiente funcionalidad, fusion_append.
+Fusion_append - Multiple values in, multiple values out
+.......................................................
 
-Fusion_append - Varios entran, varios salen
-...........................................
+In fact it's the same that a fusion, but expect that the field function returns a python dict, in the same way than
+append function.
 
-Básicamente es una operación en la que usamos varios campos para generar varios campos. La función de columna recibirá
-la lista de campos ordenados al igual que en el caso de un fusion. Pero en esta ocasión se espera que devuelva un
-diccionario con los mismos parametros que en la operación de fusión.
-
-Modificando la función del ejemplo anterior podemos devolver varios campos para no perder los datos originales en una
- sola operación:
+We can perform the same example that fusion but we can generate new fields with the currency as name of field and
+the money value as value:
 
 .. code-block:: python
 
@@ -533,14 +522,13 @@ Modificando la función del ejemplo anterior podemos devolver varios campos para
     (inp, res, err) = val_eur_op({"currency": "USD", "value": 1})
     print(res) # {"EUR": 0.8459, "USD": 1}
 
-Filter_tuple - Sólo filas vip
-.............................
+Filter_tuple - Discard irrelevant
+.................................
 
-En algunos casos estamos trabajando con un dataset del que solo queremos una parte. En este caso podemos usar la
-opración filter_tuple que nos permite descartar las filas que no cumplen una función concreta.
+When we don't need all data, the best approach it's discard as soon as possible the rows that we don't need.
 
-Por ejemplo, si necesitamos descartar las filas que no tengan un campo nulo; primero necesitamos una función que
- devuelve true si la fila no es nula. Usandola en filter_tuple quedaría algo así.
+With no_none function and filter field operation the genearted function will return None as result if the event
+it's discarded:
 
 .. code-block:: python
 
@@ -551,15 +539,15 @@ Por ejemplo, si necesitamos descartar las filas que no tengan un campo nulo; pri
     (inp, res, err) = no_none({"value": None})
     print(res) # None
 
-Cuando la función no devuelve un output, pero tampoco un error es porque la esa fila se ha descartado.
+It's up to you not to fail when result it's None, if no error means that event is discarded.
 
 Alternative - Plan B
 ....................
 
-En muchas ocasiones una operación en concreto no se puede llevar a cabo. Pero sabemos que otra operación puede
-salver el día. En este caso queremos darle al ETL una operación alternativa.
+Some times we have several ways to transform the event. If the first approach fail, alternative will try the
+next, until sucess or the last fail.
 
-Supongamos que queremos multiplicar el campo valor por dos, pero si no viene nos vale con poner un 0.
+Suppose that you want to multiply by two, but if this operation fail, you want to append value 0.
 
 .. code-block:: python
 
@@ -571,9 +559,6 @@ Supongamos que queremos multiplicar el campo valor por dos, pero si no viene nos
     )
     (inp, res, err) = need_value({"name": "John"})
     print(res) # {"value": 0}
-
-La alternativa se usa cuando la primera opción da un error. Si da un error, por supuesto, ningún cambio que se haya
-llevado a cabo llegará al output.
 
 Fallo con estilo
 ................
