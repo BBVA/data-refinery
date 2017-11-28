@@ -1,29 +1,16 @@
-Instalación
+Installation
 ============
 
-Requisitos
-----------
+Requirements
+------------
 
-Para poder instalar datarefinery es necesario:
-
-- Python 3.6
+- Python 3.5 or 3.6
 
 Pip
 ~~~
 
-Para instalar datarefinery con pip:
+To install datarefinery using pip:
 
 .. code-block:: bash
 
     pip install datarefinery
-
-
-Docker
-~~~~~~
-
-También puedes generar un contenedor para usar la librería con notebooks (debes cumplir también los requisitos anteriores):
-
-.. code-block:: bash
-
-    ./make_container.sh
-    docker run -it --rm -p 8888:8888 datarefinery-notebook:latest
