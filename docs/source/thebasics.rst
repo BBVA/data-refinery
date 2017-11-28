@@ -655,20 +655,20 @@ By this way, the output will contain the label without knowing other transformat
 Then - Adding new transformations
 .................................
 
-Data Refinery only works with Python dictionaries. So, when data is not a dictionary, it's useful to use a data format
+Data Refinery only works with Python dictionaries. So when data is not a dictionary, it's useful to use a data format
 operation before the event.
 *Tr* interface has a function to do this: *init*. This function takes the specified function and puts it at first on
 the group of event operations.
 
 At datarefinery.tuple.Formats module you can find several functions to transform different formats to Python
-dictionaries. In addition, there is the function *reader* to read the data. It's an alias for *init*.
+dictionaries. In addition, there is a function *reader* to read the data. It's an alias for *init*.
 
 ***** Hay que tener cuidado si queremos usar init y tenemos guardadas en variables Tr intermedios que queremos diverger.
 Ya que todos los Tr que divergen tienen en común la misma referencia a la raiz.
 
 **TODO: dibujo de raíz de transformaciones**
 
-Si llevamos a cabo esta operación:
+For example:
 
 .. code-block:: python
 
@@ -676,12 +676,11 @@ Si llevamos a cabo esta operación:
     from datarefinery.tuple.Formats import from_json
 
     step1 = etl()
-    step2 = op1.then(keep("label"))
+    step2 = step1.then(keep("label"))
     final = step2.init(from_json)
 
-En este caso tanto step1 como step2 tendrían como primera operación *from_json*, y es posible que no es esto lo que
-queramos llevar a cabo. Si queremos que cada una mantenga un origen independiente te sugiero que uses el siguiente código
- en su lugar:
+In this case, step1 and step2 have *from_json* operation at beginning. If you want different starts for every step, then
+you can use the next code as example:
 
 .. code-block:: python
 
@@ -692,21 +691,19 @@ queramos llevar a cabo. Si queremos que cada una mantenga un origen independient
     step2 = etl().then(keep("label"))
     final = step2.init(from_json)
 
-Peek - Cata de datos
-....................
+Peek - Take a look at data
+..........................
 
-La función *peek* permite leer y manipular los datos sin miedo a modificarlos. Es especialmente útil cuando queremos
-guardar los datos de un paso intermedio sin parar la transformación.
+*peek* function works to read and handle data without any modification. You can use it when its needed to save data
+in a intermediate step without any transformation.
 
-Ten en cuenta que la función no se llama hasta que no se invoca la función de transformación de datos generada mediante
-*apply*. Además debes saber que la función se ejecuta sincronamente, es decir, hasta que la función *peek* no termina de
-ejecutarse el proceso no continua, pero falle o no, el proceso continuará.
+Keep in mind *peek* is invoked when *apply* is. Furthermore, the execution of the complete process is synchronous. In
+other words, the process doesn't finish until *peek* doesn't finish (process continues even when *peek* fails).
 
-Debido a que se suele llamar para escribir datos los datos en una fuente externa, el método *writer* de Tr es un alias
-de *peek*.
+Note: *writer* method is an alias for *peek*.
 
-Secuencialidad
-..............
+Sequentiality
+.............
 
 Cuando se encadenan funciones con then todas ellas pasan en un solo "paso". Es decir que todas usan el mismo input y
 escriben en el mismo output. Por lo que si queremos modificar el valor de un campo ya modificado, aunque lo encadenemos
