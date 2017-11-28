@@ -663,10 +663,10 @@ the group of event operations.
 At datarefinery.tuple.Formats module you can find several functions to transform different formats to Python
 dictionaries. In addition, there is a function *reader* to read the data. It's an alias for *init*.
 
-***** Hay que tener cuidado si queremos usar init y tenemos guardadas en variables Tr intermedios que queremos diverger.
-Ya que todos los Tr que divergen tienen en común la misma referencia a la raiz.
+Note: if you want to use *init* with different *Tr* objects, be aware if this objects have the same origin, you
+will change both.
 
-**TODO: dibujo de raíz de transformaciones**
+**TODO: draw origin transformations**
 
 For example:
 
