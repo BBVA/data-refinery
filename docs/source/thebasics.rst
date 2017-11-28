@@ -9,13 +9,22 @@ Field operations
 An ETL process is composed by a group of performed operations on a row and rows are composed by groups of columns.
 So the minimal possible operation is performed on a field.
 
-Suppose a function is useless on a field V_:
-::_V: https://lh3.googleusercontent.com/KZ1MTv9z3QagVn_Gn5D4Jj7ZfPgcugdL1aIN-Mv63YY_hupDKqjqur4ZAOL3jXiEfXSoKsj5QuANVyrm14HHrTuAK2oJGIQcxUPzQGMT_WXlnTEyuqqSTss1cJSxoaBRqQu-XL96
+Suppose a function is useless on a field V:
+
+.. figure:: images/function.jpg
+    :width: 80%
+    :align: center
+    :alt: Useless function
+
 As the process is composed by operations on fields, if we execute this function to a row with one field V, there won't be output.
 
 Thus we need an usable function, as example a basic function that keeps value of a field. This function returns the input
-and its name is identity_::
-::_identity: https://lh3.googleusercontent.com/wCpoosG-B8hIWrrjHDiG8nZV2riGoIamZrQHwMa2WrOa1DFcKJJgqjJQYq6JNEoEat2F3iBwAoEuIlJjG1RjjBSa4v1IfxRDXEJ2GYLF6oZRwYnmcOmxtJboQXdrBDNe3s3OGPeC
+and its name is identity:
+
+.. figure:: images/identity.jpg
+    :width: 80%
+    :align: center
+    :alt: Identity function
 
 How process errors in data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -590,8 +599,6 @@ the operation was passed as argument with *then*.
 When we have all needed operations, we need to have a function to transform data. For this case, we use *apply*.
 This function returns a function that contains all operations and has the same interface that a row operation.
 
-******** Ten en cuenta que en cuanto llamamos a apply perdemos las funciones *then* y *apply*.
-
 For example, if we want to keep a field and replace another field value with a x2 function (multiply by two):
 
 .. code-block:: python
@@ -726,9 +733,11 @@ For example:
 In this example, you expect output value will be 8, but it's not true. When operations run in parallel, the execution is
 something like this:
 
-| input | value (1st time) | value(2nd time) |
-| ----- | ---------------- | --------------- |
-| 2     | 4                | 4               |
+=========  ====================  ===================
+  input      value (1st time)      value(2nd time)
+=========  ====================  ===================
+    2               4                     4
+=========  ====================  ===================
 
 The input is the same for both operations and the output of the first operation was overwritten by the second one.
 
@@ -762,7 +771,7 @@ the output with the result.
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 
-You can create your own operation using our [DSL](##DSL).
+You can create your own operation using our DSL.
 
 Other option is use *chain* function. This ends all operations before its execution and copy the output to the input.
 In other words, the original input disappears but you can propagate the error.
@@ -786,4 +795,4 @@ Review exercises
 ----------------
 
 If you want or need to do basic exercises for review all your knowledge, you can execute the next notebook on your
-Jupyter instance: docs/notebooks/thebasics.ipynb.
+Jupyter instance: `thebasics.ipynb <https://github.com/BBVA/data-refinery/blob/master/docs/notebooks/thebasics.ipynb>`_.

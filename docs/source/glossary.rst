@@ -1,12 +1,22 @@
 Glossary
 ========
 
-**ETL**: Extract, Transform and Load.
+**ETL**
 
-**Field**: Element of an event which was identified by name. For example, the first column of an excel sheet is identified as A field.
+    Extract, Transform and Load.
 
-**Row**: Minimal unit of transformation at ETL.
+**Field**
 
-**DSL**: Domain Specific Language
+    Element of an event which was identified by name. For example, the first column of an excel sheet is identified as A field.
 
-**Event**: Operations over a tuple or row.
+**Row**
+
+    Minimal unit of transformation at ETL.
+
+**DSL**
+
+    Domain Specific Language
+
+**Event**
+
+    Operations over a tuple or row.
