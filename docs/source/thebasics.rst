@@ -705,9 +705,11 @@ Note: *writer* method is an alias for *peek*.
 Sequentiality
 .............
 
-Cuando se encadenan funciones con then todas ellas pasan en un solo "paso". Es decir que todas usan el mismo input y
-escriben en el mismo output. Por lo que si queremos modificar el valor de un campo ya modificado, aunque lo encadenemos
-con then, pasan a la vez y recibimos el valor de la segunda transformación solamente. Por ejemplo:
+When you use *then* to create a group of operations, these are executed in one step. In other words, all operations use
+the same input and write in the same output. So, if we want to modify the value of a field which have been modified yet,
+even using *then*, all operations take place at the same time and we only see the last transformation.
+
+For example:
 
 .. code-block:: python
 
@@ -721,19 +723,17 @@ con then, pasan a la vez y recibimos el valor de la segunda transformación sola
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 4}
 
-Si pensamos secuencialmente esperamos que si se aplica la función x2 dos veces sobre el campo deberíamos obtener 8,
-pero eso no es así; al aplicarse de forma paralela lo que está pasando en realidad es algo más bien así:
+In this example, you expect output value will be 8, but it's not true. When operations run in parallel, the execution is
+something like this:
 
-| input | value (1º vez) | value(2º vez) |
-| ----- | -------------- | ------------- |
-| 2     | 4              | 4             |
+| input | value (1st time) | value(2nd time) |
+| ----- | ---------------- | --------------- |
+| 2     | 4                | 4               |
 
-Al pasar al mismo tiempo el input es 2 en las dos llamadas a la función. Y además el resultado de la segunda está
-sobreescribiendo el resultado de la primera.
+The input is the same for both operations and the output of the first operation was overwritten by the second one.
 
-Si queremos llevar a cabo estas operaciones, y obetener el resultado esperado, la solución optima es usar compose;
-que nos permite secuenciar las operaciones de campo, como ya hemos visto, en una sola referencia de función, que es lo
-que espera la función de fila. El código quedaría así:
+If you want to do different operations on the same value field, then you have to use *compose*. This function lets
+operations run sequentially, as the next example:
 
 .. code-block:: python
 
@@ -747,8 +747,8 @@ que espera la función de fila. El código quedaría así:
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 
-Hay una otra opción para llevar a cabo esta operación. Dentro de las operaciones podemos usar change, que lleva a cabo
-una sustitución pero usa el valor del output en lugar del input, y **sobreescribe** el valor del output con el nuevo valor.
+There is an alternative option for doing this. *change* is a function which uses the value of the output and substitutes
+the output with the result.
 
 .. code-block:: python
 
@@ -762,13 +762,10 @@ una sustitución pero usa el valor del output en lugar del input, y **sobreescri
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 
-Otra opción es el uso de [DSL](##DSL) de bajo nivel que permite configurar una operación de evento tan compleja como
-queramos.
+You can create your own operation using our [DSL](##DSL).
 
-En el caso de que queramos llevar cabo esta transformación, pero no tengamos acceso a la operación de campo original,
-podemos usar la operación de evento chain. Que termina con la operación que estamos llevando a cabo en ese momento y
-pasa el output al input, para que lo usen las siguientes operaciones propagando el error si es necesario,
-y **descarta el input** anterior.
+Other option is use *chain* function. This ends all operations before its execution and copy the output to the input.
+In other words, the original input disappears but you can propagate the error.
 
 .. code-block:: python
 
@@ -782,9 +779,8 @@ y **descarta el input** anterior.
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 
-Por favor, considera su uso la última opción, es una operación **muy peligrosa** ya que se **pierde el input original**.
-Esto significa que si te quedan operaciones que hacer con los campos originales no podrás hacerla después. Es especialmente
-destructivo su uso dentro de un módulo donde un usuario de tu código perdería el input irremediablemente.
+Please, use *chain* as last option. It's a **very dangerous** operation, because it **loses the original input**.
+This means if you have to do operations with original input, you can't do it after *chain* operation.
 
 Review exercises
 ----------------
