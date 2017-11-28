@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.1.63 (2017-11-28)](https://github.com/BBVA/data-refinery/tree/v0.1.63)
+
+### Fix
+
+* [e156722](https://github.com/BBVA/data-refinery/commit/e156722ee0baf6da10c4eaf60995257065af4efd) Fix some errors on documentation and adding static images.
+
+### Other
+
+* [de49bf8](https://github.com/BBVA/data-refinery/commit/de49bf89640482255e3a531b8da0bd80d4b190e4) [skip ci] Travis Build 23. Update version 0.1.62 --> 0.1.63.
+
+
 ## [v0.1.62 (2017-11-28)](https://github.com/BBVA/data-refinery/tree/v0.1.62)
 
 ### Fix
