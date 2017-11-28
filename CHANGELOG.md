@@ -1,6 +1,43 @@
 # Changelog
 
 
+## [v0.1.62 (2017-11-28)](https://github.com/BBVA/data-refinery/tree/v0.1.62)
+
+### Fix
+
+* [f0a9c04](https://github.com/BBVA/data-refinery/commit/f0a9c04e33baf2eddc5018c30c9dffb78ba017b5) Fix some typos and add new translation.
+
+### Other
+
+* [c1bc6f9](https://github.com/BBVA/data-refinery/commit/c1bc6f9a94b04ec1bbd5fa23df7722ce66aa61b0) [skip ci] Travis Build 22. Update version 0.1.61 --> 0.1.62.
+
+* [5ba4550](https://github.com/BBVA/data-refinery/commit/5ba4550065bd6936d40ec2b10717668e9247254f) Finish thebasics translation.
+
+* [ef697fc](https://github.com/BBVA/data-refinery/commit/ef697fc8564cf7c96e29453514c52ec6d2547f75) Sequentially translation.
+
+* [427d9ba](https://github.com/BBVA/data-refinery/commit/427d9babb090501862358e99abed9782824744cc) Peek translation.
+
+* [4dcf82a](https://github.com/BBVA/data-refinery/commit/4dcf82aa56835e63a4ac136ae619fc7b3569c037) Translate Adding new transformations.
+
+* [71eb58e](https://github.com/BBVA/data-refinery/commit/71eb58e7eacb3e5b5955f728a9d21eecb1418cdb) Translate fail gracefully.
+
+* [2c2ee83](https://github.com/BBVA/data-refinery/commit/2c2ee836782b9500db50440c1492b39144176cd2) Some translations.
+
+* [dfed52f](https://github.com/BBVA/data-refinery/commit/dfed52fc4c8dcd9006e78087f16af11c41b3cfed) Some basics translated.
+
+* [142e1e6](https://github.com/BBVA/data-refinery/commit/142e1e6f9f6bce3f9a5b58da6a09f96a38fede88) 2nd part of thebasics translation.
+
+* [cca0ba5](https://github.com/BBVA/data-refinery/commit/cca0ba552311509025da8f89adcd90009db453e2) Introduction translated.
+
+* [0bc4fc5](https://github.com/BBVA/data-refinery/commit/0bc4fc5d8350bfb3aad17a9ee704ffa4b28603c6) Delete image reference.
+
+* [9b481d0](https://github.com/BBVA/data-refinery/commit/9b481d04c348018d50bfd5bf14b9509cbcf6c266) First translation for basics.
+
+* [5fb1b8e](https://github.com/BBVA/data-refinery/commit/5fb1b8ea9cc9a63dce636f5ed1a54c5a50a3a262) Add DSL documentation.
+
+* [fe77d1e](https://github.com/BBVA/data-refinery/commit/fe77d1ee6657ae079f04ea830e961828a6198210) First part of translation.
+
+
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
 
 ### Other
