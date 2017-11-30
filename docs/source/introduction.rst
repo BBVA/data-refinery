@@ -12,7 +12,7 @@ This work is a must every time that a hypothesis looks promising and must hit th
 I think that smaller the transformation code, the better is translation to the cluster software. And also Python nowadays live between the two worlds.
 
 Solutions
-~~~~~~~~~
+---------
 I usually talk about this translation problem with my colleagues on Big Data events. Some of then put cluster tools in hands of their data scientist, like Spark. But this comes with a cost, every test boot up a complete cluster on the local machine, slow down the development process. But not every test must hit the real work, so comes with an unnecesary adaptation to the cluster, instead a quick local test. Also there is an slightly outdated AI algorithms on cluster libraries.
 Some times people try to do the work directly on real cluster, with real data. Thats awesome but await to all the data be processed, usually slow down development process.
 
@@ -23,7 +23,7 @@ On my opinion the only way to go is more automation and be iterative, so the sci
 >  Automation reveals the importance of a good data pipeline.
 
 Help not substitution
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 If we want to be successful we need steal the better of other tools, not try to reinvent the wheel. Big Data framework move data from one place to another very well, and also can distribute computation easilly.
 
 > But when we want add a field, or split a date field, it's completely on our hands.
@@ -35,7 +35,7 @@ Transformations are the more tedious work. And are written directly on the langu
 This can be done thanks it's minimalist interface and contained scope. Library only do one thing very well, transform data. It build a function that you can use anywhere. So if you need run a small script, you can use it, or if you need to scale up the process, you can use Spark.
 
 Focus on streaming
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Real world is not static, never stop, so we focus on streaming solutions. Sometimes people ask me "where i config the data file?" or "how i obtain all the values of the column?. On streaming environment you only have two things, a function and the current row. If you have a file, it's your work to split into rows and pass it to the transform function. Streamings are endless so you can't know all the values of a column.
 
