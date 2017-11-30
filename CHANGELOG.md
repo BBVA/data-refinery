@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.1.64 (2017-11-30)](https://github.com/BBVA/data-refinery/tree/v0.1.64)
+
+### Fix
+
+* [019817d](https://github.com/BBVA/data-refinery/commit/019817d4249345fcff9cad0f41eb81a147a0e9ee) Fix titles.
+
+### Other
+
+* [43f0f19](https://github.com/BBVA/data-refinery/commit/43f0f19c9c6ebe2e8af1e35a9182b98f394011ac) [skip ci] Travis Build 24. Update version 0.1.63 --> 0.1.64.
+
+
 ## [v0.1.63 (2017-11-28)](https://github.com/BBVA/data-refinery/tree/v0.1.63)
 
 ### Fix
