@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [v0.1.66 (2017-12-12)](https://github.com/BBVA/data-refinery/tree/v0.1.66)
+
+### Other
+
+* [f021353](https://github.com/BBVA/data-refinery/commit/f021353569bcf037cb4f56eedb3982f24c8c6551) [skip ci] Travis Build 26. Update version 0.1.65 --> 0.1.66.
+
+* [c9541c5](https://github.com/BBVA/data-refinery/commit/c9541c5e701511dfbf791e16a8c16aa9c4585599) Add demo notebook.
+
+
 ## [v0.1.65 (2017-11-30)](https://github.com/BBVA/data-refinery/tree/v0.1.65)
 
 ### Fix
@@ -198,9 +207,5 @@
 * [bdfb10d](https://github.com/BBVA/data-refinery/commit/bdfb10d2de07a91d2f3a8f991707a34ea5f612c3) Adding CI/CD by Travis service.
 
 * [0431b7e](https://github.com/BBVA/data-refinery/commit/0431b7eed3f76b4e25d882af7c000be4844a14be) Adding documentation, tests and setup.
-
-* [b46f18b](https://github.com/BBVA/data-refinery/commit/b46f18b768548229d24ec82176f901ac42492d4f) Initial code-base commit.
-
-* [19e7b16](https://github.com/BBVA/data-refinery/commit/19e7b16a85fe087b059da69f9e127538dfa23e16) Initial commit.
 
 
