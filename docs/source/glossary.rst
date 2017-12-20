@@ -1,10 +1,22 @@
-Glosario
+Glossary
 ========
 
-**ETL**: Extract, Transform and Load.
+**ETL**
 
-**Campo**: Elemento de un evento identificado por el nombre. Por ejemplo, la primera columna de una hoja excel esta identificada como el campo A.
+    Extract, Transform and Load.
 
-**Fila**: Unidad minima de transformación del etl
+**Field**
 
-**DSL**: Domain Specific Language
+    Element of an event which was identified by name. For example, the first column of an excel sheet is identified as A field.
+
+**Row**
+
+    Minimal unit of transformation at ETL.
+
+**DSL**
+
+    Domain Specific Language
+
+**Event**
+
+    Operations over a tuple or row.

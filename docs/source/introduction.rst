@@ -1,52 +1,48 @@
-Introducción
+Introduction
 ============
 
-Motivación
+Motivation
 ----------
+Data Analytics is now very popular on modern companies. Nowadays nobody deny the data insights value regarding business development. Also technology allow us to manage huge amount of data, even when look imposible to process. In fact, scientific libraries allow us to perform advaced analytics.
 
-El análisis de datos es una tarea que se ha extendido rápidamente por las empresas modernas. Hoy en día nadie niega el valor que aportan los datos al conocimiento interno al desarrollo de negocio. La tecnología a nuestra disposición nos facilita la captura de datos y su procesamiento, aunque el tamaño de los mismos parezca inmanejable. Por otro lado una gran cantidad de librerías científicas nos permiten hacer maravillas con los datos que tenemos en nuestra máquina, siempre que entren en la memoria de la máquina.
+> But i can't stop thinking about move local work to the cluster, and for me looks like a lonely valley.
 
-> Pero no puedo evitar pensar en este vacío intermedio entre el trabajo en local y el trabajo en grandes centros de proceso. Y lo visualizo como un valle yermo.
+This work is a must every time that a hypothesis looks promising and must hit the real world. Doing this job it's like walk along a lonely valley plenty of obstacles. The scientific libraries usually are not desingned to scale beyond machine memory (usually this is a very hard task) because modern machines are big enought. But a lot of times I spent time translating from R o Python to Java or Scala; just because clusters software is tipically programed on JVM languages.
 
-Que inevitablemente tenemos que recorrer cada vez que una hipótesis prometedora debe ser llevada al mundo real. Yo llamo a este trabajo **el valle de la soledad**. La popularidad entre los científicos de datos de las librerías más enfocadas al procesamiento local, que agilizan su trabajo, provocan en la mayoría de los casos un esfuerzo considerable cuando las intentamos encajar en el cluster; en muchas ocasiones en mi carrera profesional me he encontrado traduciendo código en R o Python a Java o Escala. No porque el lenguaje en sí sea determinante, sino porque es el que usa el framework de procesamiento big data que típicamente tiene el cliente instalado en sus servidores.
+I think that smaller the transformation code, the better is translation to the cluster software. And also Python nowadays live between the two worlds.
 
-En mi opinión cuanto más pequeñas y sencillas sean las operaciones de transformación de datos más sencillo es el paso por el valle de la soledad. Con la inclusión de Python en Spark se abre además la puerta de usar el mismo lenguaje (aunque el código pueda variar).
+Solutions
+---------
+I usually talk about this translation problem with my colleagues on Big Data events. Some of then put cluster tools in hands of their data scientist, like Spark. But this comes with a cost, every test boot up a complete cluster on the local machine, slow down the development process. But not every test must hit the real work, so comes with an unnecesary adaptation to the cluster, instead a quick local test. Also there is an slightly outdated AI algorithms on cluster libraries.
+Some times people try to do the work directly on real cluster, with real data. Thats awesome but await to all the data be processed, usually slow down development process.
 
-Soluciones
-~~~~~~~~~~
+There is no silver bullet for this problem, every solution that you try has its own tradeoffs. Like "i must develop on cluster, but every test run for days" or like "i have my program finished but i must rewrite it in java"
 
-Mucha gente a la que le pregunto cómo está solucionando su viaje por el valle de la soledad usa directamente los frameworks big data en la máquina de desarrollo local. Es una opción totalmente respetable, pero tiene un coste asociado, en mi opinión bastante limitante. Cada vez que llevamos a cabo una prueba debemos pagar el peaje del framework; que no es más que la infraestructura que monta para ofrecerte una escalabilidad que no estas usando, y que muy probablemente no usarás, ya que muchas de las hipótesis que se están probando no llegarán nunca a producción.
-Otra opción popular es la de usar los datos y el cluster de verdad. Pero eso también tiene un coste asociado alto; puede impactar en procesos productivos, si no tienes duplicada la información e infraestructura; y para mayor dificultad los cluster y frameworks big data están diseñados para exprimir al máximo los recursos y no responden bien a la pugna de recursos típica de un sistema multiusuario.
+On my opinion the only way to go is more automation and be iterative, so the scientific can use their own tools and the engineer can work less. When we say iterative it's not only about development, it's also about use more data if our hypotesis is still alive. Automation allow us to be more productive and secure.
 
-No hay una solución sencilla o general para este problema, y cada problema tiene sus peculiaridades que pueden invalidar totalmente una aproximación. Por ejemplo, quiero desarrollar con el cluster real, pero hay tantos datos que hace que cada prueba me lleve días. O hay muy pocos datos pero estoy obligado a escribir mi código de nuevo porque el cluster usa la tecnología X.
+>  Automation reveals the importance of a good data pipeline.
 
-En mi opinión el único paliativo a este problema es ser lo más progresivo y automatizar para no tener que parar el trabajo de investigación del científico de datos por culpa de la tecnología. Cuando digo progresivo me refiero a que nuestro código tenga la capacidad de ser expuesto a cantidades cada vez mayores de datos de forma desatendida y que el científico de datos pueda consultar las métricas de desempeño y decidir si se progresa ese modelo para ser expuesto a más datos o no. La automatización debe permitir el manejo, selección y exposición de los datos a los modelos sin intervención humana. No solo para alcanzar mayor productividad, sino que esto permite una mayor seguridad de los datos.
+Help not substitution
+---------------------
+If we want to be successful we need steal the better of other tools, not try to reinvent the wheel. Big Data framework move data from one place to another very well, and also can distribute computation easilly.
 
->  En este punto se hace evidente la necesidad de un buen pipeline de datos.
+> But when we want add a field, or split a date field, it's completely on our hands.
 
-Apoyo en lo existente, no sustitución
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Scientific libraries, also, help us loading data and show information, but if we want do a transformation, again it's in our hands.
 
-Si queremos tener éxito y ser competitivos necesitamos que nuestras estrategias sean rápidas y económicas. Y en el caso de la transformación de datos debemos apuntar a generar código que no sea ya facilitado por frameworks (que hacen muy bien esta tarea). Los frameworks de big data facilitan sobretodo el mover los datos de un sitio a otro; por ejemplo, leer de un csv y hacer un join con los datos de un Cassandra para alimentar un Elastic Search.
+Transformations are the more tedious work. And are written directly on the language of the cluster or notebook. The data refinery library comes to help here, giving you code that runs on cluster or notebook. This library it's not a complete ETL solution, but proves to be a huge help when things going real.
 
-> Pero cuando queremos añadir un campo, o dividir una fecha entre sus campos individuales, queda totalmente en nuestras manos.
+This can be done thanks it's minimalist interface and contained scope. Library only do one thing very well, transform data. It build a function that you can use anywhere. So if you need run a small script, you can use it, or if you need to scale up the process, you can use Spark.
 
-De una forma similar las librerías científicas también te ayudan a cargar ficheros y a pintar gráficas. Pero cuando tenemos que hacer operaciones sobre campos, de nuevo, recae sobre nuestro código.
+Focus on streaming
+------------------
 
-Y es precisamente este código el que tediosamente provoca más trabajo. Dando lugar al valle de la soledad, cuando tenemos que estar adaptando código para pasar de un framework a otro, solos, sin ayuda alguna. La librería ETL viene a facilitarnos la vida con una base de código que podemos usar en cualquier punto del proceso. Aunque no siendo una solución completa, si que ha demostrado reducir el tiempo necesario para llevar a cabo los ELT necesarios y reducir drásticamente el tiempo necesario para adaptar el código de los frameworks locales al cluster de producción.
+Real world is not static, never stop, so we focus on streaming solutions. Sometimes people ask me "where i config the data file?" or "how i obtain all the values of the column?. On streaming environment you only have two things, a function and the current row. If you have a file, it's your work to split into rows and pass it to the transform function. Streamings are endless so you can't know all the values of a column.
 
-Esto se consigue mediante el interfaz minimalista que usa. En lugar de pretender ser una solución global (como spark que cada vez aúna más funcionalidad) simplemente te entrega una sola función de código a la que le pasas los datos y te da los datos transformados en base a los metadatos que se le provee. Esto implica que la solución deja al framework el dimensionamiento, mientras que la función solo se preocupa de transformar los datos.
+As we say, this library does not do work that other frameworks do better. Pandas and Spark can load files easily and send results elsewhere. I strongly recommend you use a framework where you find confortable, and use this library as help.
 
-Enfocado desde el streaming
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Data scientist are usually used to work with Pandas. Its interface is based on columns, very efficient on batch, but not on streaming. If you are used to Pandas, maybe this approach will twist your mind.
 
-Esta decisión de diseño puede resultar muy alienante a aquellos más experimentados con soluciones ETL completas. En ocasiones me encuentro con comentarios como: “donde le paso los datos” o “como puedo recorrer una columna”. Para resolver este tipo de dudas debemos recordar que la librería trabaja a nivel de fila, o como se describe en las aplicaciones en streaming, a nivel de un solo evento. Un fichero normalmente está compuesto por muchos eventos, a si que tienes que extraer los eventos uno por uno y pasarlos por la función que te entrega la librería para obtenerlos transformados.
+> Work thinking about row not column.
 
-Como hemos explicado la librería no va a abordar las tareas que ya hacen los frameworks especializados; porque lo hacen mejor de lo que podemos pretender nosotros. Pandas, por ejemplo, te permite cargar un fichero con una solo línea de código, y Spark también; te recomiendo usar uno de estos frameworks y mapear las filas con la función de la librería.
-
-En la cuestión de columna también hay cierta confusión, creo que debido a la forma común de trabajar con los datos que vienen estableciendo los dataframes en los últimos años. Estos son estructuras columnares, muy adecuados y eficientes cuando tenemos un fichero finito y completo de datos entre manos. Pero la librería de ETL, de nuevo, trabaja a nivel de evento, aproximación opuesta en principio al paradigma columnar, por lo que a priori implica un pequeño cambio de enfoque para los datascientist.
-
-> Trabajar pensando en los eventos y no en las columnas de datos.
-
-Y está limitado en este aspecto porque está diseñado desde la suposición de que todos los datos son stream infinitos; lo que permite el poder pasar los datos de forma progresiva; también permite el ahorro de una gran cantidad de recursos de la máquina facilitando su uso en la máquina local o en entornos con los recursos limitados; y también ofrece una solución que funciona en streaming, de modo que es más sencillo de usar en entornos productivos, al mismo tiempo de que se puede usar como un batch tradicional con un pipe de linux.
-
+This approach it's resource friendly, and you can use on any machine, you only need one row in memory.

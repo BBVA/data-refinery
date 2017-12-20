@@ -1,89 +1,143 @@
 The Basics
 ==========
 
-Operaciones por campo
----------------------
+Field operations
+----------------
 
-**TODO: explicar cómo construimos la narrativa desde el campo a un proceso completo.**
+**TODO: explain how we build the operation from field to a complete process**
 
-El campo como raíz del cambioUn ETL se compone de un conjunto de operaciones sobre una fila. Las filas están compuestas por conjuntos de campos. De forma que la operación mínima que podemos llevar a cabo pasa en un campo.
+An ETL process is composed by a group of performed operations on a row and rows are composed by groups of columns.
+So the minimal possible operation is performed on a field.
 
-Supongamos una función no hace nada aplicada al campo V:![None function.jpg](https://lh3.googleusercontent.com/KZ1MTv9z3QagVn_Gn5D4Jj7ZfPgcugdL1aIN-Mv63YY_hupDKqjqur4ZAOL3jXiEfXSoKsj5QuANVyrm14HHrTuAK2oJGIQcxUPzQGMT_WXlnTEyuqqSTss1cJSxoaBRqQu-XL96)Como el proceso está compuesto por operaciones sobre los campos si aplicamos esta función, a una fila que solo tiene el campo V, no obtendremos ninguna salida.
+Suppose a function is useless on a field V:
 
-De esta forma llegamos hasta la primera función necesaria, mantener el valor de un campo. Para mantener el valor necesitamos un función que devuelva lo que reciba, típicamente esta función es conocida como identidad:![función identidad.jpg](https://lh3.googleusercontent.com/wCpoosG-B8hIWrrjHDiG8nZV2riGoIamZrQHwMa2WrOa1DFcKJJgqjJQYq6JNEoEat2F3iBwAoEuIlJjG1RjjBSa4v1IfxRDXEJ2GYLF6oZRwYnmcOmxtJboQXdrBDNe3s3OGPeC)
+.. figure:: images/function.jpg
+    :width: 80%
+    :align: center
+    :alt: Useless function
 
-Una función que pueda fallar
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As the process is composed by operations on fields, if we execute this function to a row with one field V, there won't be output.
 
-Dentro de las situaciones que nos encontramos durante una transformación de datos debemos enfrentarnos a los errores. Un problema típico de trabajar con datos, sobretodo cuando no pertenecen a una fuente de datos estructurados, es que alguno de los campos que esperamos no esté ahí. En el caso de que no podamos llevar a cabo una transformación, ya sea por cuestiones internas al campo o por errores externos al proceso, debemos informar de la forma más precisa posible y sin detener el proceso. La información de porque no se ha podido procesar un campo debe agregarse a los fallos que puedan tener otros campos, es decir, que no debemos detener el procesamiento de la fila por un campo. De esta forma el científico de datos puede tener una lista completa con todas las cosas a las que debe enfrentarse. De forma similar debemos seguir procesando el dataset aunque una fila no haya podido ser procesada. En este caso no debemos parar de procesar debido a que en producción es común ver datos para los que el modelo no está preparado, en este caso la fila debe ser descartada junto con los motivos de porque esto es así; de esta forma podremos adaptar el ETL a estos cambios en el próximo entrenamiento.
+Thus we need an usable function, as example a basic function that keeps value of a field. This function returns the input
+and its name is identity:
 
-Para solucionar este problema, lo que hacemos es que las funciones para transformar un campo devuelven el posible valor y también el posible error. Esto nos lleva a tres posibles escenarios:
+.. figure:: images/identity.jpg
+    :width: 80%
+    :align: center
+    :alt: Identity function
 
-- La función devuelve un valor y ningún error
-- La función devuelve un error, y provoca que nos de lo mismo el valor.
-- La función no falla, pero tampoco de un valor.
+How process errors in data
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+One of the most important situations we have to process is errors on data.
+A typical issue is when we expect some field but row doesn't have it (unstructured data source).
 
-En el primer caso podremos usar el valor modificado.
-En el segundo caso nos da lo mismo el valor, ya que hay un error que no nos permite seguir.
-En el tercer caso depende de la operación que estemos haciendo, descartaremos el campo o fallaremos al no tener valor.
+If any transformation fails we must report precisely without stop the process. All reasons for failure will aggregate by row,
+so the datascientist will have all the issues regarding a row together, and the process will continue with the next row.
+Because of this, field error will not stop the row process, and this one will not stop the dataset process. On production
+environment unexpected data is a common issue, so this data must be logged along their reasons for further
+research and process improvement.
 
-Listado de funciones
-~~~~~~~~~~~~~~~~~~~~
+To fix this problem, Data Refinery transformation functions returns the transformed value and the possible error.
+This situation takes us to three scenes:
+- Function returns a value and no error.
+- Function returns an error and provokes the value doesn't matter.
+- Function execution is OK, but there is not value.
 
-El ETL suele pelearse con problemas recurrentes de formato de los datos. Transformar tipos, el cambiar valores si cumplen cierta condición, descomponer datos en sus integrantes… Por eso la librería tiene ya algunas funciones muy comunes ya definidas. También podemos crear nuestras propias funciones, si las existentes no cumplen los requisitos. Y para dar soporte a casos más complejos podemos “encadenar” varias funciones más sencillas, permitiendo un uso atómico por pasos pequeños y posibilitando el cambiar fácilmente la funcionalidad intercalando funciones muy sencillas en un proceso. Una gran mayoría de las funciones de ETL ya definidas necesitan unos parámetros de contexto y con estos construirán y devolverán una función que nos permita llevar a cabo la transformación de campo sin estar pasando un número variable de argumentos. Lo que al fin y al cabo permite la composición sencilla, al compartir todas las funciones la misma entrada y salida en todos los pasos.
+In the first case we can use the transformed value.
+In the second one, we don't care about the value because there is an insuperable error.
+Finally it depends on the current operation, the process rejects the field or fails because there is not value.
 
-Reforzando un tipo
-..................
+List of functions
+~~~~~~~~~~~~~~~~~
 
-En ocasiones la fuente de datos no contiene información de tipo, o esta no es correcta, y nos llegan números como textos, o similar. Esta función necesita como contexto la función que permite el cambio del tipo, si esta función da algún error supondrá que no puede llevar a cabo la transformación y usará el mensaje de error de la excepción como resultado de error.
+On data transformation processes, it's common to transform types or values if a
+condition is triggered, decompose data,..  Data Refinery has defined this kind
+of functions. Furthermore, if it's necessary we can create our own functions.
 
-Por ejemplo, si quiero cambiar el tipo de un dato a int puedo usar el siguiente código:
+More complex situations can be solved chaining together two or more simple
+functions. This atomic design allows changes on application behaviour with very
+little user effort.
+
+The majority of ETL's functions require some context parameters in order to
+produce another, more specialized function. This specialized function can then
+be used to transform the field. This style of operation improves simple
+composition given that all functions will have the same input and output
+instead of a variable number of parameters.
+
+type_enforcer
+.............
+
+Expected function in order to cast the value to a type that can rise a cast exception.
+
+Sometimes, data source doesn't contain type or this type is wrong (numbers as string, etc).
+This function use as context a type changer function. If this function raises an error, type enforcer will return None
+and the error message raised.
+
+For example, if you want to change the data type to integer:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import type_enforcer
 
     int_enforcer = type_enforcer(lambda x: int(x))
     (res, err) = int_enforcer("6")
     print(res) # 6
 
-Normalización min max
+
+min_max_normalization
 .....................
 
-Esta es una operación típica en machine learning. Consiste en interpolar entre 0 y 1 un valor, considerando que el 0 es representado por el valor min y el 1 es representado por el valor max. Esta función necesita el mínimo y el máximo como contexto para su creación. Un ejemplo de uso podría ser:
+Typical operation on machine learning. It consists of interpolate a value between 0 (as minimum) and 1 (as maximum).
+So, this function need a context with the maximum and minimum to run. For example:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import min_max_normalization
 
     normalizator = min_max_normalization(1, 10)
     (res, err) = normalizator(5)
     print(res) # 0.5
 
-Puntuación estandar
-...................
 
-Esta operación representa lo lejos que está un dato de la estadística representativa de una columna completa. Para usarlo necesitamos pasarle como contexto la media y la desviación típica de los valores de la columna. Un ejemplo de uso sería:
+std_score_normalization
+.......................
+
+Returns the distance of a particular datum ...
+
+This operation represents how far it's the value from mean, using deviation as scale.
+
+The function requires two input parameters, the column average and the standard
+deviation. Usage example:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import std_score_normalization
 
     normalizator = std_score_normalization(79, 8)
     (res, err) = normalizator(85)
     print(res) # 0.75
 
-Agrupando por valor
-...................
 
-Esta función nos ayuda cuando queremos convertir un valor lineal numérico en uno categórico. Un caso común de uso es agrupar usuarios por edad. Requiere como contexto el paso de al menos un valor, esto generará dos grupos uno desde menos infinito al valor y del valor hasta infinito.
+buckets_grouping
+................
 
-Continuando con el ejmplo de edad, si queremos distinguir entre niños, adultos y jubilados podríamos pasar como valores 18 y 70. De esta forma la agrupación generará los siguientes grupos:
+Transform a lineal numeric value into a categorical one. For instance it can be
+used to group users by age.
 
-1. Entre menos infinito y 18
-2. Entre 18 y 70
-3. Entre 70 e infinito
+A minimum of one input value is mandatory. This will produce two groups, the
+first one from negative infinity to the given value, and the second one from
+the given value to infinity.
 
-En código podríamos ver estas situaciones así:
+For example, in order to categorize users into three groups (children, adults
+and elderly) the values 18 and 70 can be passed to the function. This will
+produce the following groups:
+
+1. From negative infinity to 18.
+2. From 18 to 70.
+3. From 70 to infinity.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import buckets_grouping
 
     group = buckets_grouping(18, 70)
@@ -94,118 +148,158 @@ En código podríamos ver estas situaciones así:
     (res, err) = group(73)
     print(res) # 3
 
-Categorización lineal
-.....................
 
-Esta operación de campo cambia los datos categóricos, como textos, en un número. Para ellos debemos pasarle las categorías existentes siempre con los elementos en las mismas posiciones (añadiendo siempre al final los nuevos valores).
-Esto se debe a que asignará el valor numérico del orden de la lista, y necesitamos que sea coherente entre ejecuciones.
+linear_category
+...............
 
-Como ejemplo podemos categorizar de nuevo la edad, pero esta vez nos llega como texto en lugar de como número.
+Translates the textual value of a field into a numeric value given a list of
+possible values.
+
+The input value is a list of categories. Keep in mind that this list must
+always be in the same order to consistently translate the values.
+
+The translated value will be the category index of the list.
+
+As an example, the age can be categorized again, but this time the input a text
+value instead of a numeric one.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import linear_category
 
     categorizer = linear_category(["niño", "adulto", "jubilado"])
     (res, err) = categorizer("adulto")
     print(res) # 2
 
-Categorización columnar
-.......................
 
-Funciona como la categorización lineal pero genera una columna con cada valor de la categoría, por defecto tendrá valor de 0, y en la categoría encontrada en el campo tendrá 1. También es conocido como *one hot vector*.
+column_category
+...............
 
-Continuando con el ejemplo de la edad.
+Translates the textual value of a field into a set of columns given a list of
+possible values. A column will be produced by each one of the members of the
+input list. This columns will have a value of `0` by default except for the
+corresponding category that will have a value of `1`. This is known as *one hot
+vector*.
+
+Example:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import column_category
 
     categorizer = column_category(["niño", "adulto", "jubilado"])
     (res, err) = categorizer("niño")
     print(res) # {"niño": "1", "adulto": "0", "jubilado": "0"}
 
-Esta operación añade campos, por lo que suele usarse con una operación de evento de tipo [append](##Cange it).
+This operation adds new columns, so is usually used along with an event operation of type [append](##Change it).
 
-Prefijo de columna
-..................
 
-En casos en los que una función genera varios campos es posible que estas coincidan en nombre con otros campos. Por eso podemos usar esta función que añadirá un prefijo al nombre de la columna.
+add_column_prefix
+.................
+
+Adds a prefix to the column name. This is useful in a scenario when other
+function generates a new column with the same name of another already existing.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import add_column_prefix
 
     prefix = add_column_prefix("good")
     (res, err) = prefix({"one": "me"})
     print(res) # {"good_one": "me"}
 
-Deconstrucción de campos
-........................
 
-Es común encontrar datos anidados, la función explode aplana esta anidación, incluso si esta está formada por una lista de objetos.
-En el caso de que haya un solo sub objeto no se añadirá más que el prefijo del nombre de campo original. Pero si hay una lista con varios elementos entonces al nombre del campos se le añadirá, además del prefijo, un sufijo munérico empezando en 1 para la segunda posición; esto es asi para evitar cambiar el nombre de los campos de la primera posición en el caso de recibir un elemento inesperado.
+explode
+.......
 
-Por ejemplo, si queremos explotar el campo nombre la llamada podría ser asi:
+Flattens a nested data structure even when is made up by a list of objects.
+
+In the case of just one inner object, only the original name prefix will be added.
+
+When multiple objects are present the same prefix will be added and in
+addition, a numerical suffix (starting on 1) fo the second position.
+
+In this example we exploded the field `name`:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import explode
 
     explode_name = explode("name")
     (res, err) = explode_name({"name": {"first": "Bob", "last": "Dylan"}})
     print(res) # {"name_first": "Bob", "name_last": "Dylan"}
 
-Sustituyendo valores
-....................
 
-Cuando se estudian los datos en raras ocasiones una columna tiene todos los valores correctamente rellenos. Es muy útil el sustituir un valor cuando este cumple una condición en concreto, pero para añadir flexibilidad usaremos dos funciones, una que debe devolver true o false, y otra función que generará un nuevo valor si la primera función devuelve true; ambas funciones recibiran el valor del campo.
+replace_if
+..........
 
-Por ejemplo, si queremos sustituir por cero todos los valores negativos de un campo:
+Replaces a value when some condition fulfilled.
+
+Two functions are expected, the former should return a boolean value and the
+latter should produce a new value in case of the former function returns
+`True`. Both function will receive the field value.
+
+As an example, if we want to replace by zero all negative values:
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import replace_if
 
     change = replace_if(lambda x: x<0, lambda x: 0)
     (res, err) = change(-3)
     print(res) # 0
 
-Procesando fechas y horas
+
+date_parser - time_parser
 .........................
 
-Las fechas son siempre una fuente de problemas, la variedad de formatos puede ser abrumadora. Para ellos tenemos una función de intenta parsear varios formatos diferentes, y si no lo consigue informa del error para que se añada un formato nuevo.
+Tries to parse a date with the given list of date formats. If none of the
+formats successfully parses the date then the function returns an error.
 
-Los formatos esperados deben ser formatos de fecha estandar de Python.
+The expected formats are Python standard time formats.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import date_parser
 
     parser = date_parser(["%Y-%m-%d"])
     (res, err) = parser("2017-03-22")
     print(res) # <datetime class>
 
-Hay una función similar solo para formatear horas, minutos y segundos.
+There is a similar function to format hours, minutes and seconds.
 
-Explosión temporal
-..................
 
-Tanto para fechas, como para tiempo, es posible que queramos tener los integrantes del valor como números simples en diferentes campos. Como entrada espera siempre un valor de tipo datetime.
+explode_date - explode_time
+...........................
+
+Transforms a datetime object to a series of columns with numeric values.
 
 .. code-block:: python
+
     import datetime
     from datarefinery.FieldOperations import explode_date
 
     (res, err) = explode_date(datetime(2017,3,22))
     print(res) # {"year": 2017, "month": 3, "day": 22, "hour":0, "minute": 0, "second": 0}
 
-Si hay varias fechas en tu evento considera usar la función [add_prefix](###Prefijo de columna). SI no necesitas todos los campos de la fecha considera usar [remove column](###Quitando columnas). Esta función se usa típicamente en conjunción con un date_parser.
+If multiple date exists on the event, please consider using the function [add_prefix](###Prefijo de columna). If no all fields are needed the function [remove column](###Quitando columnas) can be used.
 
-Quitando columnas
-.................
+This function is typically used along with `date_parser`.
 
-Este método es habitualmente una fuente de confusión. Su uso en solitario no tiene sentido debido a que no puede afectar a todo el evento. Está diseñado solo para ser usado en conjunto con otras funciones de campo que generan varios campos.
 
-En el caso de que quieras eliminar una columna, simplemente no operes sobre ella, la función ETL solo pondrá en el output los campos con los que operes.
+remove_columns
+..............
 
-Si este es el primer caso de composición que ves considera revisar primero la [documentación](##Combinando operaciones de campo) a este respecto.
+Removes one or more columns from a set.
+
+This function is usually used along with other functions which generate
+multiple columns.
+
+In case of not require a column, is better just not to operate it. This
+non-operated column will be removed automatically.
 
 .. code-block:: python
+
     import datetime
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.FieldOperations import explode_date, remove_columns
@@ -214,14 +308,14 @@ Si este es el primer caso de composición que ves considera revisar primero la [
     (res, err) = only_year_month(datetime(2017,3,22))
     print(res) # {"year": 2017, "month": 3}
 
-Buscando el valor
-.................
 
-Hay veces que muchos cambios en un campo son variados pero estáticos, como en asignación de coordenadas a una provincia. Para estos casos tener un diccionario de elementos donde la entrada y el valor estén representados por la clave y el valor respectivamente es una solución muy cómoda.
+match_dict
+..........
 
-A la función match_dict se le pasa este diccionario contexto y se encarga de devolver el valor correspondiente de la clave con la que se llama a la función.
+Translates values from a table.
 
 .. code-block:: python
+
     from datarefinery.FieldOperations import match_dict
 
     d = {"Spain": "ES", "United States of America": "US"}
@@ -229,22 +323,30 @@ A la función match_dict se le pasa este diccionario contexto y se encarga de de
     (res, err) = iso_decoder("Spain")
     print(res) # "ES"
 
-Combinando operaciones de campo
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Toda la arquitectura gira en torno a este concepto, muy potente, de programación funcional que nos permite construir aplicaciones muy complejas con bloques muy sencillos de código (funciones) fáciles de probar y mantener.
+Composing field operations
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-La composición se parece mucho a la promación tradicional en que tenemos un conjunto sencillo de operaciones que combinados pueden resolver infinidad de situaciones.
-Todas las funciones de la librería se pueden combinar para generar estos comportamientos con la función combine.
+This powerful concept from functional programing allow us to build complex
+applications using simple blocks (functions).
 
-Pero este concepto se puede ver mejor con algunos ejemplos.
 
-Normalización numérica
+Composition is similar to programming in the sense that a small set of
+operations can be combined to solve a very large set of problems.
+
+All functions on the library can be combined together using the function
+`combine`.
+
+This concept is better shown by example.
+
+
+Normalize Numeric Data
 ......................
 
-Convertir un número de entrada en texto a un número y luego llevar a cabo una normalización min max.
+Convert a numeric string to a numeric format and then normalize using min max approximation.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.FieldOperations import type_enforcer, min_max_normalization
 
@@ -255,12 +357,15 @@ Convertir un número de entrada en texto a un número y luego llevar a cabo una 
     (res, err) = str_2_min_max("50")
     print(res) # 0.5
 
-Fecha completa
-..............
 
-Otra operación típica es la de explotar una fecha, querase solo con los años, meses y dias, y añadir un prefijo para evitar colisiones con otros campos.
+Date data
+.........
+
+Explode a date is a typical operation too. It keeps year, month and day as data. Furthermore, it adds a prefix to avoid
+problems with other fields.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.FieldOperations import date_parser, explode_date, remove_columns, add_column_prefix
 
@@ -273,12 +378,14 @@ Otra operación típica es la de explotar una fecha, querase solo con los años,
     (res, err) = complete_date("2017-03-22")
     print(res) # {"x_year": 2017, "x_month": 3, "x_day": 22}
 
-One hot vector del día
-......................
 
-Incluso podemos llevar a cabo una transformación mucho más atrevida, como construir un one hot vector, desde una fecha en texto, con el día de la semana.
+Day to one hot vector
+.....................
+
+This example returns one hot vector using a date string and week days.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.tuple.TupleOperations import wrap
     from datarefinery.FieldOperations import date_parser, match_dict, column_category
@@ -300,98 +407,120 @@ Incluso podemos llevar a cabo una transformación mucho más atrevida, como cons
     (res, err) = day_hot("2017-10-19")
     print(res) # {"Mo": 0, "Tu": 0, "We": 0, "Th": 1, "Fr": 0, "Sa": 0, "Su": 0}
 
-Operaciones de evento
----------------------
+Event operations
+----------------
 
-Pero las funciones de campo no dicen que queremos hacer con el valor transformado; tal vez quiero que el valor se guarde en un campo con el mismo nombre; o a lo mejor quiero que tenga un nombre de campo diferente. En este nivel tenemos las funciones de fila, que funcionan de forma ligeramente diferente, ya que reciben el input, el output acumulado hasta este momento y el error acumulado hasta este momento; y se espera que devuelvan lo mismo, es decir, input, output y error.
+Field functions has no affect on the row, so we need Event functions; maybe we need to change the value of a field; or
+maybe create a new field.
+Field functions has different interface. They receives the input, the accumulated output until this point and the error.
+Every Field function also returns the same, because of this we can compose all functions together in one bigger function.
 
-Esto les da el control total en cada paso de la transformación de lo que está pasando, por lo que tienen una gran responsabilidad; es recomendable usar las existentes, aunque se pueden definir nuevas como veremos más adelante.
+The Field function has total control over the transformation step, and can affect to the full row, even fields already
+changed by other field functions. Because of this responsibility it's better using the supplied functions, but you can
+build your own.
 
-Listado de funciones
-~~~~~~~~~~~~~~~~~~~~
+List of functions
+~~~~~~~~~~~~~~~~~
 
-Keep - Mantener campos
-......................
+keep - Keep files
+...........
 
-La operación más sencilla, que no requiere de ninguna función de campo, es Keep. Básicamente coge un campo del input y lo pone en el output sin modificar su valor:
+Keep is the simplest operation, no need of any field function. In essence take the value of a field from the input and
+put it on the output without change neither the value nor the name of field.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import keep
 
     operation = keep(["greet"])
     (inp, res, err) = operation({"greet": "hello", "who": "world"}, {}, {})
     print(res) # {"greet": "hello"}
 
-Existe una versión de esta función que funciona exactamente igual pero que recibe una expresión regular como selector de campos. Se llama keep_regexp.
+If you need keep several similar fields you can use keep_regexp.
 
-Substitution - Substituir campos
-................................
+substitution - Value Substitution
+..................
 
-La siguiente operación si que requiere de una función de campo. Substitution pondrá el campo, con el mismo nombre, en el output pero con el valor transformado por la función de campo que se provea. Por ejemplo, una función to_float que transforme el valor dado en un float podrían usarse así:
+The next operation change the value of a field with the supplied field function. This function will not change the
+name of the field. By example, given a to_float function, you can do this:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution
 
     operation = substitution(["greet"], wrap(lambda x: len(x)))
     (inp, res, err) = operation({"greet": "hello", "who": "world"}, {}, {})
     print(res) # {"greet": 5}
 
-Append - Añadir nuevos campos a partir de uno
-.............................................
+append - Append new fields
+.................
 
-En muchas ocasiones queremos añadir varios campos con una sola operación, o cambiar el nombre del campo. La operación append permite hacer esto, pero requiere que la función de campo devuelva un diccionario donde el nombre del campo será extraído de la clave del diccionario y el valor del campo del valor del diccionario.Supongamos una función de campo, llamada len_cap, que dada una cadena de texto genera los campos len, con la longitud de la cadena, y cap, con la primera letra en mayúsculas.
+Usually we need add new field or change the name of the field. We can use append to do this, but it expects a
+field function that return a python dictionary, where every key will be a new field. By example, given a len_cap function that
+will return the len of a string and the first letter in uppercase:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, append
 
     operation = append(["greet"], wrap(lambda x: {x: "you", "y": "None"}))
     (inp, res, err) = operation({"greet": "hello", "who": "world"}, {}, {})
     print(res) # {'hello': 'you', 'y': 'None'}
 
-Cabe destacar que, en este caso, en el output no está el campo nombre. Esto es así porque aunque se pase a la función el nombre, esta no devuelve en ningún momento el campo nombre, solo len y cap.
+Notice that the field "greet" it's not in the output. Append only add the result of the function, and the function has no
+"greet" in their output.
 
-Fusion - Combinar campos
-........................
+fusion - several fields one output
+..................................
 
-Si nos fijamos con atención veremos que como patrón subyacente estamos llevando a cabo una operación que genera varios campos a partir de uno. Pero es posible que necesitemos la operación opuesta, es decir, a partir de varios campos el generar uno nuevo.
+We already define functions to change the values and add more than one field to the output. But also we can create one
+field from several inputs.
 
-Esta es una de las operaciones más complejas, y se llama fusion; para ilustrar esta función vamos a cambiar el ejemplo. Dada una función de campo suma, que suma todos los valores que recibe, vamos a generar un campo total.
+This function it's complex, and we have several scenarios. Also need the name of the new field.
+By example we can sum several numeric fields into total field.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, fusion
 
     operation = fusion(["a", "b", "c"], "sum_abc", wrap(lambda x: sum(x)))
     (inp, res, err) = operation({"a": 1, "b": 2, "c": 3}, {}, {})
     print(res) # {'sum_abc': 6}
 
-Pero fusión también puede usarse para operaciones más complejas. Supongamos que dependiendo del valor de un campo moneda queremos aplicar un tipo de cambio concreto. Para poder llevar a cabo esta operación necesitamos saber el valor concreto del campo moneda y el campo concreto con la cantidad monetaria. Para poder llevar a cabo esto, debemos saber que, la fusión entrega a la función de transformación de campo una lista, con los parámetros ordenados, exactamente en el mismo orden en el que se especificaron, en la llamada a la operación de fusión. En el ejemplo anterior llamamos a fusión con los campos ene, feb y mar; por lo que el listado que se pasará a la función contendrá los valores 5, 15 y 18.
+But we can perform some decision with the input fields. Suppose that you need to change the value of money amount
+field by currency code field. But functions receive only one parameter input, so fusion will put all the values in
+a list as the input, in the same order that you request in fields field.
+Knowing that, we can decompose the list into the fields that we need.
 
-Con este conocimiento podríamos generar una función que recupere los valores por su orden y que llame a la función de cambio de divisa existente (to_eur).
+By example, given a function to_eur that convert any currency into EUR:
 
 .. code-block:: python
+
     def to_eur_wrapped(x):
       [currency, value] = x
       return to_eur(currency, value)
 
-Y usarla junto con fusión para crear el campo val_eur.
+We can use this way with fusion:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, fusion
 
     val_eur_op = fusion(["currency", "value"], "val_eur", wrap(to_eur_wrapped))
     (inp, res, err) = val_eur_op({"currency": "USD", "value": 1})
     print(res) # {"val_eur": 0.8459}
 
-Con este mismo ejemplo se puede intuir la siguiente funcionalidad, fusion_append.
+fusion_append - Multiple values in, multiple values out
+.......................................................
 
-Fusion_append - Varios entran, varios salen
-...........................................
+In fact it's the same that a fusion, but expect that the field function returns a python dict, in the same way than
+append function.
 
-Básicamente es una operación en la que usamos varios campos para generar varios campos. La función de columna recibirá la lista de campos ordenados al igual que en el caso de un fusion. Pero en esta ocasión se espera que devuelva un diccionario con los mismos parametros que en la operación de fusión.
-
-Modificando la función del ejemplo anterior podemos devolver varios campos para no perder los datos originales en una sola operación:
+We can perform the same example that fusion but we can generate new fields with the currency as name of field and
+the money value as value:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, fusion_append
 
     def to_eur_cols(x):
@@ -402,14 +531,16 @@ Modificando la función del ejemplo anterior podemos devolver varios campos para
     (inp, res, err) = val_eur_op({"currency": "USD", "value": 1})
     print(res) # {"EUR": 0.8459, "USD": 1}
 
-Filter_tuple - Sólo filas vip
-.............................
+filter_tuple - Discard irrelevant
+.................................
 
-En algunos casos estamos trabajando con un dataset del que solo queremos una parte. En este caso podemos usar la opración filter_tuple que nos permite descartar las filas que no cumplen una función concreta.
+When we don't need all data, the best approach it's discard as soon as possible the rows that we don't need.
 
-Por ejemplo, si necesitamos descartar las filas que no tengan un campo nulo; primero necesitamos una función que devuelve true si la fila no es nula. Usandola en filter_tuple quedaría algo así.
+With no_none function and filter field operation the genearted function will return None as result if the event
+it's discarded:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, filter_tuple
 
     no_none = filter_tuple(["value"], wrap(lambda x: x is not None))
@@ -417,16 +548,18 @@ Por ejemplo, si necesitamos descartar las filas que no tengan un campo nulo; pri
     (inp, res, err) = no_none({"value": None})
     print(res) # None
 
-Cuando la función no devuelve un output, pero tampoco un error es porque la esa fila se ha descartado.
+It's up to you not to fail when result it's None, if no error means that event is discarded.
 
-Alternative - Plan B
+alternative - Plan B
 ....................
 
-En muchas ocasiones una operación en concreto no se puede llevar a cabo. Pero sabemos que otra operación puede salver el día. En este caso queremos darle al ETL una operación alternativa.
+Some times we have several ways to transform the event. If the first approach fail, alternative will try the
+next, until success or the last fail.
 
-Supongamos que queremos multiplicar el campo valor por dos, pero si no viene nos vale con poner un 0.
+Suppose that you want to multiply by two, but if this operation fail, you want to append value 0.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, alternative, substitution, append
 
     need_value = alternative(
@@ -436,14 +569,16 @@ Supongamos que queremos multiplicar el campo valor por dos, pero si no viene nos
     (inp, res, err) = need_value({"name": "John"})
     print(res) # {"value": 0}
 
-La alternativa se usa cuando la primera opción da un error. Si da un error, por supuesto, ningún cambio que se haya llevado a cabo llegará al output.
+Fail gracefully
+...............
 
-Fallo con estilo
-................
+When error occurs, at any point, we don't stop the process; keep in mind this principle when you develop your own functions. Instead exceptions we try to explain what it's going on, the deeper the better.
+This allow us to perform a recovery from fail as one of last steps. The recovery function search the field in error, write to the output with the provided function and if it's succsesful remove the error.
 
-Cuando registramos el fallo, a cualquier nivel, no detenemos el proceso; si escribes tus propias funciones para la librería asegurate de que son resistentes al fallo. Esto nos permite llevar a cabo una operación especial, el recuperarnos de un error. La operación recover lee del error, escribe en el output y si todo va bien borra del error el campo relacionado. En el siguiente ejemplo, el tercer parametro es el input de error de la función y el segundo el output.
+Remember that params to the no_error function are input, ouput and error.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, recover
 
     no_error = recover(["value"], wrap(lambda x: 0))
@@ -451,20 +586,23 @@ Cuando registramos el fallo, a cualquier nivel, no detenemos el proceso; si escr
     print(res) # {"value": 0}
     print(err) # {}
 
-Combinando operaciones de evento
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Combine event operations
+~~~~~~~~~~~~~~~~~~~~~~~~
+Normally, a transformation is a group of different type of functions, not only one type. For example, you want to keep
+some fields and change the value of a field using a function.
 
-Una transformación no solo se compone de un cambio. Es decir, no solo nos quedamos con un grupo de campos; o no solo sustituimos los valores de una forma concreta. Normalmente nos quedamos un campos, cambiamos el valor de otro de una forma concreta y de un tercer campo de forma completamente diferente.
+So that's why we need an interface for doing this kind of transformations. Data Refinery has an object that wraps event
+operations and exposes the methods. This object is *Tr*.
 
-A si que necesitamos un interfaz que lo permita. En este caso tenemos *Tr*. Este objeto envuelve la operación para evento y expone métodos que nos ayudan a expresar como queremos que funcionen los campos.
+The most important methods are *then* and *apply*. *then* returns a new *Tr* object which contains last operations plus
+the operation was passed as argument with *then*.
+When we have all needed operations, we need to have a function to transform data. For this case, we use *apply*.
+This function returns a function that contains all operations and has the same interface that a row operation.
 
-Especialmente destacan *then* y *apply*. Cuando llamamos a *then* este devuelve un nuevo objeto *Tr* que contiene una secuencia con las operaciones anteriores y la operación que hemos pasado a la función then.
-Una vez que tenemos todas las funciones encadenadas necesitamos una función que nos permita transformar los datos, ya que en este punto tenemos un objeto *Tr*. Para esto llamamos a la función *apply*. Esta función devuelve una sola función, generada en ese momento, que engloba todas las operaciones encadenadas, y que además tiene el mismo interfaz que una operación de fila.
-Ten en cuenta que en cuanto llamamos a apply perdemos las funciones *then* y *apply*.
-
-Si por ejemplo queremos guardar un campo y sustutir el valor de otro con la función x2 (multiplica un valor por dos) podríamos escribir el siguiente código.
+For example, if we want to keep a field and replace another field value with a x2 function (multiply by two):
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, keep, substitution
     from datarefinery.Tr import Tr
 
@@ -475,27 +613,43 @@ Si por ejemplo queremos guardar un campo y sustutir el valor de otro con la func
     (inp, res, err) = operation({"name": "John", "value": 10})
     print(res) # {"name": "John", "value": 20}
 
-Errores comunes a evitar son pasarle los datos a apply, que no hace nada más que devolver la función a usar. O llamar a la función que estamos pasando a la operación (se pasa sin paréntesis).
+There are common mistakes as:
+- Add arguments to *apply*. This function only returns the complete function to use at the event.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import substitution
 
-    substitution(["value"], x2()) # WRONG!!!
+    tr = Tr(keep(["name"])).apply(substitution(["value"], x2)) # WRONG!!!
 
-En este caso estamos llamando a la función, mientras que en realiad la operación espera una referencia a la función y no el resultado de la llamada sin parámetros.
-
-Esto suele pasar porque algunas de las funciones de la libería reciben parámetros (como min_max_normalization) y devuelven la referencia a la función como resultado y otras no (como explode_date) que se usa directamente la referencia.
-
-Un bosque de posibilidades
-..........................
-
-Al usar un objeto para encapsular las transformaciones, y este objeto ser inmutable, se da el caso de que podemos guardar pasos intermedios en el proceso de transormación de datos, lo cual es especialmente útil cuando tenemos, por ejemplo, datos de entrenamiento y datos de ejecución.
-
-Los datos de entrenamiento suelen ser como los de ejecución pero contienen un campo extra "label" que suele indicar lo que tiene que aprender (o inferir) el modelo de machine learning.
-
-En el siguiente ejemplo la transformación de datos (el objeto Tr) se construye en un módulo especifico de tu aplicación, y se recupera con la función etl(). Luego añadiremos la lógica para el label:
+- Use directly the function with parenthesis as argument (the argument is the function result without parameters):
 
 .. code-block:: python
+
+    from datarefinery.tuple.TupleOperations import substitution
+    from datarefinery.Tr import Tr
+
+    tr = Tr(keep(["name"])).then(substitution(["value"], x2())) # WRONG!!!
+
+In this case, we need a function as argument (the reference to the function).
+
+This should be carefully used, in Data Refinery some functions receives data parameters (as min_max_normalization) and
+returns a function as result and other (as explode_date) use functions as parameters.
+
+A world of possibilities
+........................
+
+We can save our set of transformations every time we want using *Tr* object. This is very useful when you have training
+and production data.
+
+Training data is often as production data, but it contains an extra field called "label". This field indicates what
+machine learning model must learn.
+
+In next example, data transformation is a specified module of your application. You can get it with *etl* function.
+Then we will add the label logic:
+
+.. code-block:: python
+
     from datarefinery.tuple.TupleOperations import keep
 
     tr = etl()
@@ -503,34 +657,40 @@ En el siguiente ejemplo la transformación de datos (el objeto Tr) se construye 
         tr = tr.then(keep("label"))
     operation = tr.apply()
 
-De esta forma si estamos en la fase de entrenamiento la salida contendrá el label necesario sin tener que saber a priori cuales son las transformaciones específicas para ese set de datos.
+By this way, the output will contain the label without knowing other transformations over the data during training phase.
 
-Then - Empujando transformaciones al inicio
-...........................................
+Then - Adding new transformations
+.................................
 
-En ocasiones hay datos que nos llegan en formatos que no entendemos, la librería solo maneja diccionarios de python internamente, o tal vez necesitamos hacer una operación al inicio del proceso.
+Data Refinery only works with Python dictionaries. So when data is not a dictionary, it's useful to use a data format
+operation before the event.
+*Tr* interface has a function to do this: *init*. This function takes the specified function and puts it at first on
+the group of event operations.
 
-El interfaz de Tr tiene una función para llevar a cabo esta operación: init. Esta pone al principio de la secuencia de transformaciones la función de evento que pongamos.
+At datarefinery.tuple.Formats module you can find several functions to transform different formats to Python
+dictionaries. In addition, there is a function *reader* to read the data. It's an alias for *init*.
 
-En el modulo datarefinery.tuple.Formats encontrarás varias operaciones que transforman el input de los formatos más populares a diccionarios de python. Como además esta es una función que se usa mucho para "leer" los datos el interfaz tiene una función *reader* que no es más que un alias de *init*.
+Note: if you want to use *init* with different *Tr* objects, be aware if this objects have the same origin, you
+will change both.
 
-Hay que tener cuidado si queremos usar init y tenemos guardadas en variables Tr intermedios que queremos diverger. Ya que todos los Tr que divergen tienen en común la misma referencia a la raiz.
+**TODO: draw origin transformations**
 
-**TODO: dibujo de raíz de transformaciones**
-
-Si llevamos a cabo esta operación:
+For example:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import keep
     from datarefinery.tuple.Formats import from_json
 
     step1 = etl()
-    step2 = op1.then(keep("label"))
+    step2 = step1.then(keep("label"))
     final = step2.init(from_json)
 
-En este caso tanto step1 como step2 tendrían como primera operación *from_json*, y es posible que no es esto lo que queramos llevar a cabo. Si queremos que cada una mantenga un origen independiente te sugiero que uses el siguiente código en su lugar:
+In this case, step1 and step2 have *from_json* operation at beginning. If you want different starts for every step, then
+you can use the next code as example:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import keep
     from datarefinery.tuple.Formats import from_json
 
@@ -538,21 +698,28 @@ En este caso tanto step1 como step2 tendrían como primera operación *from_json
     step2 = etl().then(keep("label"))
     final = step2.init(from_json)
 
-Peek - Cata de datos
-....................
+Peek - Take a look at data
+..........................
 
-La función *peek* permite leer y manipular los datos sin miedo a modificarlos. Es especialmente útil cuando queremos guardar los datos de un paso intermedio sin parar la transformación.
+*peek* function works to read and handle data without any modification. You can use it when its needed to save data
+in a intermediate step without any transformation.
 
-Ten en cuenta que la función no se llama hasta que no se invoca la función de transformación de datos generada mediante *apply*. Además debes saber que la función se ejecuta sincronamente, es decir, hasta que la función *peek* no termina de ejecutarse el proceso no continua, pero falle o no, el proceso continuará.
+Keep in mind *peek* is invoked when *apply* is. Furthermore, the execution of the complete process is synchronous. In
+other words, the process doesn't finish until *peek* doesn't finish (process continues even when *peek* fails).
 
-Debido a que se suele llamar para escribir datos los datos en una fuente externa, el método *writer* de Tr es un alias de *peek*.
+Note: *writer* method is an alias for *peek*.
 
-Secuencialidad
-..............
+Sequentiality
+.............
 
-Cuando se encadenan funciones con then todas ellas pasan en un solo "paso". Es decir que todas usan el mismo input y escriben en el mismo output. Por lo que si queremos modificar el valor de un campo ya modificado, aunque lo encadenemos con then, pasan a la vez y recibimos el valor de la segunda transformación solamente. Por ejemplo:
+When you use *then* to create a group of operations, these are executed in one step. In other words, all operations use
+the same input and write in the same output. So, if we want to modify the value of a field which have been modified yet,
+even using *then*, all operations take place at the same time and we only see the last transformation.
+
+For example:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution
     from datarefinery.Tr import Tr
 
@@ -563,17 +730,22 @@ Cuando se encadenan funciones con then todas ellas pasan en un solo "paso". Es d
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 4}
 
-Si pensamos secuencialmente esperamos que si se aplica la función x2 dos veces sobre el campo deberíamos obtener 8, pero eso no es así; al aplicarse de forma paralela lo que está pasando en realidad es algo más bien así:
+In this example, you expect output value will be 8, but it's not true. When operations run in parallel, the execution is
+something like this:
 
-| input | value (1º vez) | value(2º vez) |
-| ----- | -------------- | ------------- |
-| 2     | 4              | 4             |
+=========  ====================  ===================
+  input      value (1st time)      value(2nd time)
+=========  ====================  ===================
+    2               4                     4
+=========  ====================  ===================
 
-Al pasar al mismo tiempo el input es 2 en las dos llamadas a la función. Y además el resultado de la segunda está sobreescribiendo el resultado de la primera.
+The input is the same for both operations and the output of the first operation was overwritten by the second one.
 
-Si queremos llevar a cabo estas operaciones, y obetener el resultado esperado, la solución optima es usar compose; que nos permite secuenciar las operaciones de campo, como ya hemos visto, en una sola referencia de función, que es lo que espera la función de fila. El código quedaría así:
+If you want to do different operations on the same value field, then you have to use *compose*. This function lets
+operations run sequentially, as the next example:
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution, compose
     from datarefinery.Tr import Tr
 
@@ -584,9 +756,11 @@ Si queremos llevar a cabo estas operaciones, y obetener el resultado esperado, l
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 
-Hay una otra opción para llevar a cabo esta operación. Dentro de las operaciones podemos usar change, que lleva a cabo una sustitución pero usa el valor del output en lugar del input, y **sobreescribe** el valor del output con el nuevo valor.
+There is an alternative option for doing this. *change* is a function which uses the value of the output and substitutes
+the output with the result.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution, change
     from datarefinery.Tr import Tr
 
@@ -597,11 +771,13 @@ Hay una otra opción para llevar a cabo esta operación. Dentro de las operacion
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 
-Otra opción es el uso de [DSL](##DSL) de bajo nivel que permite configurar una operación de evento tan compleja como queramos.
+You can create your own operation using our DSL.
 
-En el caso de que queramos llevar cabo esta transformación, pero no tengamos acceso a la operación de campo original, podemos usar la operación de evento chain. Que termina con la operación que estamos llevando a cabo en ese momento y pasa el output al input, para que lo usen las siguientes operaciones propagando el error si es necesario, y **descarta el input** anterior.
+Other option is use *chain* function. This ends all operations before its execution and copy the output to the input.
+In other words, the original input disappears but you can propagate the error.
 
 .. code-block:: python
+
     from datarefinery.tuple.TupleOperations import wrap, substitution, chain
     from datarefinery.Tr import Tr
 
@@ -612,34 +788,11 @@ En el caso de que queramos llevar cabo esta transformación, pero no tengamos ac
     (inp, res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 
-Por favor, considera su uso la última opción, es una operación **muy peligrosa** ya que se **pierde el input original**. Esto significa que si te quedan operaciones que hacer con los campos originales no podrás hacerla después. Es especialmente destructivo su uso dentro de un módulo donde un usuario de tu código perdería el input irremediablemente.
+Please, use *chain* as last option. It's a **very dangerous** operation, because it **loses the original input**.
+This means if you have to do operations with original input, you can't do it after *chain* operation.
 
-DSL
-~~~
+Review exercises
+----------------
 
-
-El dsl de bajo nivel nos permite crear cualquier operación que se nos pueda imaginar respecto de una fila, pero como siempre todo gran poder conlleva una gran responsabilidad. Queda bajo tu responsabilidad propagar el input, el output modificado (si procede) y el error modificado (si procede).
-
-Su uso es bastante sencillo, básicamente todas las funciones de evento se crear con este DSL, para ejemplificar su uso vamos a ver como está declarado keep:
-
-.. code-block:: python
-    def keep(fields) -> Callable[[dict, dict, dict], Tuple[dict, dict, dict]]:
-        operations = [compose(use_input(), read_field(f), write_field(f)) for f in fields]
-        return reduce(compose, map(apply_over_output, operations))
-
-Como puedes ver es una composición donde especificamos los pasos por cada campo y finalmente reducimos de nuevo a una sola función con compose. Hay también funciones para usar el input, para usar el error... para casi todas las operaciones que se te puedan ocurrir.
-
-En última instancia puedes generarte tu propia función de 0, aunque te recomiendo seguir la filosofía de atomizar lo máximo posible en funciones de código pequeñas; simplemente debes devolver una fucnión que reciba los tres diccionarios que representan el input, el output y el error y los retorne modificados como proceda.
-
-Repaso con ejercicios
----------------------
-
-Si quieres hacer algunos ejercicios para practicar, puedes ejecutar el contenedor así:
-
-.. code-block:: bash
-
-    docker run -it --rm -p 8888:8888 -v [tu ruta del proyecto etl-func]:/home/jovyan/work datarefinery-notebook:latest
-
-
-Desde jupyter, puedes acceder al notebook con ejercicios básicos en /work/docs/notebooks/thebasics.ipynb.
-
+If you want or need to do basic exercises for review all your knowledge, you can execute the next notebook on your
+Jupyter instance: `thebasics.ipynb <https://github.com/BBVA/data-refinery/blob/master/docs/notebooks/thebasics.ipynb>`_.
