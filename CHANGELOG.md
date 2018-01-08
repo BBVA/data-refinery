@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.1.68 (2018-01-08)](https://github.com/BBVA/data-refinery/tree/v0.1.68)
+
+### Other
+
+* [2dc8cfa](https://github.com/BBVA/data-refinery/commit/2dc8cfaf0e7ebefc6e1a513cba81e854930b11da) [skip ci] Travis Build 30. Update version 0.1.67 --> 0.1.68.
+
+* [74a9278](https://github.com/BBVA/data-refinery/commit/74a9278db4aa2fc5b9d0e3cd42bbb5c4b7bb564a) First functional combiners with tests.
+
+* [8b4ef34](https://github.com/BBVA/data-refinery/commit/8b4ef34caf5bae8d3c09f980fd882b4d10b7f93b) Add combineoperations.
+
+
 ## [v0.1.67 (2018-01-08)](https://github.com/BBVA/data-refinery/tree/v0.1.67)
 
 ### Other
