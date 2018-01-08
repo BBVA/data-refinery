@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.1.67 (2018-01-08)](https://github.com/BBVA/data-refinery/tree/v0.1.67)
+
+### Other
+
+* [9081c02](https://github.com/BBVA/data-refinery/commit/9081c02b0a5e5c12a31a8f535dda882cc1d6c4c8) [skip ci] Travis Build 29. Update version 0.1.66 --> 0.1.67.
+
+* [e986a38](https://github.com/BBVA/data-refinery/commit/e986a38512f7ed9bf79528caea240742af92c080) Time frequency counters.
+
+* [6c003f1](https://github.com/BBVA/data-refinery/commit/6c003f18239020370d309160a02e7a3ccec3eea3) Time iterators.
+
+
 ## [v0.1.66 (2017-12-12)](https://github.com/BBVA/data-refinery/tree/v0.1.66)
 
 ### Other
@@ -207,5 +218,9 @@
 * [bdfb10d](https://github.com/BBVA/data-refinery/commit/bdfb10d2de07a91d2f3a8f991707a34ea5f612c3) Adding CI/CD by Travis service.
 
 * [0431b7e](https://github.com/BBVA/data-refinery/commit/0431b7eed3f76b4e25d882af7c000be4844a14be) Adding documentation, tests and setup.
+
+* [b46f18b](https://github.com/BBVA/data-refinery/commit/b46f18b768548229d24ec82176f901ac42492d4f) Initial code-base commit.
+
+* [19e7b16](https://github.com/BBVA/data-refinery/commit/19e7b16a85fe087b059da69f9e127538dfa23e16) Initial commit.
 
 
