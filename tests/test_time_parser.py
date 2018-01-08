@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import time_parser, compose, explode_time
+from datarefinery.FieldOperations import compose
+from datarefinery.DateFieldOperations import time_parser, explode_time
 from datarefinery.Tr import Tr
 from datarefinery.tuple.TupleOperations import append
 
