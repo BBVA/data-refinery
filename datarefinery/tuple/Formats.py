@@ -15,30 +15,19 @@
 import json
 import io
 import csv
+from datarefinery.tuple.TupleDSL import fixed_input
+
+def from_json(i, e=None):
+    try:
+        return json.loads(i), e
+    except Exception as err:
+        return None, "Can't parse"
 
 
-def from_json(i, o, e):
-    """
-    convert json to dict
-
-    :param i:
-    :param o:
-    :param e:
-    :return:
-    """
-    return json.loads(i), o, e
-
-
-def to_json(i, o, e):
-    """
-    convert dict to json
-
-    :param i:
-    :param o:
-    :param e:
-    :return:
-    """
-    return i, json.dumps(o), e
+def to_json(i, e=None):
+    if e is not None:
+        return None, e
+    return json.dumps(i), e
 
 
 def _list_to_csv(l):
@@ -72,14 +61,16 @@ def csv_to_map(fields):
     :param fields:
     :return:
     """
-    def _app(current_tuple, o={}, e={}):
+    def _app(current_tuple, e=None):
+        if current_tuple is None or len(current_tuple) == 0:
+            return None, "no input"
         csv_list = _csv_to_list(current_tuple)
         if len(csv_list) != len(fields):
-            e.update(
-                {"input": "unexpected number of fields {} obtained {} expected".format(len(csv_list), len(fields))}
-            )
-            return None, o, e
-        return {k: v for (k, v) in zip(fields, csv_list)}, o, e
+            e = {"input": "unexpected number of fields {} obtained {} expected".format(len(csv_list), len(fields))}
+            return None, e
+        return {k: v for (k, v) in zip(fields, csv_list)}, e
+    if fields is None or len(fields) == 0:
+        return fixed_input(None, "no fields provided, cannot proceed without order")
     return _app
 
 
@@ -90,13 +81,17 @@ def map_to_csv(fields):
     :param fields:
     :return:
     """
-    def _app(i, current_tuple={}, e={}):
+    def _app(current_tuple, e=None):
+        if e is not None:
+            return None, e
         csv_list = []
         for f in fields:
             if f in current_tuple:
                 csv_list.append(current_tuple[f])
             else:
                 e.update({"output": "expected field {} not found".format(f)})
-                return i, None, e
-        return i, _list_to_csv(csv_list), e
+                return None, e
+        return _list_to_csv(csv_list), e
+    if fields is None or len(fields) == 0:
+        return fixed_input(None, "no fields provided, cannot proceed without order")
     return _app

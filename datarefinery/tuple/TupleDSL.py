@@ -34,6 +34,8 @@ def read_field(f):
     def _app(i, e=None):
         if i is not None and f in i:
             return i[f], None
+        elif e is not None:
+            return None, e
         else:
             return None, "{} not found".format(f)
 
@@ -116,3 +118,16 @@ def compose(*funcs):
         return _app
 
     return reduce(_comp, funcs)
+
+
+def fixed_input(return_value, error_text: str = ""):
+    def _value(x, e=None):
+        return return_value, None
+
+    def _error(x, e=None):
+        return None, error_text
+
+    if return_value is not None:
+        return _value
+    else:
+        return _error

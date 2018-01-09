@@ -9,12 +9,13 @@ def test_emtpy():
     (res_p, err_p) = op_p(None)
     (res_s, err_s) = op_s(None)
 
-    assert res_p == res_s == {}
-    assert err_p == err_s == {}
+    assert res_p is None
+    assert res_s is None
+    assert err_p == err_s == 'No operations to perform'
 
 
 def test_one_opertaion():
-    def one_op(i, e):
+    def one_op(i, e=None):
         i.update({"hello": "Tom"})
         return i, e
 
@@ -31,7 +32,8 @@ def test_one_opertaion():
 
     assert res_p == {"hello": "Tom"}
     assert res_s == {"hello": "Tom"}
-    assert err_p == err_s == {}
+    assert err_p is None
+    assert err_s is None
 
 
 def test_two_operations_parallel():
@@ -49,7 +51,7 @@ def test_two_operations_parallel():
 
     assert inp == {"hello": "world"}
     assert res_p == {"who": "Tom", "hello": "Tom"}
-    assert err_p == {}
+    assert err_p is None
 
 
 def test_two_operations_sequential():
@@ -68,7 +70,7 @@ def test_two_operations_sequential():
 
     assert inp == {"greet": "hello"}
     assert res_p == "hello Tom"
-    assert err_p == {}
+    assert err_p is None
 
 
 def test_complex_workflow():
@@ -92,7 +94,7 @@ def test_complex_workflow():
 
     assert inp == {"greet": "Hail"}
     assert res_c == {'greet': 'Hail', 'hello': 'Tom', 'world': False}
-    assert err_c == {}
+    assert err_c is None
 
 
 def test_filtered_workflow():

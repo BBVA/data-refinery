@@ -19,64 +19,61 @@ from datarefinery.tuple.TupleDSL import compose
 
 
 def parallel(*tupleOperations):
-    # inp, err
-    # todas las tuple Operations reciben el mismo input y error
-    # luego combinamos todos los outputs y errors
-    # se devuelve el output combinado y el error
-    # map y reduce, pringada
-    def _no_operations(inp, err=None):
-        if err is None:
-            err = {}
-        if inp is None:
-            inp = {}
-        return inp, err
+    def _no_operations(inp=None, err=None):
+        return None, "No operations to perform"
 
-    def _no_affect(inp, err):
-        i = copy.deepcopy(inp)
-        e = copy.deepcopy(err)
+    def _no_affect(inp, err=None):
+        if inp is not None:
+            i = copy.deepcopy(inp)
+        else:
+            i = None
+        if err is not None:
+            e = copy.deepcopy(err)
+        else:
+            e = None
         return i, e
 
-    def _apply(inp, err):
+    def _apply(inp, err=None):
         def _reductor(acc, re):
             (i, e) = acc
             (o, er) = re
             i.update(o)
-            e.update(er)
+            if er is not None and e is not None:
+                e.update(er)
+            elif er is not None:
+                e = er
             return i, e
         inmutable = map(lambda x: compose(_no_affect, x), tupleOperations)
         results = map(lambda x: x(inp, err), inmutable)
-        return reduce(_reductor, results, ({}, {}))
+        return reduce(_reductor, results, ({}, None))
 
     some_params = any(map(lambda x: x is not None, tupleOperations))
     if tupleOperations is not None and some_params:
-        return compose(_no_operations, _apply)
+        return _apply
     return _no_operations
 
 
-def secuential(*tupleOperations):
-    # inp, err
-    # la primera operacion recibe el inp
-    # cada operacion recibe como input el output de la anterior
-    # devolvemos el output y el error de la ultima
-    # con our compose
-    def _no_operations(inp, err=None):
-        if err is None:
-            err = {}
-        if inp is None:
-            inp = {}
-        return inp, err
+def secuential(*tuple_operations):
+    def _no_operations(inp=None, err=None):
+        return None, "No operations to perform"
 
-    def _no_affect(inp, err):
-        i = copy.deepcopy(inp)
-        e = copy.deepcopy(err)
+    def _no_affect(inp, err=None):
+        if inp is not None:
+            i = copy.deepcopy(inp)
+        else:
+            i = None
+        if err is not None:
+            e = copy.deepcopy(err)
+        else:
+            e = None
         return i, e
 
     def _apply(inp, err=None):
-        for operation in tupleOperations:
+        for operation in tuple_operations:
             inp, err = operation(inp, err)
         return inp, err
 
-    some_params = any(map(lambda x: x is not None, tupleOperations))
-    if tupleOperations is not None and some_params:
-        return compose(_no_operations, _no_affect, _apply)
+    some_params = any(map(lambda x: x is not None, tuple_operations))
+    if tuple_operations is not None and some_params:
+        return compose(_no_affect, _apply)
     return _no_operations

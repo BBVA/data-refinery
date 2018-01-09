@@ -14,46 +14,40 @@
 
 from datarefinery.FieldOperations import buckets_grouping
 
-from datarefinery.Tr import Tr
-from datarefinery.tuple.TupleOperations import substitution
+from datarefinery.TupleOperations import substitution
 
 
 def test_empty():
-    operation = Tr(substitution(["a"], etl_func=buckets_grouping(25, 75))).apply()
-    (inp, res, err) = operation(None)
-    assert res is not None
-    assert res == {}
-    assert err is not None
-    assert err == {}
+    operation = substitution(["a"], etl_func=buckets_grouping(25, 75))
+    (res, err) = operation(None)
+    assert res is None
+    assert err == {'a': 'a not found'}
 
 
 def test_empty_definition():
-    operation = Tr(substitution(["a"], etl_func=buckets_grouping(None, None))).apply()
-    (imp, res, err) = operation({"a": 0.3})
-    assert res is not None
-    assert res == {}
+    inp = {"a": 0.3}
+    operation = substitution(["a"], etl_func=buckets_grouping(None, None))
+    (res, err) = operation(inp)
+    assert res is None
     assert err is not None
-    assert "a" in err
-    assert err["a"] == "buckets not provided"
+    assert err == {'a': 'buckets not provided'}
 
 
 def test_all_empty():
-    operation = Tr(substitution(["a"], etl_func=buckets_grouping(None, None))).apply()
-    (imp, res, err) = operation(None)
-    assert res is not None
-    assert res == {}
-    assert err is not None
-    assert err == {}
+    operation = substitution(["a"], etl_func=buckets_grouping(None, None))
+    (res, err) = operation(None)
+    assert res is None
+    assert err == {'a': 'buckets not provided'}
 
 
 def test_some_working():
-    operation = Tr(substitution(["a"], etl_func=buckets_grouping(0.25, 0.5))).apply()
-    (imp, res, err) = operation({"a": 0.3})
+    inp = {"a": 0.3}
+    operation = substitution(["a"], etl_func=buckets_grouping(0.25, 0.5))
+    (res, err) = operation(inp)
     assert res is not None
     assert "a" in res
     assert res["a"] == 2
-    assert err is not None
-    assert err == {}
+    assert err is None
 
 
 def test_final_bucket():

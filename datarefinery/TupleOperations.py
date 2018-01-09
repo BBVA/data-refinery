@@ -80,8 +80,6 @@ def filter_tuple(fields, etl_func):
 def alternative(*alternatives):
     def reduction(a, b):
         def _app(input_dict, error_dict=None):
-            if error_dict is None:
-                error_dict = {}
             (res, err) = a(input_dict, error_dict)
             if len(err) == 0:
                 return res, error_dict

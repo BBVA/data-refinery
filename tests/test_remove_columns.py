@@ -14,19 +14,17 @@
 
 from datarefinery.FieldOperations import compose, remove_columns
 from datarefinery.DateFieldOperations import date_parser, explode_date
-from datarefinery.Tr import Tr
-from datarefinery.tuple.TupleOperations import append
+from datarefinery.TupleOperations import append
 
 
 def test_empty():
     date_formats = ["%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S.%fZ",
                     "%Y-%m-%dT%H:%M:%S", "%m%d", "%Y-%m-%d", "%Y%m%d"]
-
-    operation = Tr(append(fields=["date"], etl_func=compose(date_parser(date_formats), explode_date,
-                                                            remove_columns(None)))).apply()
-    (inp, res, err) = operation({"date": "20171010"})
-    assert inp is not None
-    assert inp["date"] == "20171010"
+    inp = {"date": "20171010"}
+    operation = append(fields=["date"], etl_func=compose(date_parser(date_formats), explode_date,
+                                                         remove_columns(None)))
+    (res, err) = operation(inp)
+    assert inp == {"date": "20171010"}
     assert res is not None
     assert "second" in res
     assert "minute" in res
@@ -40,17 +38,17 @@ def test_empty():
     assert res["day"] == 10
     assert res["month"] == 10
     assert res["year"] == 2017
-    assert err is not None
-    assert err == {}
+    assert err is None
 
 
 def test_some_working():
     date_formats = ["%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S.%fZ",
                     "%Y-%m-%dT%H:%M:%S", "%m%d", "%Y-%m-%d", "%Y%m%d"]
 
-    operation = Tr(append(fields=["date"], etl_func=compose(date_parser(date_formats), explode_date,
-                                                            remove_columns("hour", "minute", "second")))).apply()
-    (inp, res, err) = operation({"date": "20171010"})
+    inp = {"date": "20171010"}
+    operation = append(fields=["date"], etl_func=compose(date_parser(date_formats), explode_date,
+                                                         remove_columns("hour", "minute", "second")))
+    (res, err) = operation(inp)
     assert inp is not None
     assert inp["date"] == "20171010"
     assert res is not None
@@ -63,17 +61,17 @@ def test_some_working():
     assert res["day"] == 10
     assert res["month"] == 10
     assert res["year"] == 2017
-    assert err is not None
-    assert err == {}
+    assert err is None
 
 
 def test_some_working_remove_non_existing_columns():
     date_formats = ["%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S.%fZ",
                     "%Y-%m-%dT%H:%M:%S", "%m%d", "%Y-%m-%d", "%Y%m%d"]
 
-    operation = Tr(append(fields=["date"], etl_func=compose(date_parser(date_formats), explode_date,
-                                                            remove_columns("hora", "dia")))).apply()
-    (inp, res, err) = operation({"date": "20171010"})
+    inp = {"date": "20171010"}
+    operation = append(fields=["date"], etl_func=compose(date_parser(date_formats), explode_date,
+                                                         remove_columns("hora", "dia")))
+    (res, err) = operation(inp)
     assert inp is not None
     assert inp["date"] == "20171010"
     assert res is not None
@@ -89,5 +87,4 @@ def test_some_working_remove_non_existing_columns():
     assert res["day"] == 10
     assert res["month"] == 10
     assert res["year"] == 2017
-    assert err is not None
-    assert err == {}
+    assert err is None
