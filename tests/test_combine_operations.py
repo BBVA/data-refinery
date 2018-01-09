@@ -68,3 +68,28 @@ def test_two_operations_sequential():
     assert inp == {"greet": "hello"}
     assert res_p == "hello Tom"
     assert err_p == {}
+
+
+def test_complex_workflow():
+    def adder(value):
+        def add_field(i, e):
+            i.update(value)
+            return i, e
+        return add_field
+
+    def change_field(i, e):
+        return {"hello": "Tom"}, e
+
+    complex_op = parallel(
+        secuential(adder({"hello": "world"}), change_field),
+        adder({"world": False})
+    )
+
+    inp = {"greet": "Hail"}
+
+    (res_c, err_c) = complex_op(inp)
+
+    assert inp == {"greet": "Hail"}
+    assert res_c == {'greet': 'Hail', 'hello': 'Tom', 'world': False}
+    assert err_c == {}
+

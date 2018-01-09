@@ -31,8 +31,8 @@ def use_output():
 
 
 def read_field(f):
-    def _app(i, e):
-        if f in i:
+    def _app(i, e=None):
+        if i is not None and f in i:
             return i[f], None
         else:
             return None, "{} not found".format(f)
@@ -43,7 +43,9 @@ def read_field(f):
 def read_match(regexp):
     pattern = re.compile(regexp)
 
-    def _app(i, e):
+    def _app(i, e=None):
+        if i is None:
+            return None, "no input provided"
         new_input = {
             k: v
             for (k, v) in i.items()
@@ -55,7 +57,9 @@ def read_match(regexp):
 
 
 def read_fields(fields):
-    def _app(i, e):
+    def _app(i, e=None):
+        if i is None:
+            return None, "no input provided"
         out = []
         for f in fields:
             if f in i:
@@ -86,7 +90,7 @@ def write_error_field(f):
     return _app
 
 
-def dict_enforcer(i, e):
+def dict_enforcer(i, e=None):
     if i is not None and not isinstance(i, dict):
         return None, "dict expected"
     return i, e
