@@ -1,4 +1,4 @@
-from datarefinery.tuple.TupleDSL import compose, read_field, write_field, apply_over_output, read_match, \
+from datarefinery.tuple.TupleDSL import compose, read_field, write_field, read_match, \
     read_fields, write_error_field, dict_enforcer
 from functools import reduce
 
@@ -63,16 +63,16 @@ def append(fields, etl_func):
 def filter_tuple(fields, etl_func):
     operations = [compose(read_field(f), etl_func, write_error_field(f)) for f in fields]
 
-    def _app(input_dict: dict, output_dict: dict, error_dict: dict):
+    def _app(input_dict, error_dict=None):
         for f in operations:
-            (res, err) = f(input_dict, output_dict, error_dict)
+            (res, err) = f(input_dict, error_dict)
 
             if err is not None:
-                error_dict.update(err)
+                return None, err
 
             if (res is not None and res is False) or (res is None):
-                return input_dict, None, error_dict
-        return input_dict, output_dict, error_dict
+                return None, None
+        return input_dict, error_dict
 
     return _app
 

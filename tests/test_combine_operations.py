@@ -1,4 +1,5 @@
 from datarefinery.CombineOperations import parallel, secuential
+from datarefinery.TupleOperations import wrap, filter_tuple, substitution
 
 
 def test_emtpy():
@@ -92,4 +93,30 @@ def test_complex_workflow():
     assert inp == {"greet": "Hail"}
     assert res_c == {'greet': 'Hail', 'hello': 'Tom', 'world': False}
     assert err_c == {}
+
+
+def test_filtered_workflow():
+    def invert(x):
+        return not x
+
+    def must_true(x):
+        return x
+
+    def to_int(x):
+        if x:
+            return 1
+        return 0
+
+    inp = {"a": False}
+
+    op = secuential(
+        substitution(["a"], wrap(invert)),
+        filter_tuple(["a"], wrap(must_true)),
+        substitution(["a"], wrap(to_int))
+    )
+
+    (res, err) = op(inp)
+
+    assert res == {"a": 1}
+    assert err is None
 
