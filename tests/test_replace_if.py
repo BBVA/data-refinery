@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.Tr import Tr
-from datarefinery.tuple.TupleOperations import substitution
+from datarefinery.TupleOperations import substitution
 from datarefinery.FieldOperations import replace_if
 
 
@@ -24,14 +23,14 @@ def test_some_working():
     def _fun_part(x):
         return x+1
 
-    operation = Tr(substitution(["a"], replace_if(_if_part, _fun_part))).apply()
-    (inp, res, err) = operation({"a": 0})
+    inp = {"a": 0}
+    operation = substitution(["a"], replace_if(_if_part, _fun_part))
+    (res, err) = operation(inp)
     assert inp is not None
     assert res is not None
     assert "a" in res
     assert res["a"] == 1
-    assert err is not None
-    assert err == {}
+    assert err is None
 
 
 def test_empty():
@@ -41,10 +40,7 @@ def test_empty():
     def _fun_part(x):
         return x+1
 
-    operation = Tr(substitution(["a"], replace_if(_if_part, _fun_part))).apply()
-    (inp, res, err) = operation(None)
-    assert inp is None
-    assert res is not None
-    assert res == {}
-    assert err is not None
-    assert err == {}
+    operation = substitution(["a"], replace_if(_if_part, _fun_part))
+    (res, err) = operation(None)
+    assert res is None
+    assert err == {'a': 'a not found'}

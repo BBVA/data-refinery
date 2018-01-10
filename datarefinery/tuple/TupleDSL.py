@@ -16,24 +16,12 @@ import re
 from functools import reduce
 
 
-def use_input():
-    def _app(i, o, e):
-        return i, e
-
-    return _app
-
-
-def use_output():
-    def _app(i, o, e):
-        return o, e
-
-    return _app
-
-
 def read_field(f):
-    def _app(i, e):
-        if f in i:
+    def _app(i, e=None):
+        if i is not None and f in i:
             return i[f], None
+        elif e is not None:
+            return None, e
         else:
             return None, "{} not found".format(f)
 
@@ -43,7 +31,9 @@ def read_field(f):
 def read_match(regexp):
     pattern = re.compile(regexp)
 
-    def _app(i, e):
+    def _app(i, e=None):
+        if i is None:
+            return None, "no input provided"
         new_input = {
             k: v
             for (k, v) in i.items()
@@ -55,7 +45,9 @@ def read_match(regexp):
 
 
 def read_fields(fields):
-    def _app(i, e):
+    def _app(i, e=None):
+        if i is None:
+            return None, "no input provided"
         out = []
         for f in fields:
             if f in i:
@@ -86,7 +78,7 @@ def write_error_field(f):
     return _app
 
 
-def dict_enforcer(i, e):
+def dict_enforcer(i, e=None):
     if i is not None and not isinstance(i, dict):
         return None, "dict expected"
     return i, e
@@ -112,3 +104,16 @@ def compose(*funcs):
         return _app
 
     return reduce(_comp, funcs)
+
+
+def fixed_input(return_value, error_text: str = ""):
+    def _value(x, e=None):
+        return return_value, None
+
+    def _error(x, e=None):
+        return None, error_text
+
+    if return_value is not None:
+        return _value
+    else:
+        return _error

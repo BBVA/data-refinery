@@ -9,14 +9,6 @@ datarefinery
     :undoc-members:
     :show-inheritance:
 
-datarefinery.Tr
----------------
-
-.. automodule:: datarefinery.Tr
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 datarefinery.FieldOperations
 ----------------------------
 
@@ -41,10 +33,28 @@ datarefinery.tuple.TupleDSL
     :undoc-members:
     :show-inheritance:
 
-datarefinery.tuple.TupleOperations
-----------------------------------
+datarefinery.TupleOperations
+----------------------------
 
-.. automodule:: datarefinery.tuple.TupleOperations
+.. automodule:: datarefinery.TupleOperations
     :members:
     :undoc-members:
     :show-inheritance:
+
+datarefinery.DateFieldOperations
+--------------------------------
+
+.. automodule:: datarefinery.DateFieldOperations
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+datarefinery.CombineOperations
+------------------------------
+
+.. automodule:: datarefinery.CombineOperations
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+

@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.Tr import Tr
-from datarefinery.tuple.TupleOperations import substitution
+from datarefinery.TupleOperations import substitution
 from datarefinery.FieldOperations import replace_if_else
 
 
@@ -24,16 +23,10 @@ def test_empty_input_if_then():
     def _fn_then(x):
         return x + 1
 
-    def _fn_else(x):
-        return x + 2
-
-    operation = Tr(substitution(["a"], replace_if_else(_fn_cond, _fn_then))).apply()
-    (inp, res, err) = operation(None)
-    assert inp is None
-    assert res is not None
-    assert res == {}
-    assert err is not None
-    assert err == {}
+    operation = substitution(["a"], replace_if_else(_fn_cond, _fn_then))
+    (res, err) = operation(None)
+    assert res is None
+    assert err == {'a': 'a not found'}
 
 
 def test_empty_input_if_then_else():
@@ -46,13 +39,10 @@ def test_empty_input_if_then_else():
     def _fn_else(x):
         return x + 2
 
-    operation = Tr(substitution(["a"], replace_if_else(_fn_cond, _fn_then, _fn_else))).apply()
-    (inp, res, err) = operation(None)
-    assert inp is None
-    assert res is not None
-    assert res == {}
-    assert err is not None
-    assert err == {}
+    operation = substitution(["a"], replace_if_else(_fn_cond, _fn_then, _fn_else))
+    (res, err) = operation(None)
+    assert res is None
+    assert err == {'a': 'a not found'}
 
 
 def test_cond_true_replace_if_then():
@@ -62,14 +52,12 @@ def test_cond_true_replace_if_then():
     def _fn_then(x):
         return x + 1
 
-    operation = Tr(substitution(["a"], replace_if_else(_fn_cond, _fn_then))).apply()
-    (inp, res, err) = operation({"a": 0})
-    assert inp is not None
+    operation = substitution(["a"], replace_if_else(_fn_cond, _fn_then))
+    (res, err) = operation({"a": 0})
     assert res is not None
     assert "a" in res
     assert res["a"] == 1
-    assert err is not None
-    assert err == {}
+    assert err is None
 
 
 def test_cond_true_replace_if_then_default_else():
@@ -79,14 +67,12 @@ def test_cond_true_replace_if_then_default_else():
     def _fn_then(x):
         return x + 1
 
-    operation = Tr(substitution(["a"], replace_if_else(_fn_cond, _fn_then))).apply()
-    (inp, res, err) = operation({"a": 100})
-    assert inp is not None
+    operation = substitution(["a"], replace_if_else(_fn_cond, _fn_then))
+    (res, err) = operation({"a": 100})
     assert res is not None
     assert "a" in res
     assert res["a"] == 100
-    assert err is not None
-    assert err == {}
+    assert err is None
 
 
 def test_cond_false_replace_if_then_else():
@@ -99,11 +85,9 @@ def test_cond_false_replace_if_then_else():
     def _fn_else(x):
         return x + 2
 
-    operation = Tr(substitution(["a"], replace_if_else(_fn_cond, _fn_then, _fn_else))).apply()
-    (inp, res, err) = operation({"a": 100})
-    assert inp is not None
+    operation = substitution(["a"], replace_if_else(_fn_cond, _fn_then, _fn_else))
+    (res, err) = operation({"a": 100})
     assert res is not None
     assert "a" in res
     assert res["a"] == 102
-    assert err is not None
-    assert err == {}
+    assert err is None
