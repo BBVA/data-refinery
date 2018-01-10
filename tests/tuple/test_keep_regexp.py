@@ -29,4 +29,3 @@ def test_no_fields():
 
     assert res == {}
     assert err is None
-

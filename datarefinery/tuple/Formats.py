@@ -17,6 +17,7 @@ import io
 import csv
 from datarefinery.tuple.TupleDSL import fixed_input
 
+
 def from_json(i, e=None):
     try:
         return json.loads(i), e

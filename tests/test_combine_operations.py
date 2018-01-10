@@ -121,4 +121,3 @@ def test_filtered_workflow():
 
     assert res == {"a": 1}
     assert err is None
-

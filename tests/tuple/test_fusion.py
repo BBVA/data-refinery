@@ -44,4 +44,3 @@ def test_none_field_found():
 
     assert res is None
     assert err == {"tot": "a not found"}
-

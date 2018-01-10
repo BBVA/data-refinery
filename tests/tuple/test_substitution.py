@@ -23,4 +23,3 @@ def test_some_working():
 
     assert res == {"cant": 1}
     assert err is None
-

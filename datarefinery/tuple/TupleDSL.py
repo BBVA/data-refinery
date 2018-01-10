@@ -16,20 +16,6 @@ import re
 from functools import reduce
 
 
-def use_input():
-    def _app(i, o, e):
-        return i, e
-
-    return _app
-
-
-def use_output():
-    def _app(i, o, e):
-        return o, e
-
-    return _app
-
-
 def read_field(f):
     def _app(i, e=None):
         if i is not None and f in i:
