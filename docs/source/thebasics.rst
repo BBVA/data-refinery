@@ -419,7 +419,7 @@ List of functions
 ~~~~~~~~~~~~~~~~~
 
 keep - Keep files
-...........
+.................
 
 Keep is the simplest operation, no need of any field function. In essence take the value of a field from the input and
 put it on the output without change neither the value nor the name of field.
@@ -435,7 +435,7 @@ put it on the output without change neither the value nor the name of field.
 If you need keep several similar fields you can use keep_regexp.
 
 substitution - Value Substitution
-..................
+.................................
 
 The next operation change the value of a field with the supplied field function. This function will not change the
 name of the field. By example, given a to_float function, you can do this:
@@ -449,7 +449,7 @@ name of the field. By example, given a to_float function, you can do this:
     print(res) # {"greet": 5}
 
 append - Append new fields
-.................
+..........................
 
 Usually we need add new field or change the name of the field. We can use append to do this, but it expects a
 field function that return a python dictionary, where every key will be a new field. By example, given a len_cap function that
