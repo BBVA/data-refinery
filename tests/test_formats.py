@@ -75,5 +75,44 @@ def test_writer_csv_some_working():
     operation = secuential(keep(fields=["who"]), map_to_csv(["who"]))
     (transformed_output, transformed_error) = operation({"who": "anciano"})
     assert transformed_output is not None
-    assert transformed_output == '"anciano"\r\n'
+    assert transformed_output == '"anciano"'
     assert transformed_error is None
+
+
+def test_writer_csv_multiples_lines():
+    lines_in = [
+        {"who": "Thorin"},
+        {"who": "Dwalin"},
+        {"who": "Balin"},
+        {"who": "Kíli"},
+        {"who": "Fíli"},
+        {"who": "Dori"},
+        {"who": "Nori"},
+        {"who": "Ori"},
+        {"who": "Óin"},
+        {"who": "Glóin"},
+        {"who": "Bifur"},
+        {"who": "Bofur"},
+        {"who": "Bombur"}
+    ]
+    lines_out_expected = [
+        '"Thorin"',
+        '"Dwalin"',
+        '"Balin"',
+        '"Kíli"',
+        '"Fíli"',
+        '"Dori"',
+        '"Nori"',
+        '"Ori"',
+        '"Óin"',
+        '"Glóin"',
+        '"Bifur"',
+        '"Bofur"',
+        '"Bombur"'
+    ]
+
+    operation = secuential(keep(fields=["who"]), map_to_csv(["who"]))
+
+    lines_out = [operation(x)[0] for x in lines_in]
+
+    assert lines_out_expected == lines_out
