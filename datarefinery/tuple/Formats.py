@@ -39,7 +39,7 @@ def _list_to_csv(l):
     :return:
     """
     io_file = io.StringIO()
-    writer = csv.writer(io_file, quoting=csv.QUOTE_NONNUMERIC)
+    writer = csv.writer(io_file, quoting=csv.QUOTE_NONNUMERIC, lineterminator='')
     writer.writerow(l)
     return io_file.getvalue()
 
