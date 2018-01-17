@@ -1,6 +1,27 @@
 # Changelog
 
 
+## [v0.2.1 (2018-01-10)](https://github.com/BBVA/data-refinery/tree/v0.2.1)
+
+### Other
+
+* [9e5ad3d](https://github.com/BBVA/data-refinery/commit/9e5ad3daa7fc40b569296e24c4c0cbac5e55c8e3) [skip ci] Travis Build 32. Update version 0.2.0 --> 0.2.1.
+
+* [e599c92](https://github.com/BBVA/data-refinery/commit/e599c92aeb959580badeb8c546f781d89356666d) Docs updated.
+
+* [c65aa90](https://github.com/BBVA/data-refinery/commit/c65aa9061d8638a1ccd367817f25e0fc3c4096c3) Notebooks updated.
+
+* [bca1837](https://github.com/BBVA/data-refinery/commit/bca183723e1c4f7896507d5b3a96d0e21ed8f96f) Bump version.
+
+* [1b84eff](https://github.com/BBVA/data-refinery/commit/1b84eff41018a02cfc46206acda7445925b242d5) Doc without Tr.
+
+* [2465839](https://github.com/BBVA/data-refinery/commit/2465839bc5f3da2e26c9f8b443dfa4bd74ccf8ba) Tr interface removed.
+
+* [9d9b007](https://github.com/BBVA/data-refinery/commit/9d9b00720d2a222169e46f5dbbdf502fa2014f80) Filter and combine tuple operations use of it.
+
+* [23854dc](https://github.com/BBVA/data-refinery/commit/23854dcb63e9a08ecdc1a0fe34ac968c9884bf66) New Operations for new combiners.
+
+
 ## [v0.1.68 (2018-01-08)](https://github.com/BBVA/data-refinery/tree/v0.1.68)
 
 ### Other
