@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [v0.2.2 (2018-01-17)](https://github.com/BBVA/data-refinery/tree/v0.2.2)
+
+### Other
+
+* [8d45ce8](https://github.com/BBVA/data-refinery/commit/8d45ce84bea06efa3d41c42889ed0a4ec121672c) [skip ci] Travis Build 35. Update version 0.2.1 --> 0.2.2.
+
+* [3b68e1b](https://github.com/BBVA/data-refinery/commit/3b68e1beaa6a34bfd1edefb49d476ba15a66009e) Pandas function opertator doc.
+
+* [9f76a84](https://github.com/BBVA/data-refinery/commit/9f76a84a13333c20c318eddafc65b8ba291ddf45) Pandas data frame examples.
+
+* [ad7ab90](https://github.com/BBVA/data-refinery/commit/ad7ab90fe35f6d373db108c259e7aa3fd09ff58d) Csv line ending fix.
+
+
 ## [v0.2.1 (2018-01-10)](https://github.com/BBVA/data-refinery/tree/v0.2.1)
 
 ### Other
@@ -211,7 +224,9 @@
 
 * [6e57d68](https://github.com/BBVA/data-refinery/commit/6e57d685e19f26b8fee21709c202051d148a9035) [skip ci] Travis Build 9. Update version 0.1.52 --> 0.1.53.
 
-* [5c2b137](https://github.com/BBVA/data-refinery/commit/5c2b137f5cdec223561bc178fdd749559f342838) Update readme with sample.
+* [f0f151c](https://github.com/BBVA/data-refinery/commit/f0f151c2f11069470b83bd6dd8f7265811397e8c) Merge pull request #2 from SoyGema/master.
+
+  Update readme with sample
 
 
 ## [v0.1.52 (2017-11-20)](https://github.com/BBVA/data-refinery/tree/v0.1.52)
