@@ -662,6 +662,41 @@ operations run sequentially, as the next example:
     (res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 
+
+Pandas use
+----------
+You can use Pandas Data Frame easily with this function:
+
+.. code-block:: python
+
+    import pandas as pd
+
+    def pandas_dataframe_operator(df, operation):
+        if df is None or operation is None:
+            return None, None
+        raw_df = pd.DataFrame(df.apply(operation, axis=1), columns=["res"])
+
+        raw_df['ok'] = raw_df["res"].apply(lambda x: x[0])
+        raw_df['ko'] = raw_df["res"].apply(lambda x: x[1])
+
+        raw_df = pd.concat([df, raw_df[['ok', 'ko']]], axis=1)
+
+        ok_filter = raw_df["ok"].apply(lambda x: x is not None)
+        ok_df = raw_df[ok_filter]
+        ok_df = pd.DataFrame(ok_df["ok"].apply(pd.Series))
+        ko_df = raw_df[~ok_filter]
+        ko_df = pd.concat([ko_df, pd.DataFrame(ko_df["ko"].apply(pd.Series))], axis=1)
+        del ko_df['ok']
+        del ko_df['ko']
+
+        return ok_df, ko_df
+
+This function expect a data frame and any tuple operation, and returns two data frames. One it's the correct tuples
+transformed, the other is the original data frame with error columns added, this way you can easily fix the tuple
+operation.
+
+You can check the example of use in tests/examples.
+
 Review exercises
 ----------------
 
