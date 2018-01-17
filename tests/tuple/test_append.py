@@ -37,4 +37,3 @@ def test_multiple_working():
 
     assert err is None
     assert res == {"w": "orld", "s": "adness"}
-
