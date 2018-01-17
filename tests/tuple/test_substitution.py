@@ -23,3 +23,13 @@ def test_some_working():
 
     assert res == {"cant": 1}
     assert err is None
+
+
+def test_multiple_working():
+    imp = {"cant": 0, "sum": 1}
+    op = substitution(["cant", "sum"], wrap(add_one))
+
+    (res, err) = op(imp)
+
+    assert err is None
+    assert res == {"cant": 1, "sum": 2}

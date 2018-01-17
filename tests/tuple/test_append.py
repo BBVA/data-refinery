@@ -23,3 +23,18 @@ def test_some_working():
 
     assert res == {"head": "w", "tail": "orld"}
     assert err is None
+
+
+def head_field_and_tail(x):
+    return {x[0]: x[1:]}
+
+
+def test_multiple_working():
+    imp = {"hello": "world", "goodbye": "sadness"}
+    op = append(["hello", "goodbye"], wrap(head_field_and_tail))
+
+    (res, err) = op(imp)
+
+    assert err is None
+    assert res == {"w": "orld", "s": "adness"}
+
