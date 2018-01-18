@@ -1,3 +1,5 @@
+from datarefinery.CombineOperations import parallel
+
 from datarefinery.tuple.TupleDSL import compose, read_field, write_field, read_match, \
     read_fields, write_error_field, dict_enforcer
 from functools import reduce
@@ -17,7 +19,7 @@ def wrap(func):
 
 def keep(fields):
     operations = [compose(read_field(f), write_field(f)) for f in fields]
-    return reduce(compose, operations)
+    return parallel(*operations)
 
 
 def keep_regexp(regexp):
@@ -26,7 +28,7 @@ def keep_regexp(regexp):
 
 def substitution(fields, etl_func):
     operations = [compose(read_field(f), etl_func, write_field(f)) for f in fields]
-    return reduce(compose, operations)
+    return parallel(*operations)
 
 
 def fusion(fields, target_field, etl_func):
@@ -57,7 +59,7 @@ def fusion_append(fields, error_field, etl_func):
 def append(fields, etl_func):
     operations = [compose(read_field(f), etl_func, dict_enforcer, write_error_field(f))
                   for f in fields]
-    return reduce(compose, operations)
+    return parallel(*operations)
 
 
 def filter_tuple(fields, etl_func):

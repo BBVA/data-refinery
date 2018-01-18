@@ -37,7 +37,10 @@ def parallel(*tupleOperations):
         def _reductor(acc, re):
             (i, e) = acc
             (o, er) = re
-            i.update(o)
+            if o is not None and i is not None:
+                i.update(o)
+            elif o is not None:
+                i = o
             if er is not None and e is not None:
                 e.update(er)
             elif er is not None:
@@ -45,7 +48,7 @@ def parallel(*tupleOperations):
             return i, e
         inmutable = map(lambda x: compose(_no_affect, x), tupleOperations)
         results = map(lambda x: x(inp, err), inmutable)
-        return reduce(_reductor, results, ({}, None))
+        return reduce(_reductor, results, (None, None))
 
     some_params = any(map(lambda x: x is not None, tupleOperations))
     if tupleOperations is not None and some_params:
