@@ -56,7 +56,7 @@ def parallel(*tupleOperations):
     return _no_operations
 
 
-def secuential(*tuple_operations):
+def sequential(*tuple_operations):
     def _no_operations(inp=None, err=None):
         return None, "No operations to perform"
 
@@ -71,12 +71,7 @@ def secuential(*tuple_operations):
             e = None
         return i, e
 
-    def _apply(inp, err=None):
-        for operation in tuple_operations:
-            inp, err = operation(inp, err)
-        return inp, err
-
     some_params = any(map(lambda x: x is not None, tuple_operations))
     if tuple_operations is not None and some_params:
-        return compose(_no_affect, _apply)
+        return compose(_no_affect, reduce(compose, tuple_operations))
     return _no_operations

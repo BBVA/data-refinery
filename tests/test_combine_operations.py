@@ -1,10 +1,10 @@
-from datarefinery.CombineOperations import parallel, secuential
+from datarefinery.CombineOperations import parallel, sequential
 from datarefinery.TupleOperations import wrap, filter_tuple, substitution
 
 
 def test_emtpy():
     op_p = parallel(None)
-    op_s = secuential(None)
+    op_s = sequential(None)
 
     (res_p, err_p) = op_p(None)
     (res_s, err_s) = op_s(None)
@@ -20,7 +20,7 @@ def test_one_opertaion():
         return i, e
 
     op_p = parallel(one_op)
-    op_s = secuential(one_op)
+    op_s = sequential(one_op)
 
     inp = {"hello": "world"}
 
@@ -62,7 +62,7 @@ def test_two_operations_sequential():
     def change_field(i, e):
         return "{} {}".format(i["greet"], i["who"]), e
 
-    op_p = secuential(add_field, change_field)
+    op_p = sequential(add_field, change_field)
 
     inp = {"greet": "hello"}
 
@@ -84,7 +84,7 @@ def test_complex_workflow():
         return {"hello": "Tom"}, e
 
     complex_op = parallel(
-        secuential(adder({"hello": "world"}), change_field),
+        sequential(adder({"hello": "world"}), change_field),
         adder({"world": False})
     )
 
@@ -111,7 +111,7 @@ def test_filtered_workflow():
 
     inp = {"a": False}
 
-    op = secuential(
+    op = sequential(
         substitution(["a"], wrap(invert)),
         filter_tuple(["a"], wrap(must_true)),
         substitution(["a"], wrap(to_int))
