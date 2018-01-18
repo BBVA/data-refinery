@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [v0.2.3 (2018-01-18)](https://github.com/BBVA/data-refinery/tree/v0.2.3)
+
+### Fix
+
+* [763c2c3](https://github.com/BBVA/data-refinery/commit/763c2c3c552e86e20a827c626da7b1e9a8a30ff5) Fix flake8 warning.
+
+* [2996440](https://github.com/BBVA/data-refinery/commit/2996440ee9bcf8eca25563374023be5837cc125e) Fix some parallel problems.
+
+### Other
+
+* [11cbe64](https://github.com/BBVA/data-refinery/commit/11cbe64e944bebe31b8382fc60a60d50bafdf939) [skip ci] Travis Build 38. Update version 0.2.2 --> 0.2.3.
+
+
 ## [v0.2.2 (2018-01-17)](https://github.com/BBVA/data-refinery/tree/v0.2.2)
 
 ### Other
@@ -215,8 +228,6 @@
 
 * [aae22ae](https://github.com/BBVA/data-refinery/commit/aae22ae766af579134c5251ae264b860ef7cb10c) [skip ci] Travis Build 10. Update version 0.1.53 --> 0.1.54.
 
-* [b076b43](https://github.com/BBVA/data-refinery/commit/b076b4383391dad317a7bf3e21476a52b0b660c6) Ignore coverage report.
-
 
 ## [v0.1.53 (2017-11-21)](https://github.com/BBVA/data-refinery/tree/v0.1.53)
 
@@ -224,9 +235,7 @@
 
 * [6e57d68](https://github.com/BBVA/data-refinery/commit/6e57d685e19f26b8fee21709c202051d148a9035) [skip ci] Travis Build 9. Update version 0.1.52 --> 0.1.53.
 
-* [f0f151c](https://github.com/BBVA/data-refinery/commit/f0f151c2f11069470b83bd6dd8f7265811397e8c) Merge pull request #2 from SoyGema/master.
-
-  Update readme with sample
+* [5c2b137](https://github.com/BBVA/data-refinery/commit/5c2b137f5cdec223561bc178fdd749559f342838) Update readme with sample.
 
 
 ## [v0.1.52 (2017-11-20)](https://github.com/BBVA/data-refinery/tree/v0.1.52)
