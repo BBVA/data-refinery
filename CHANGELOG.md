@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.5 (2018-01-25)](https://github.com/BBVA/data-refinery/tree/v0.2.5)
+
+### Fix
+
+* [911e63f](https://github.com/BBVA/data-refinery/commit/911e63f50ca21d5dcc9ae8c39d848d6a8dd8d5db) Fix some typos.
+
+### Other
+
+* [d37d504](https://github.com/BBVA/data-refinery/commit/d37d504398a91bad73e61bbeca9dac5172156133) [skip ci] Travis Build 43. Update version 0.2.4 --> 0.2.5.
+
+
 ## [v0.2.4 (2018-01-18)](https://github.com/BBVA/data-refinery/tree/v0.2.4)
 
 ### Other
@@ -155,7 +166,7 @@
 
 * [5fb1b8e](https://github.com/BBVA/data-refinery/commit/5fb1b8ea9cc9a63dce636f5ed1a54c5a50a3a262) Add DSL documentation.
 
-* [fe77d1e](https://github.com/BBVA/data-refinery/commit/fe77d1ee6657ae079f04ea830e961828a6198210) First part of translation.
+* [04f3b0e](https://github.com/BBVA/data-refinery/commit/04f3b0ed8165dbe943a2de887a34feef55833c72) Merge branch 'master' of github.com:BBVA/data-refinery into feature/improve_doc.
 
 
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
@@ -211,13 +222,15 @@
 * [09465d5](https://github.com/BBVA/data-refinery/commit/09465d58193431b65add278ff07c16d42bb4eb9f) [skip ci] Travis Build 16. Update version 0.1.56 --> 0.1.57.
 
 
-## [v0.1.56 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.56)
+## [v0.1.55 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.55)
+
+### Fix
+
+* [31ae5ce](https://github.com/BBVA/data-refinery/commit/31ae5cea5cb143c2d33010dab22fbcdff3ad0a1b) Closes #3.
 
 ### Other
 
-* [ff72f71](https://github.com/BBVA/data-refinery/commit/ff72f715d3316d923f336afe8c38685842e38467) [skip ci] Travis Build 13. Update version 0.1.55 --> 0.1.56.
-
-* [bee765f](https://github.com/BBVA/data-refinery/commit/bee765f07c92f1695a9fa4b99f8b78210b7f099e) Update README with right title.
+* [548f960](https://github.com/BBVA/data-refinery/commit/548f960dd7c3bfa2c50c74709384525be7568a90) [skip ci] Travis Build 12. Update version 0.1.54 --> 0.1.55.
 
 
 ## [v0.1.54 (2017-11-21)](https://github.com/BBVA/data-refinery/tree/v0.1.54)
