@@ -18,7 +18,7 @@ from functools import reduce
 from datarefinery.tuple.TupleDSL import compose
 
 
-def parallel(*tupleOperations):
+def parallel(*tuple_operations):
     def _no_operations(inp=None, err=None):
         return None, "No operations to perform"
 
@@ -34,7 +34,7 @@ def parallel(*tupleOperations):
         return i, e
 
     def _apply(inp, err=None):
-        def _reductor(acc, re):
+        def _reducer(acc, re):
             (i, e) = acc
             (o, er) = re
             if o is not None and i is not None:
@@ -46,12 +46,12 @@ def parallel(*tupleOperations):
             elif er is not None:
                 e = er
             return i, e
-        inmutable = map(lambda x: compose(_no_affect, x), tupleOperations)
-        results = map(lambda x: x(inp, err), inmutable)
-        return reduce(_reductor, results, (None, None))
+        immutable = map(lambda x: compose(_no_affect, x), tuple_operations)
+        results = map(lambda x: x(inp, err), immutable)
+        return reduce(_reducer, results, (None, None))
 
-    some_params = any(map(lambda x: x is not None, tupleOperations))
-    if tupleOperations is not None and some_params:
+    some_params = any(map(lambda x: x is not None, tuple_operations))
+    if tuple_operations is not None and some_params:
         return _apply
     return _no_operations
 
