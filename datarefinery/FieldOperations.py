@@ -187,7 +187,7 @@ def explode(prefix: str):
     """
     given an array of objects de-normalized into fields
     """
-    def _app(i, e):
+    def _app(i, e=None):
         if i is not None:
             return {k: v for (k, v) in iter_fields(i)}, None
         return i, e
@@ -208,7 +208,7 @@ def explode(prefix: str):
 
 
 def replace_if(func, replacement):
-    def _app(i, e):
+    def _app(i, e=None):
         if func(i):
             return replacement(i), e
         return i, e
@@ -217,7 +217,7 @@ def replace_if(func, replacement):
 
 
 def remove_columns(*columns_to_remove: str):
-    def _app(i, e):
+    def _app(i, e=None):
         if i is not None:
             out = {k: v for k, v in i.items() if k not in columns_to_remove}
             if len(out) == 0:
@@ -240,7 +240,7 @@ def match_dict(dictionary):
 
 
 def replace_if_else(fn_cond, fn_then, fn_else=lambda x: x):
-    def _app(i, e):
+    def _app(i, e=None):
         if e is not None:
             return None, e
         elif fn_cond(i):
