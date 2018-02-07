@@ -1,6 +1,27 @@
 # Changelog
 
 
+## [v0.2.6 (2018-02-07)](https://github.com/BBVA/data-refinery/tree/v0.2.6)
+
+### Fix
+
+* [474ad06](https://github.com/BBVA/data-refinery/commit/474ad06c0618edba7b35fa3ae25db707c095ccaf) Fix errors on documentation. All code snippets are OK.
+
+### Other
+
+* [6f7b1d0](https://github.com/BBVA/data-refinery/commit/6f7b1d0a300e1603ef5325c9cc5dd2fb1d8bb7b4) [skip ci] Travis Build 46. Update version 0.2.5 --> 0.2.6.
+
+* [5f2297c](https://github.com/BBVA/data-refinery/commit/5f2297c7f1a520fd332b1ae8c4f0fdbe2925e1c1) Update README.
+
+  Typo
+
+* [6b8cc37](https://github.com/BBVA/data-refinery/commit/6b8cc375445787c15247fd6339107f454f77e14d) Update README.
+
+  Delete reference to github pages
+
+* [1518a6e](https://github.com/BBVA/data-refinery/commit/1518a6ebcd7f33ba4260712f795460b2d4171e74) Delete documentation on github pages.
+
+
 ## [v0.2.5 (2018-01-25)](https://github.com/BBVA/data-refinery/tree/v0.2.5)
 
 ### Fix
@@ -162,12 +183,6 @@
 
 * [0bc4fc5](https://github.com/BBVA/data-refinery/commit/0bc4fc5d8350bfb3aad17a9ee704ffa4b28603c6) Delete image reference.
 
-* [9b481d0](https://github.com/BBVA/data-refinery/commit/9b481d04c348018d50bfd5bf14b9509cbcf6c266) First translation for basics.
-
-* [5fb1b8e](https://github.com/BBVA/data-refinery/commit/5fb1b8ea9cc9a63dce636f5ed1a54c5a50a3a262) Add DSL documentation.
-
-* [04f3b0e](https://github.com/BBVA/data-refinery/commit/04f3b0ed8165dbe943a2de887a34feef55833c72) Merge branch 'master' of github.com:BBVA/data-refinery into feature/improve_doc.
-
 
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
 
@@ -220,6 +235,15 @@
 ### Other
 
 * [09465d5](https://github.com/BBVA/data-refinery/commit/09465d58193431b65add278ff07c16d42bb4eb9f) [skip ci] Travis Build 16. Update version 0.1.56 --> 0.1.57.
+
+
+## [v0.1.56 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.56)
+
+### Other
+
+* [ff72f71](https://github.com/BBVA/data-refinery/commit/ff72f715d3316d923f336afe8c38685842e38467) [skip ci] Travis Build 13. Update version 0.1.55 --> 0.1.56.
+
+* [bee765f](https://github.com/BBVA/data-refinery/commit/bee765f07c92f1695a9fa4b99f8b78210b7f099e) Update README with right title.
 
 
 ## [v0.1.55 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.55)
