@@ -53,7 +53,7 @@ def time_parser(formats: list):
     return _app
 
 
-def explode_date(date: datetime, e):
+def explode_date(date: datetime, e=None):
     if date is not None:
         return {
                    "year": date.year,
@@ -67,7 +67,7 @@ def explode_date(date: datetime, e):
         return None, e
 
 
-def explode_time(time: datetime.time, e):
+def explode_time(time: datetime.time, e=None):
     if time is not None:
         return {
                    "hour": time.hour,
