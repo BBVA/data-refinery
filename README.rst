@@ -34,7 +34,7 @@ Usage example
 Documentation
 -------------
 
-Visit complete documentation at `github pages branch <https://bbva.github.io/data-refinery/>`_ or at `readthedocs.io <https://data-refinery.readthedocs.io>`_.
+Visit complete documentation at `readthedocs.io <https://data-refinery.readthedocs.io>`_.
 
 
 Compatibility
