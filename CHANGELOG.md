@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [v0.2.7 (2018-02-07)](https://github.com/BBVA/data-refinery/tree/v0.2.7)
+
+### Other
+
+* [ef633e6](https://github.com/BBVA/data-refinery/commit/ef633e671daf09f2ad788c2d5fa7a13992a2bf00) [skip ci] Travis Build 48. Update version 0.2.6 --> 0.2.7.
+
+
 ## [v0.2.6 (2018-02-07)](https://github.com/BBVA/data-refinery/tree/v0.2.6)
 
 ### Fix
@@ -176,12 +183,6 @@
 * [2c2ee83](https://github.com/BBVA/data-refinery/commit/2c2ee836782b9500db50440c1492b39144176cd2) Some translations.
 
 * [dfed52f](https://github.com/BBVA/data-refinery/commit/dfed52fc4c8dcd9006e78087f16af11c41b3cfed) Some basics translated.
-
-* [142e1e6](https://github.com/BBVA/data-refinery/commit/142e1e6f9f6bce3f9a5b58da6a09f96a38fede88) 2nd part of thebasics translation.
-
-* [cca0ba5](https://github.com/BBVA/data-refinery/commit/cca0ba552311509025da8f89adcd90009db453e2) Introduction translated.
-
-* [0bc4fc5](https://github.com/BBVA/data-refinery/commit/0bc4fc5d8350bfb3aad17a9ee704ffa4b28603c6) Delete image reference.
 
 
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
