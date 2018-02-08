@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.8 (2018-02-08)](https://github.com/BBVA/data-refinery/tree/v0.2.8)
+
+### Other
+
+* [1ed5ca9](https://github.com/BBVA/data-refinery/commit/1ed5ca9d57d433b326f5598ae2f26cc7959188d2) [skip ci] Travis Build 49. Update version 0.2.7 --> 0.2.8.
+
+* [093abd3](https://github.com/BBVA/data-refinery/commit/093abd3f8f1e95ff090115e5114c600e5d0112d5) Update thebasics.rst.
+
+  Add import
+
+
 ## [v0.2.7 (2018-02-07)](https://github.com/BBVA/data-refinery/tree/v0.2.7)
 
 ### Other
@@ -162,10 +173,6 @@
 
 ## [v0.1.62 (2017-11-28)](https://github.com/BBVA/data-refinery/tree/v0.1.62)
 
-### Fix
-
-* [f0a9c04](https://github.com/BBVA/data-refinery/commit/f0a9c04e33baf2eddc5018c30c9dffb78ba017b5) Fix some typos and add new translation.
-
 ### Other
 
 * [c1bc6f9](https://github.com/BBVA/data-refinery/commit/c1bc6f9a94b04ec1bbd5fa23df7722ce66aa61b0) [skip ci] Travis Build 22. Update version 0.1.61 --> 0.1.62.
@@ -179,10 +186,6 @@
 * [4dcf82a](https://github.com/BBVA/data-refinery/commit/4dcf82aa56835e63a4ac136ae619fc7b3569c037) Translate Adding new transformations.
 
 * [71eb58e](https://github.com/BBVA/data-refinery/commit/71eb58e7eacb3e5b5955f728a9d21eecb1418cdb) Translate fail gracefully.
-
-* [2c2ee83](https://github.com/BBVA/data-refinery/commit/2c2ee836782b9500db50440c1492b39144176cd2) Some translations.
-
-* [dfed52f](https://github.com/BBVA/data-refinery/commit/dfed52fc4c8dcd9006e78087f16af11c41b3cfed) Some basics translated.
 
 
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
