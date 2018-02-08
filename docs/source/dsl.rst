@@ -22,8 +22,6 @@ that contains all of them applied on output.
 List of functions
 -----------------
 
-- use_input
-- use_output
 - read_field
 - read_match
 - read_fields
@@ -32,6 +30,7 @@ List of functions
 - dict_enforcer
 - apply_over_output
 - compose
+- fixed_input
 
-You can create your own function too. It has to return a function that takes 3 dictionaries (input, output and error)
-and returns them modified if it's necessary.
+You can create your own function too. It has to return a function that takes 2 dictionaries (input and error)
+and returns them modified if it's necessary as (output, error).

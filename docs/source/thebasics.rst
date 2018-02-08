@@ -306,7 +306,7 @@ non-operated column will be removed automatically.
     from datarefinery.DateFieldOperations import explode_date
     from datarefinery.FieldOperations import remove_columns
 
-    only_year_month = compose(explode_date, remove_columns("day", "hour", "minute", "sencond"))
+    only_year_month = compose(explode_date, remove_columns("day", "hour", "minute", "second"))
     (res, err) = only_year_month(datetime(2017,3,22))
     print(res) # {"year": 2017, "month": 3}
 
