@@ -301,7 +301,7 @@ non-operated column will be removed automatically.
 
 .. code-block:: python
 
-    import datetime
+    from datetime import datetime
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.DateFieldOperations import explode_date
     from datarefinery.FieldOperations import remove_columns
