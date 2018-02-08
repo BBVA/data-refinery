@@ -224,6 +224,7 @@ In this example we exploded the field `name`:
 .. code-block:: python
 
     from datarefinery.FieldOperations import explode
+    from datarefinery.TupleOperations import append
 
     explode_name = append(["name"], explode("name"))
     (res, err) = explode_name({"name": {"first": "Bob", "last": "Dylan"}})
