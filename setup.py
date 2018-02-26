@@ -43,4 +43,9 @@ setup(name='data-refinery',
       url='https://github.com/BBVA/data-refinery',
       packages=find_packages(exclude=["tests", "docs"]),
       include_package_data=True,
+      entry_points={
+          'console_scripts': [
+              'data-refinery = datarefinery.cli.executor:cli'
+          ]
+      },
       zip_safe=False)

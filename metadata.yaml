@@ -1,0 +1,12 @@
+etls:
+- name: initial
+  transformations:
+    operation: |
+      parallel(keep_regexp(".*"))
+- name: final
+  transformations:
+    helpers: helpers.py
+    operation: |
+      parallel(keep(['feat1']), substitution(['feat2'], wrap(x2)))
+  dependencies:
+    - initial
