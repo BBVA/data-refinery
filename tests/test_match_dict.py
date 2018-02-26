@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import match_dict
-from datarefinery.TupleOperations import substitution
+from datarefinery.field_operations import match_dict
+from datarefinery.tuple_operations import substitution
 
 
 def test_empty():

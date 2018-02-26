@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import compose, remove_columns
-from datarefinery.DateFieldOperations import date_parser, explode_date
-from datarefinery.TupleOperations import append
+from datarefinery.field_operations import compose, remove_columns
+from datarefinery.datefield_operations import date_parser, explode_date
+from datarefinery.tuple_operations import append
 
 
 def test_empty():

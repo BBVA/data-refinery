@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import add_column_prefix
+from datarefinery.field_operations import add_column_prefix
 
 
 def test_empty():

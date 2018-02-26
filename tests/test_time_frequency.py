@@ -13,10 +13,10 @@
 # limitations under the License.
 
 from datetime import datetime
-from datarefinery.DateFieldOperations import year_iterator, month_iterator, day_iterator
-from datarefinery.DateFieldOperations import hour_iterator, minute_iterator, second_iterator
-from datarefinery.DateFieldOperations import years_between, months_between, days_between, hours_between
-from datarefinery.DateFieldOperations import minutes_between, seconds_between
+from datarefinery.datefield_operations import year_iterator, month_iterator, day_iterator
+from datarefinery.datefield_operations import hour_iterator, minute_iterator, second_iterator
+from datarefinery.datefield_operations import years_between, months_between, days_between, hours_between
+from datarefinery.datefield_operations import minutes_between, seconds_between
 from itertools import islice
 
 

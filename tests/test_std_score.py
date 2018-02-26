@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import std_score_normalization
+from datarefinery.field_operations import std_score_normalization
 
 
 def test_empty():

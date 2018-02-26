@@ -1,4 +1,4 @@
-from datarefinery.TupleOperations import fusion_append, wrap
+from datarefinery.tuple_operations import fusion_append, wrap
 
 
 def greet_person_and_world(x):

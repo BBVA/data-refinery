@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import type_enforcer
+from datarefinery.field_operations import type_enforcer
 
 
 def test_empty():

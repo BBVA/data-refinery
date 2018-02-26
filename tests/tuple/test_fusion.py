@@ -1,4 +1,4 @@
-from datarefinery.TupleOperations import fusion, wrap
+from datarefinery.tuple_operations import fusion, wrap
 
 
 def test_empty():

@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.TupleOperations import keep
-from datarefinery.CombineOperations import sequential
-from datarefinery.tuple.Formats import from_json, to_json, csv_to_map, map_to_csv
+from datarefinery.tuple_operations import keep
+from datarefinery.combine_operations import sequential
+from datarefinery.tuple.formats import from_json, to_json, csv_to_map, map_to_csv
 
 
 def test_reader_json_empty():

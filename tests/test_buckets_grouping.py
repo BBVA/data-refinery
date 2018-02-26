@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import buckets_grouping
+from datarefinery.field_operations import buckets_grouping
 
-from datarefinery.TupleOperations import substitution
+from datarefinery.tuple_operations import substitution
 
 
 def test_empty():

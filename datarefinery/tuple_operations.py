@@ -1,6 +1,6 @@
-from datarefinery.CombineOperations import parallel
+from datarefinery.combine_operations import parallel
 
-from datarefinery.tuple.TupleDSL import compose, read_field, write_field, read_match, \
+from datarefinery.tuple.tupledsl import compose, read_field, write_field, read_match, \
     read_fields, write_error_field, dict_enforcer
 from functools import reduce
 

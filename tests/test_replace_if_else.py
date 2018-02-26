@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.TupleOperations import substitution
-from datarefinery.FieldOperations import replace_if_else
+from datarefinery.tuple_operations import substitution
+from datarefinery.field_operations import replace_if_else
 
 
 def test_empty_input_if_then():

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import column_category
+from datarefinery.field_operations import column_category
 
 
 def test_empty():

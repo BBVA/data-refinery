@@ -14,7 +14,7 @@
 
 # Example of integration with pandas
 import pandas as pd
-from datarefinery.TupleOperations import fusion, wrap
+from datarefinery.tuple_operations import fusion, wrap
 
 
 def pandas_dataframe_operator(df, operation):

@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.FieldOperations import compose
-from datarefinery.DateFieldOperations import time_parser, explode_time
-from datarefinery.TupleOperations import append
+from datarefinery.field_operations import compose
+from datarefinery.datefield_operations import time_parser, explode_time
+from datarefinery.tuple_operations import append
 
 
 def test_empty():

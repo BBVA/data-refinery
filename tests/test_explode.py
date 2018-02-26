@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.TupleOperations import append
-from datarefinery.FieldOperations import explode
+from datarefinery.tuple_operations import append
+from datarefinery.field_operations import explode
 
 
 def check_dict_by_field(current: dict, expected: dict):

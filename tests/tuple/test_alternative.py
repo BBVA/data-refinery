@@ -1,4 +1,4 @@
-from datarefinery.TupleOperations import alternative, keep
+from datarefinery.tuple_operations import alternative, keep
 
 
 def test_empty():

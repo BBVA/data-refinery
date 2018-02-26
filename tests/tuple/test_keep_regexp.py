@@ -1,4 +1,4 @@
-from datarefinery.TupleOperations import keep_regexp
+from datarefinery.tuple_operations import keep_regexp
 
 
 def test_empty():

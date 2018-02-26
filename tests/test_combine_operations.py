@@ -1,5 +1,5 @@
-from datarefinery.CombineOperations import parallel, sequential
-from datarefinery.TupleOperations import wrap, filter_tuple, substitution
+from datarefinery.combine_operations import parallel, sequential
+from datarefinery.tuple_operations import wrap, filter_tuple, substitution
 
 
 def test_emtpy():

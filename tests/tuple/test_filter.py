@@ -1,4 +1,4 @@
-from datarefinery.TupleOperations import filter_tuple, wrap
+from datarefinery.tuple_operations import filter_tuple, wrap
 
 
 def only_true_values(x):

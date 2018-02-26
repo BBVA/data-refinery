@@ -1,4 +1,4 @@
-from datarefinery.TupleOperations import substitution, wrap
+from datarefinery.tuple_operations import substitution, wrap
 
 
 def add_one(x):

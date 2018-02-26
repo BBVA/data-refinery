@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datarefinery.TupleOperations import alternative, substitution, wrap
+from datarefinery.tuple_operations import alternative, substitution, wrap
 
 
 def test_empty():

@@ -15,7 +15,7 @@
 import copy
 from functools import reduce
 
-from datarefinery.tuple.TupleDSL import compose
+from datarefinery.tuple.tupledsl import compose
 
 
 def parallel(*tuple_operations):

@@ -14,8 +14,8 @@
 
 from collections import OrderedDict
 from typing import Callable, TypeVar, Tuple, Optional, List, Union
-from datarefinery.TupleOperations import compose
-from datarefinery.tuple.TupleDSL import fixed_input
+from datarefinery.tuple_operations import compose
+from datarefinery.tuple.tupledsl import fixed_input
 
 T = TypeVar('T')
 U = TypeVar('U')

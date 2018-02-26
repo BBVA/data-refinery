@@ -1,4 +1,4 @@
-from datarefinery.TupleOperations import append, wrap
+from datarefinery.tuple_operations import append, wrap
 
 
 def head_and_tail(x):
