@@ -592,7 +592,7 @@ For example, if we want to keep a field and replace another field value with a x
 
     x2 = wrap(lambda x: x*2)
 
-    operation = parallel(keep(["name"]), substitution(["value"], x2))
+    operation = sequential(keep_regexp(".*"), parallel(keep(["name"]), substitution(["value"], x2)))
     (res, err) = operation({"name": "John", "value": 10})
     print(res) # {"name": "John", "value": 20}
 

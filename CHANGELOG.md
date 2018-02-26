@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [v0.2.10 (2018-02-20)](https://github.com/BBVA/data-refinery/tree/v0.2.10)
+
+### Fix
+
+* [5a9f492](https://github.com/BBVA/data-refinery/commit/5a9f49277d91a054f263c9996efca2e700cd231c) Fix sequential example [skip_ci]
+
+* [b3a5fdb](https://github.com/BBVA/data-refinery/commit/b3a5fdb19c5112c2d04e88d802cabef052a4ca06) Fix typos on documentation and update DSL part [skip ci]
+
+### Other
+
+* [143b6e8](https://github.com/BBVA/data-refinery/commit/143b6e898b213669fb54af0de3639592ea9d90fa) [skip ci] Travis Build 52. Update version 0.2.9 --> 0.2.10.
+
+
 ## [v0.2.9 (2018-02-08)](https://github.com/BBVA/data-refinery/tree/v0.2.9)
 
 ### Other
@@ -188,10 +201,6 @@
 
 * [c1bc6f9](https://github.com/BBVA/data-refinery/commit/c1bc6f9a94b04ec1bbd5fa23df7722ce66aa61b0) [skip ci] Travis Build 22. Update version 0.1.61 --> 0.1.62.
 
-* [5ba4550](https://github.com/BBVA/data-refinery/commit/5ba4550065bd6936d40ec2b10717668e9247254f) Finish thebasics translation.
-
-* [ef697fc](https://github.com/BBVA/data-refinery/commit/ef697fc8564cf7c96e29453514c52ec6d2547f75) Sequentially translation.
-
 
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
 
@@ -314,13 +323,5 @@
 * [177c626](https://github.com/BBVA/data-refinery/commit/177c626e5e5e8211dc58a7ebf56311006639c3f3) [skip ci] Travis Build 3. Update version 0.1.47 --> 0.1.48.
 
 * [83f3c9d](https://github.com/BBVA/data-refinery/commit/83f3c9d73c77c2d5675296499372bc4b2e337f19) Upload current version of bumpversion to 0.1.47.
-
-* [273e507](https://github.com/BBVA/data-refinery/commit/273e50757d05f8a4a46d48b171b5538abb3cbfa1) Adding CI/CD by Travis service - changing source repository.
-
-* [bdfb10d](https://github.com/BBVA/data-refinery/commit/bdfb10d2de07a91d2f3a8f991707a34ea5f612c3) Adding CI/CD by Travis service.
-
-* [0431b7e](https://github.com/BBVA/data-refinery/commit/0431b7eed3f76b4e25d882af7c000be4844a14be) Adding documentation, tests and setup.
-
-* [b46f18b](https://github.com/BBVA/data-refinery/commit/b46f18b768548229d24ec82176f901ac42492d4f) Initial code-base commit.
 
 
