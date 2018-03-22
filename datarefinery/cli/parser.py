@@ -55,7 +55,9 @@ def load_yml(yml_path):
         try:
             return yaml.load(stream)
         except yaml.YAMLError as exception:
-            raise exception
+            if hasattr(exception, 'problem_mark'):
+                mark = exception.problem_mark
+                return "syntax incorrect. The error position is (line %s, column %s)" % (mark.line + 1, mark.column + 1)
 
 
 def validate_data(document):
