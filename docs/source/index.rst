@@ -11,6 +11,7 @@ Welcome to Data Refinery's documentation!
    installation
    thebasics
    dsl
+   cli
    reference
    glossary
    :maxdepth: 3

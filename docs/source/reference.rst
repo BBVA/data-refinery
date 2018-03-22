@@ -12,7 +12,7 @@ datarefinery
 datarefinery.FieldOperations
 ----------------------------
 
-.. automodule:: datarefinery.FieldOperations
+.. automodule:: datarefinery.field_operations
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ datarefinery.FieldOperations
 datarefinery.tuple.Formats
 --------------------------
 
-.. automodule:: datarefinery.tuple.Formats
+.. automodule:: datarefinery.tuple.formats
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ datarefinery.tuple.Formats
 datarefinery.tuple.TupleDSL
 ---------------------------
 
-.. automodule:: datarefinery.tuple.TupleDSL
+.. automodule:: datarefinery.tuple.tupledsl
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ datarefinery.tuple.TupleDSL
 datarefinery.TupleOperations
 ----------------------------
 
-.. automodule:: datarefinery.TupleOperations
+.. automodule:: datarefinery.tuple_operations
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ datarefinery.TupleOperations
 datarefinery.DateFieldOperations
 --------------------------------
 
-.. automodule:: datarefinery.DateFieldOperations
+.. automodule:: datarefinery.datefield_operations
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +52,7 @@ datarefinery.DateFieldOperations
 datarefinery.CombineOperations
 ------------------------------
 
-.. automodule:: datarefinery.CombineOperations
+.. automodule:: datarefinery.combine_operations
     :members:
     :undoc-members:
     :show-inheritance:
