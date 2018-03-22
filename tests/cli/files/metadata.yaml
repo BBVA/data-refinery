@@ -1,0 +1,19 @@
+etls:
+- name: final
+  transformations:
+    helpers: /home/leti/Git/machine-learning/data-refinery/tests/cli/files/helpers.py
+    operation: |
+      parallel(keep(['feat1']), substitution(['feat2'], wrap(x2)))
+  dependencies:
+    - initial
+- name: initial
+  transformations:
+    operation: |
+      sequential(from_json, keep_regexp(".*"))
+- name: final2
+  transformations:
+    helpers: /home/leti/Git/machine-learning/data-refinery/tests/cli/files/helpers.py
+    operation: |
+      parallel(keep(['feat1']), substitution(['feat2'], wrap(x2)))
+  dependencies:
+    - initial
