@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.2.13 (2018-04-09)](https://github.com/BBVA/data-refinery/tree/v0.2.13)
+
+### Fix
+
+* [90cc691](https://github.com/BBVA/data-refinery/commit/90cc6918e181c3fc63defbb94bdb431c4e3bde28) Fix author_email for python3.6 and adding license classifiers.
+
+### Other
+
+* [1fd0a32](https://github.com/BBVA/data-refinery/commit/1fd0a321ebc10603508e5c77e7f6b898ecbc7e46) [skip ci] Travis Build 56. Update version 0.2.12 --> 0.2.13.
+
+
 ## [v0.2.12 (2018-04-09)](https://github.com/BBVA/data-refinery/tree/v0.2.12)
 
 ### Other
@@ -234,12 +245,6 @@
 * [2c2ee83](https://github.com/BBVA/data-refinery/commit/2c2ee836782b9500db50440c1492b39144176cd2) Some translations.
 
 * [dfed52f](https://github.com/BBVA/data-refinery/commit/dfed52fc4c8dcd9006e78087f16af11c41b3cfed) Some basics translated.
-
-* [142e1e6](https://github.com/BBVA/data-refinery/commit/142e1e6f9f6bce3f9a5b58da6a09f96a38fede88) 2nd part of thebasics translation.
-
-* [cca0ba5](https://github.com/BBVA/data-refinery/commit/cca0ba552311509025da8f89adcd90009db453e2) Introduction translated.
-
-* [0bc4fc5](https://github.com/BBVA/data-refinery/commit/0bc4fc5d8350bfb3aad17a9ee704ffa4b28603c6) Delete image reference.
 
 
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
