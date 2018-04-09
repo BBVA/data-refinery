@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [v0.2.12 (2018-04-09)](https://github.com/BBVA/data-refinery/tree/v0.2.12)
+
+### Other
+
+* [fc12dfb](https://github.com/BBVA/data-refinery/commit/fc12dfbfc6971434a05ae775b45490efa8825588) [skip ci] Travis Build 55. Update version 0.2.11 --> 0.2.12.
+
+
 ## [v0.2.11 (2018-04-09)](https://github.com/BBVA/data-refinery/tree/v0.2.11)
 
 ### Other
@@ -234,10 +241,6 @@
 
 * [0bc4fc5](https://github.com/BBVA/data-refinery/commit/0bc4fc5d8350bfb3aad17a9ee704ffa4b28603c6) Delete image reference.
 
-* [9b481d0](https://github.com/BBVA/data-refinery/commit/9b481d04c348018d50bfd5bf14b9509cbcf6c266) First translation for basics.
-
-* [5fb1b8e](https://github.com/BBVA/data-refinery/commit/5fb1b8ea9cc9a63dce636f5ed1a54c5a50a3a262) Add DSL documentation.
-
 
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
 
@@ -282,6 +285,10 @@
 
 
 ## [v0.1.57 (2017-11-23)](https://github.com/BBVA/data-refinery/tree/v0.1.57)
+
+### Features
+
+* [7273012](https://github.com/BBVA/data-refinery/commit/7273012c9577fa1a1c26c12f4c338e543e7115d8) Feature branches as exception on travis execution.
 
 ### Other
 
