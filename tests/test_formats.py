@@ -116,3 +116,18 @@ def test_writer_csv_multiples_lines():
     lines_out = [operation(x)[0] for x in lines_in]
 
     assert lines_out_expected == lines_out
+
+
+def test_reader_csv_custom_params():
+    the_csv = '"Nori";"Melon"'
+    the_map = {"who": "Nori", "greet": "Melon"}
+
+    operation = sequential(csv_to_map(["who", "greet"], delimiter=";"), keep(fields=["who", "greet"]))
+    (transformed_output, transformed_error) = operation(the_csv)
+    assert transformed_output == the_map
+    assert transformed_error is None
+
+    reverse_operation = map_to_csv(["who", "greet"], delimiter=";")
+    (transformed_output, transformed_error) = reverse_operation(the_map)
+    assert transformed_output == the_csv
+    assert transformed_error is None
