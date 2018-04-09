@@ -13,4 +13,4 @@ To install datarefinery using pip:
 
 .. code-block:: bash
 
-    pip install datarefinery
+    pip install data-refinery

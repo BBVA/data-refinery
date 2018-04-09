@@ -96,7 +96,7 @@ So, this function need a context with the maximum and minimum to run. For exampl
 
     normalizator = min_max_normalization(1, 10)
     (res, err) = normalizator(5)
-    print(res) # 0.5
+    print(res) # 0.4444444444444444
 
 
 std_score_normalization
@@ -189,7 +189,7 @@ Example:
 
     categorizer = column_category(["niño", "adulto", "jubilado"])
     (res, err) = categorizer("niño")
-    print(res) # {"niño": "1", "adulto": "0", "jubilado": "0"}
+    print(res) # OrderedDict([('niño', 1), ('adulto', 0), ('jubilado', 0)])
 
 This operation adds new columns, so is usually used along with an event operation of type [append](##Change it).
 
@@ -224,8 +224,9 @@ In this example we exploded the field `name`:
 .. code-block:: python
 
     from datarefinery.FieldOperations import explode
+    from datarefinery.TupleOperations import append
 
-    explode_name = explode("name")
+    explode_name = append(["name"], explode("name"))
     (res, err) = explode_name({"name": {"first": "Bob", "last": "Dylan"}})
     print(res) # {"name_first": "Bob", "name_last": "Dylan"}
 
@@ -260,7 +261,7 @@ The expected formats are Python standard time formats.
 
 .. code-block:: python
 
-    from datarefinery.FieldOperations import date_parser
+    from datarefinery.DateFieldOperations import date_parser
 
     parser = date_parser(["%Y-%m-%d"])
     (res, err) = parser("2017-03-22")
@@ -276,8 +277,8 @@ Transforms a datetime object to a series of columns with numeric values.
 
 .. code-block:: python
 
-    import datetime
-    from datarefinery.FieldOperations import explode_date
+    from datetime import datetime
+    from datarefinery.DateFieldOperations import explode_date
 
     (res, err) = explode_date(datetime(2017,3,22))
     print(res) # {"year": 2017, "month": 3, "day": 22, "hour":0, "minute": 0, "second": 0}
@@ -300,11 +301,12 @@ non-operated column will be removed automatically.
 
 .. code-block:: python
 
-    import datetime
+    from datetime import datetime
     from datarefinery.tuple.TupleDSL import compose
-    from datarefinery.FieldOperations import explode_date, remove_columns
+    from datarefinery.DateFieldOperations import explode_date
+    from datarefinery.FieldOperations import remove_columns
 
-    only_year_month = compose(explode_date, remove_columns("day", "hour", "minute", "sencond"))
+    only_year_month = compose(explode_date, remove_columns("day", "hour", "minute", "second"))
     (res, err) = only_year_month(datetime(2017,3,22))
     print(res) # {"year": 2017, "month": 3}
 
@@ -367,7 +369,8 @@ problems with other fields.
 .. code-block:: python
 
     from datarefinery.tuple.TupleDSL import compose
-    from datarefinery.FieldOperations import date_parser, explode_date, remove_columns, add_column_prefix
+    from datarefinery.FieldOperations import remove_columns, add_column_prefix
+    from datarefinery.DateFieldOperations import date_parser, explode_date
 
     complete_date = compose(
         date_parser(["%Y-%m-%d"]),
@@ -388,7 +391,8 @@ This example returns one hot vector using a date string and week days.
 
     from datarefinery.tuple.TupleDSL import compose
     from datarefinery.TupleOperations import wrap
-    from datarefinery.FieldOperations import date_parser, match_dict, column_category
+    from datarefinery.FieldOperations import match_dict, column_category
+    from datarefinery.DateFieldOperations import date_parser
 
     week_days={
         0: "Mo", 1: "Tu", 2: "We", 3: "Th", 4: "Fr", 5: "Sa", 6: "Su"
@@ -405,7 +409,7 @@ This example returns one hot vector using a date string and week days.
     )
 
     (res, err) = day_hot("2017-10-19")
-    print(res) # {"Mo": 0, "Tu": 0, "We": 0, "Th": 1, "Fr": 0, "Sa": 0, "Su": 0}
+    print(res) # OrderedDict([('Mo', 0), ('Tu', 0), ('We', 0), ('Th', 1), ('Fr', 0), ('Sa', 0), ('Su', 0)])
 
 Event operations
 ----------------
@@ -503,7 +507,7 @@ We can use this way with fusion:
     from datarefinery.TupleOperations import wrap, fusion
 
     val_eur_op = fusion(["currency", "value"], "val_eur", wrap(to_eur_wrapped))
-    (inp, res, err) = val_eur_op({"currency": "USD", "value": 1})
+    (res, err) = val_eur_op({"currency": "USD", "value": 1})
     print(res) # {"val_eur": 0.8459}
 
 fusion_append - Multiple values in, multiple values out
@@ -584,13 +588,12 @@ For example, if we want to keep a field and replace another field value with a x
 .. code-block:: python
 
     from datarefinery.TupleOperations import wrap, keep, substitution
-    from datarefinery.CombineOperations import secuential
+    from datarefinery.CombineOperations import parallel
 
     x2 = wrap(lambda x: x*2)
 
-    tr = secuential(keep(["name"]), substitution(["value"], x2))
-    operation = tr.apply()
-    (inp, res, err) = operation({"name": "John", "value": 10})
+    operation = sequential(keep_regexp(".*"), parallel(keep(["name"]), substitution(["value"], x2)))
+    (res, err) = operation({"name": "John", "value": 10})
     print(res) # {"name": "John", "value": 20}
 
 
@@ -634,7 +637,7 @@ For example:
 
     x2 = wrap(lambda x: x*2)
 
-    operation = parallel(substitution("value", x2), substitution("value", x2))
+    operation = parallel(substitution(["value"], x2), substitution(["value"], x2))
     (res, err) = operation({"value": 2})
     print(res) # {"value": 4}
 
@@ -658,7 +661,7 @@ operations run sequentially, as the next example:
 
     x2 = wrap(lambda x: x*2)
 
-    operation = substitution("value", compose(x2,x2))
+    operation = substitution(["value"], compose(x2,x2))
     (res, err) = operation({"value": 2})
     print(res) # {"value": 8}
 

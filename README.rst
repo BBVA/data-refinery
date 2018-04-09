@@ -22,11 +22,11 @@ Usage example
 .. code-block:: python
 
     from datarefinery.TupleOperations import wrap, keep, substitution
-    from datarefinery.CombineOperations import secuential
+    from datarefinery.CombineOperations import sequential
 
     x2 = wrap(lambda x: x*2)
 
-    operation = secuential(keep(["name"]), substitution(["value"], x2))
+    operation = sequential(keep(["name"]), substitution(["value"], x2))
     (res, err) = operation({"name": "John", "value": 10})
     print(res) # {"name": "John", "value": 20}
 
@@ -34,7 +34,7 @@ Usage example
 Documentation
 -------------
 
-Visit complete documentation at `github pages branch <https://bbva.github.io/data-refinery/>`_ or at `readthedocs.io <https://data-refinery.readthedocs.io>`_.
+Visit complete documentation at `readthedocs.io <https://data-refinery.readthedocs.io>`_.
 
 
 Compatibility

@@ -1,6 +1,80 @@
 # Changelog
 
 
+## [v0.2.10 (2018-02-20)](https://github.com/BBVA/data-refinery/tree/v0.2.10)
+
+### Fix
+
+* [5a9f492](https://github.com/BBVA/data-refinery/commit/5a9f49277d91a054f263c9996efca2e700cd231c) Fix sequential example [skip_ci]
+
+* [b3a5fdb](https://github.com/BBVA/data-refinery/commit/b3a5fdb19c5112c2d04e88d802cabef052a4ca06) Fix typos on documentation and update DSL part [skip ci]
+
+### Other
+
+* [143b6e8](https://github.com/BBVA/data-refinery/commit/143b6e898b213669fb54af0de3639592ea9d90fa) [skip ci] Travis Build 52. Update version 0.2.9 --> 0.2.10.
+
+
+## [v0.2.9 (2018-02-08)](https://github.com/BBVA/data-refinery/tree/v0.2.9)
+
+### Other
+
+* [4fc9e2e](https://github.com/BBVA/data-refinery/commit/4fc9e2e4863a219fbbd60edf696247ccd731f579) [skip ci] Travis Build 50. Update version 0.2.8 --> 0.2.9.
+
+* [0e1922f](https://github.com/BBVA/data-refinery/commit/0e1922fa410dbecb23b2b966f477868b802fd640) Update thebasics.rst.
+
+  Fix import
+
+
+## [v0.2.8 (2018-02-08)](https://github.com/BBVA/data-refinery/tree/v0.2.8)
+
+### Other
+
+* [1ed5ca9](https://github.com/BBVA/data-refinery/commit/1ed5ca9d57d433b326f5598ae2f26cc7959188d2) [skip ci] Travis Build 49. Update version 0.2.7 --> 0.2.8.
+
+* [093abd3](https://github.com/BBVA/data-refinery/commit/093abd3f8f1e95ff090115e5114c600e5d0112d5) Update thebasics.rst.
+
+  Add import
+
+
+## [v0.2.7 (2018-02-07)](https://github.com/BBVA/data-refinery/tree/v0.2.7)
+
+### Other
+
+* [ef633e6](https://github.com/BBVA/data-refinery/commit/ef633e671daf09f2ad788c2d5fa7a13992a2bf00) [skip ci] Travis Build 48. Update version 0.2.6 --> 0.2.7.
+
+
+## [v0.2.6 (2018-02-07)](https://github.com/BBVA/data-refinery/tree/v0.2.6)
+
+### Fix
+
+* [474ad06](https://github.com/BBVA/data-refinery/commit/474ad06c0618edba7b35fa3ae25db707c095ccaf) Fix errors on documentation. All code snippets are OK.
+
+### Other
+
+* [6f7b1d0](https://github.com/BBVA/data-refinery/commit/6f7b1d0a300e1603ef5325c9cc5dd2fb1d8bb7b4) [skip ci] Travis Build 46. Update version 0.2.5 --> 0.2.6.
+
+* [5f2297c](https://github.com/BBVA/data-refinery/commit/5f2297c7f1a520fd332b1ae8c4f0fdbe2925e1c1) Update README.
+
+  Typo
+
+* [6b8cc37](https://github.com/BBVA/data-refinery/commit/6b8cc375445787c15247fd6339107f454f77e14d) Update README.
+
+  Delete reference to github pages
+
+* [1518a6e](https://github.com/BBVA/data-refinery/commit/1518a6ebcd7f33ba4260712f795460b2d4171e74) Delete documentation on github pages.
+
+
+## [v0.2.5 (2018-01-25)](https://github.com/BBVA/data-refinery/tree/v0.2.5)
+
+### Fix
+
+* [911e63f](https://github.com/BBVA/data-refinery/commit/911e63f50ca21d5dcc9ae8c39d848d6a8dd8d5db) Fix some typos.
+
+### Other
+
+* [d37d504](https://github.com/BBVA/data-refinery/commit/d37d504398a91bad73e61bbeca9dac5172156133) [skip ci] Travis Build 43. Update version 0.2.4 --> 0.2.5.
+
+
 ## [v0.2.4 (2018-01-18)](https://github.com/BBVA/data-refinery/tree/v0.2.4)
 
 ### Other
@@ -123,39 +197,9 @@
 
 ## [v0.1.62 (2017-11-28)](https://github.com/BBVA/data-refinery/tree/v0.1.62)
 
-### Fix
-
-* [f0a9c04](https://github.com/BBVA/data-refinery/commit/f0a9c04e33baf2eddc5018c30c9dffb78ba017b5) Fix some typos and add new translation.
-
 ### Other
 
 * [c1bc6f9](https://github.com/BBVA/data-refinery/commit/c1bc6f9a94b04ec1bbd5fa23df7722ce66aa61b0) [skip ci] Travis Build 22. Update version 0.1.61 --> 0.1.62.
-
-* [5ba4550](https://github.com/BBVA/data-refinery/commit/5ba4550065bd6936d40ec2b10717668e9247254f) Finish thebasics translation.
-
-* [ef697fc](https://github.com/BBVA/data-refinery/commit/ef697fc8564cf7c96e29453514c52ec6d2547f75) Sequentially translation.
-
-* [427d9ba](https://github.com/BBVA/data-refinery/commit/427d9babb090501862358e99abed9782824744cc) Peek translation.
-
-* [4dcf82a](https://github.com/BBVA/data-refinery/commit/4dcf82aa56835e63a4ac136ae619fc7b3569c037) Translate Adding new transformations.
-
-* [71eb58e](https://github.com/BBVA/data-refinery/commit/71eb58e7eacb3e5b5955f728a9d21eecb1418cdb) Translate fail gracefully.
-
-* [2c2ee83](https://github.com/BBVA/data-refinery/commit/2c2ee836782b9500db50440c1492b39144176cd2) Some translations.
-
-* [dfed52f](https://github.com/BBVA/data-refinery/commit/dfed52fc4c8dcd9006e78087f16af11c41b3cfed) Some basics translated.
-
-* [142e1e6](https://github.com/BBVA/data-refinery/commit/142e1e6f9f6bce3f9a5b58da6a09f96a38fede88) 2nd part of thebasics translation.
-
-* [cca0ba5](https://github.com/BBVA/data-refinery/commit/cca0ba552311509025da8f89adcd90009db453e2) Introduction translated.
-
-* [0bc4fc5](https://github.com/BBVA/data-refinery/commit/0bc4fc5d8350bfb3aad17a9ee704ffa4b28603c6) Delete image reference.
-
-* [9b481d0](https://github.com/BBVA/data-refinery/commit/9b481d04c348018d50bfd5bf14b9509cbcf6c266) First translation for basics.
-
-* [5fb1b8e](https://github.com/BBVA/data-refinery/commit/5fb1b8ea9cc9a63dce636f5ed1a54c5a50a3a262) Add DSL documentation.
-
-* [fe77d1e](https://github.com/BBVA/data-refinery/commit/fe77d1ee6657ae079f04ea830e961828a6198210) First part of translation.
 
 
 ## [v0.1.61 (2017-11-24)](https://github.com/BBVA/data-refinery/tree/v0.1.61)
@@ -220,6 +264,17 @@
 * [bee765f](https://github.com/BBVA/data-refinery/commit/bee765f07c92f1695a9fa4b99f8b78210b7f099e) Update README with right title.
 
 
+## [v0.1.55 (2017-11-22)](https://github.com/BBVA/data-refinery/tree/v0.1.55)
+
+### Fix
+
+* [31ae5ce](https://github.com/BBVA/data-refinery/commit/31ae5cea5cb143c2d33010dab22fbcdff3ad0a1b) Closes #3.
+
+### Other
+
+* [548f960](https://github.com/BBVA/data-refinery/commit/548f960dd7c3bfa2c50c74709384525be7568a90) [skip ci] Travis Build 12. Update version 0.1.54 --> 0.1.55.
+
+
 ## [v0.1.54 (2017-11-21)](https://github.com/BBVA/data-refinery/tree/v0.1.54)
 
 ### Other
@@ -268,15 +323,5 @@
 * [177c626](https://github.com/BBVA/data-refinery/commit/177c626e5e5e8211dc58a7ebf56311006639c3f3) [skip ci] Travis Build 3. Update version 0.1.47 --> 0.1.48.
 
 * [83f3c9d](https://github.com/BBVA/data-refinery/commit/83f3c9d73c77c2d5675296499372bc4b2e337f19) Upload current version of bumpversion to 0.1.47.
-
-* [273e507](https://github.com/BBVA/data-refinery/commit/273e50757d05f8a4a46d48b171b5538abb3cbfa1) Adding CI/CD by Travis service - changing source repository.
-
-* [bdfb10d](https://github.com/BBVA/data-refinery/commit/bdfb10d2de07a91d2f3a8f991707a34ea5f612c3) Adding CI/CD by Travis service.
-
-* [0431b7e](https://github.com/BBVA/data-refinery/commit/0431b7eed3f76b4e25d882af7c000be4844a14be) Adding documentation, tests and setup.
-
-* [b46f18b](https://github.com/BBVA/data-refinery/commit/b46f18b768548229d24ec82176f901ac42492d4f) Initial code-base commit.
-
-* [19e7b16](https://github.com/BBVA/data-refinery/commit/19e7b16a85fe087b059da69f9e127538dfa23e16) Initial commit.
 
 
