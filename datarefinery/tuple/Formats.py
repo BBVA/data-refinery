@@ -31,37 +31,25 @@ def to_json(i, e=None):
     return json.dumps(i), e
 
 
-def _list_to_csv(l):
-    """
-    Util function to overcome the use of files by in-memory io buffer
-
-    :param l:
-    :return:
-    """
-    io_file = io.StringIO()
-    writer = csv.writer(io_file, quoting=csv.QUOTE_NONNUMERIC, lineterminator='')
-    writer.writerow(l)
-    return io_file.getvalue()
-
-
-def _csv_to_list(csv_input):
-    """
-    Util function to overcome the use of files by in-memory io buffer
-
-    :param csv_input:
-    :return:
-    """
-    io_file = io.StringIO(csv_input)
-    return next(csv.reader(io_file, delimiter=','))
-
-
-def csv_to_map(fields):
+def csv_to_map(fields, delimiter=','):
     """
     Convert csv to dict
 
+    :param delimiter:
     :param fields:
     :return:
     """
+
+    def _csv_to_list(csv_input):
+        """
+        Util function to overcome the use of files by in-memory io buffer
+
+        :param csv_input:
+        :return:
+        """
+        io_file = io.StringIO(csv_input)
+        return next(csv.reader(io_file, delimiter=delimiter))
+
     def _app(current_tuple, e=None):
         if current_tuple is None or len(current_tuple) == 0:
             return None, "no input"
@@ -75,13 +63,26 @@ def csv_to_map(fields):
     return _app
 
 
-def map_to_csv(fields):
+def map_to_csv(fields, delimiter=","):
     """
     Convert dict to csv
 
     :param fields:
     :return:
     """
+
+    def _list_to_csv(l):
+        """
+        Util function to overcome the use of files by in-memory io buffer
+
+        :param l:
+        :return:
+        """
+        io_file = io.StringIO()
+        writer = csv.writer(io_file, quoting=csv.QUOTE_NONNUMERIC, lineterminator='', delimiter=delimiter)
+        writer.writerow(l)
+        return io_file.getvalue()
+
     def _app(current_tuple, e=None):
         if e is not None:
             return None, e
