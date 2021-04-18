@@ -21,7 +21,7 @@ matrix:
   - python: "3.7"
     env:
     - FLAG=true
-      TOXENV=py37,doc,build
+      TOXENV=py37
   - python: "3.8"
     env:
       - FLAG=true
